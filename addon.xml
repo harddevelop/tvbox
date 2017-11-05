@@ -14,7 +14,9 @@
 		<platform>all</platform>
 		<language>en</language>
 		<summary lang="en">TV BOX channels</summary>
+		<summary lang="he">ערוצי TV BOX</summary>
 		<description lang="en">TV BOX channels client for browse and see online channels.</description>
 		<description lang="es">Cliente de canales TV BOX para navegar y ver canales online.</description>
+		<description lang="he">לקוח ערוצי TV BOX לעיון וצפייה בתוכן מקוון.</description>
 	</extension>
 </addon>
