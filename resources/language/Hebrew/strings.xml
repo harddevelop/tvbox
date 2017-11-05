@@ -1,0 +1,87 @@
+<strings><!-- plugin title -->
+    <string id="10001">עיין ברשימת ערוצים מרוחקת</string>
+    <string id="10002">מוריד..</string>
+    <string id="10003">נשאר %.2fMB/%.2fMB (%d%%) %.2f Kb/s %s </string>
+    <string id="10004">לא ניתן להוריד את הקובץ</string>
+    <string id="10005">צפה בהזרמה</string>
+    <string id="10006">הצג לפי אירוע</string>
+    <string id="10007">עיין לפי מדינה</string>
+    <string id="10008">עיין לפי סגנון</string>
+    <string id="10009">משהו קרה. ייתכן והקישור לא פעיל כעת</string>
+
+    <string id="10010">עיין בדפי רשת</string>
+    <string id="10011">יש עדכון זמין!</string>
+
+    <string id="10012">טלטקסט</string>
+    <string id="10013">הכנס מספר באופן ידני</string>
+
+    <string id="10014">PPV</string>
+    <string id="10015">תכנות מוזרמות</string>
+    <string id="10016">אתרי רשת ציבוריים פופולריים</string>
+    <string id="10017">סרטים וסדרות</string>
+    <string id="10018">אתרי Acestream/Sopcast מהרשת</string>
+    <string id="10019">אתרי רשת מבוססים על משתמשים</string>
+    <string id="10020">אתרי רשת שמזרימים ספורט</string>
+    <string id="10021">אתרי חדשות מקוונים</string>
+    <string id="10022">אתרי טלוויזיה מהעולם</string>
+    <string id="10023">רשימות אתרי רשת מקוונים</string>
+    <string id="10024">אתרי מצלמות רשת מקוונות</string>
+    <string id="10025">אחרים</string>
+
+    <string id="11010">כן</string>
+    <string id="11011">לא</string>
+    <string id="11012">אשר</string>
+    <string id="11013">בטל</string>
+    <string id="11014">עדכן</string>
+    <string id="11015">השאר</string>
+    <string id="11016">בחר אפשרות</string>
+    <string id="11017">כפה עדכון</string>
+    <string id="11018">חפש</string>
+
+    <string id="30000">הגדרות</string>
+    <string id="30001">רשימת ערוץ מרוחק</string>
+    <string id="30002">XML מרוחק לעדכונים</string>
+    <string id="30003">אפשר ערוצים חלופיים (ערוצים נוספים)</string>
+    <string id="30004">אישור תיקון ffmpeg (נדרש בשימוש עם ספקים מסוימים)</string>
+    <string id="30005">תשתמש בנתיב מקומי עבור שרתים מיוחדים</string>
+    <string id="30006">התקן תיקון אוניברסלי</string>
+
+    <string id="30010">פיתוח</string>
+    <string id="30011">איתור באגים</string>
+    <string id="30012">הורד והתקן את  plexus (אחרי שינוי לעבודה)</string>
+
+    <string id="30020">SPLive</string>
+    <string id="30021">רשימת ערוצים</string>
+    <string id="30022">אפשר SPlive רשימות יישום (נסיוני)</string>
+
+    <string id="30031">מקודד מקוון</string>
+
+    <string id="30040">Plexus</string>
+    <string id="30041">אפשר ערוצים המנוהלים על ידי plexus (ניסיוני) (experimental)</string>
+    <string id="30042">הורד והתקן את plexus (ניסיוני)</string>
+    <string id="30043">הורד והתקן את quasar (ניסיוני)</string>
+
+    <string id="30050">האם ברצונך להתקין את plexus?התקנת plexus דורשת ספריות נוספות, אם התקנת גירסה קודמת ההתקנה לא תוחלף.</string>
+    <string id="30051">ההרחבה מותקנת, אנא הפעל  אותה לתוך הרחבות -> תוכניות כדי להגדיר ולהפעיל את האשף. אם ההרחבה לא מופיעה, אנא הפעל מחדש את קודי.</string>
+    <string id="30052">האם ברצונך להתקין את quasar? אם התקנת גירסה קודמת ההתקנה לא תוחלף.</string>
+
+    <string id="30060">התוספת הותקנה. אנא הפעל מחדש את קודי כדי שההתקנה תיכנס לתוקף</string>
+
+    <string id="30070">דפים דינמיים</string>
+    <string id="30071">אפשר דפים דינמיים</string>
+    <string id="30072">פרמטר חיפוש עבור pastebin.com</string>
+
+    <string id="30080">חדשות</string>
+    <string id="30081">אפשר דפי חדשות</string>
+
+    <string id="30090">Yomvi</string>
+    <string id="30091">אפשר את  yomvi כספק</string>
+    <string id="30092">שם משתמש</string>
+    <string id="30093">סיסמה</string>
+
+    <string id="30100">Mobdro</string>
+    <string id="30101">אפשר את mobdro</string>
+    <string id="30102">מפתח API של Mobdro</string>
+    <string id="30103">Resolver של אסימון mobdro מרוחק</string>
+
+</strings>
