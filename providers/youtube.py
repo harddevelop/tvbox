@@ -22,6 +22,9 @@ class Youtube(Downloader):
             html = Youtube.getContentFromUrl(page,"",Youtube.cookie,"")
             logger.debug("html: "+html)
             x = Youtube.extractMainChannels(html)
+            if len(x)==0:
+                jsonScript = Decoder.extract('ytInitialGuideData = ',';',html)
+                x = Youtube.extractMainChannelsJSON(jsonScript)
             element = {}
             element["title"] = XBMCUtils.getString(11018)
             element["page"] = 'search'
@@ -44,8 +47,25 @@ class Youtube(Downloader):
             x = Youtube.extractAllVideosFromHtml(html)
             logger.debug("done search logic pagination!")
         elif page.find('/channel/')>-1:
-            html = Youtube.getContentFromUrl(page,"",Youtube.cookie,Youtube.MAIN_URL)
+            h= {}
+            h['Host'] = 'www.youtube.com'
+            h['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:56.0) Gecko/20100101 Firefox/56.0'
+            h['Accept'] = "text/html,application/xhtml+xml,application/xml;q='0.9,*/*;q='0.8"
+            h['Accept-Language'] = "es-MX,es-ES;q='0.9,es;q='0.7,es-AR;q='0.6,es-CL;q='0.4,en-US;q='0.3,en;q='0.1"
+            h['Accept-Encoding'] = 'gzip, deflate, br'
+            h['DNT'] = '1'
+            h['Upgrade-Insecure-Requests'] = '1'
+            h['Connection'] = 'keep-alive'
+            h['Pragma'] = 'no-cache'
+            h['Cache-Control'] = 'no-cache'
+            html = Youtube.getContentFromUrl(url=page,referer=page,ajax=True,headers=h)
             x = Youtube.extractAllVideos(html)
+            #if len(x) == 0:
+            #jsonScript = Decoder.extract('window["ytInitialData"] = ',';',html)
+            #try:
+            #    x = Youtube.extractVideosFromChannelJSON(jsonScript)
+            #except:
+            #    x = Youtube.extractVideosFromSpecialChannelJSON(jsonScript)
         elif "/trending" in page:
             html = Youtube.getContentFromUrl(page, "", Youtube.cookie, Youtube.MAIN_URL)
             x = Youtube.extractAllVideosFromHtml(html)
@@ -223,4 +243,95 @@ class Youtube(Downloader):
                 if "Home" not in title and "Movies" not in title:
                     x.append(element)
             i+=1
+        return x
+
+    @staticmethod
+    def extractMainChannelsJSON(jsonScript):
+        x = []
+        jsonList = json.loads(jsonScript)
+        for jsonElement in jsonList['items'][1]["guideSectionRenderer"]["items"]:
+            title = ''
+            url = ''
+            thumbnail = ''
+            element = {}
+            element2 = jsonElement["guideEntryRenderer"]
+            if element2.has_key('title'):
+                title = element2['title']
+            if element2.has_key('thumbnail'):
+                thumbnail = element2['thumbnail']['thumbnails'][0]['url']
+                if 'https' not in thumbnail:
+                    thumbnail = 'https:'+thumbnail
+            if element2.has_key('navigationEndpoint'):
+                url = element2['navigationEndpoint']['webNavigationEndpointData']['url']
+                if 'youtube.com' not in url:
+                    url = 'https://youtube.com'+url
+            element = {}
+            element["title"] = title
+            element["page"] = url
+            element["thumbnail"] = thumbnail
+            x.append(element)
+
+        return x
+
+    @staticmethod
+    def extractVideosFromChannelJSON(jsonScript):
+        x = []
+        jsonList = json.loads(jsonScript)
+        #contents -> twoColumnBrowseResultsRenderer -> tabs[0-4][0] -> tabRenderer -> content -> sectionListRenderer -> contents[0-9]
+        for jsonElements in jsonList['contents']['twoColumnBrowseResultsRenderer']["tabs"][0]['tabRenderer']['content']['sectionListRenderer']['contents']:
+            #-> itemSectionRenderer -> contents [0] -> shelfRenderer -> content -> horizontalListRenderer -> items [0-11] (4) -> gridVideoRenderer
+            for jsonElement in jsonElements['itemSectionRenderer']['contents'][0]['shelfRenderer']['content']['horizontalListRenderer']['items']:
+                title = ''
+                url = ''
+                thumbnail = ''
+                element = {}
+                element2 = jsonElement["gridVideoRenderer"]
+                if element2.has_key('title'):
+                    title = element2['title']['simpleText']
+                if element2.has_key('thumbnails'):
+                    thumbnail = element2['thumbnail']['thumbnails'][0]['url']
+                    if 'https' not in thumbnail:
+                        thumbnail = 'https:' + thumbnail
+                if element2.has_key('videoId'):
+                    url = element2['videoId']
+                    url = 'https://youtube.com/watch?v='+url
+                element = {}
+                element["title"] = title
+                element["page"] = url
+                element["thumbnail"] = thumbnail
+                x.append(element)
+
+        return x
+
+    @staticmethod
+    def extractVideosFromSpecialChannelJSON(jsonScript):
+        x = []
+        jsonList = json.loads(jsonScript)
+        # contents -> twoColumnBrowseResultsRenderer -> tabs[0-4][0] -> tabRenderer -> content -> sectionListRenderer -> contents[0-9]
+        for jsonElements in jsonList['contents']['twoColumnBrowseResultsRenderer']["tabs"][0]['tabRenderer']['content'][
+            'sectionListRenderer']['contents']:
+            # -> itemSectionRenderer -> contents [0] -> shelfRenderer -> content -> horizontalListRenderer -> items [0-11] (4) -> gridVideoRenderer
+            for jsonElement in \
+            jsonElements['itemSectionRenderer']['contents'][0]['shelfRenderer']['content']['horizontalListRenderer'][
+                'items']:
+                title = ''
+                url = ''
+                thumbnail = ''
+                element = {}
+                element2 = jsonElement["gridVideoRenderer"]
+                if element2.has_key('title'):
+                    title = element2['title']['simpleText']
+                if element2.has_key('thumbnails'):
+                    thumbnail = element2['thumbnail']['thumbnails'][0]['url']
+                    if 'https' not in thumbnail:
+                        thumbnail = 'https:' + thumbnail
+                if element2.has_key('videoId'):
+                    url = element2['videoId']
+                    url = 'https://youtube.com/watch?v=' + url
+                element = {}
+                element["title"] = title
+                element["page"] = url
+                element["thumbnail"] = thumbnail
+                x.append(element)
+
         return x
