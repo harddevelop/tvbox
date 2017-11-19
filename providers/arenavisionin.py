@@ -8,8 +8,8 @@ from core.downloader import Downloader
 
 class Arenavisionin(Downloader):
 
-    MAIN_URL = "http://www.arenavision.us/iguide"
-    MAIN_URL_RU = "http://www.arenavision.ru/iguide"
+    MAIN_URL = "http://www.arenavision.in/"
+    MAIN_URL_RU = "http://www.arenavision.ru/"
 
     COOKIE = "has_js=1; POPARENArhpmax=3|Sat%2C%2014%20Oct%202017%2018%3A26%3A06%20GMT; ads_smrt_popunder=2%7CSun%2C%2015%20Oct%202017%2017%3A26%3A02%20GMT; POPARENArhpmin=yes"
 
@@ -20,9 +20,13 @@ class Arenavisionin(Downloader):
             try:
                 page=Arenavisionin.MAIN_URL
                 html = Arenavisionin.getContentFromUrl(page,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
+                guideUrl = Decoder.rExtract('"','">EVENTS GUIDE</a></li>',html)
+                html = Arenavisionin.getContentFromUrl(page+guideUrl,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
             except:
                 page = Arenavisionin.MAIN_URL_RU
                 html = Arenavisionin.getContentFromUrl(page, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL_RU)
+                guideUrl = Decoder.rExtract('"', '">EVENTS GUIDE</a></li>', html)
+                html = Arenavisionin.getContentFromUrl(page+guideUrl, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL_RU)
                 pass
             html = Decoder.extract('<table align="center" cellspacing="1" class="auto-style1" style="width: 100%; float: left"><tr><th class="auto-style4" style="width: 190px; height: 39px"><strong>DAY</strong></th>',"</tr></table></div></div></div>",html)
             x = Arenavisionin.extractElements(html)
