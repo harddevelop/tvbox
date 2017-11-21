@@ -92,7 +92,7 @@ class Decoder():
             link = Decoder.decodeMitele(link)
         elif "youtube." in link:
             from providers.youtube import Youtube
-            link = Youtube.extractTargetVideo(link)
+            link = Youtube.extractTargetVideoJSON(link)
         return link
 
     @staticmethod
