@@ -52,6 +52,7 @@ from providers.elmundo import ElMundo
 from providers.elpaises import ElPais
 from providers.streamingsport365 import StreamingSports365
 from providers.clan import Clan
+from providers.rtvealacarta import RTVEAlaCarta
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -685,6 +686,17 @@ def displayClan(url,page):
 		if element.has_key("thumbnail"):
 			image = element["thumbnail"]
 		add_dir(element["title"], element["link"], code, image, "clan", element["link"])
+
+def displayRTVE(url,page):
+	finalUrls = RTVEAlaCarta.getChannels(page)
+	for element in finalUrls:
+		code = 4
+		if element.has_key("finalLink"):
+			code = 125
+		image = icon
+		if element.has_key("thumbnail"):
+			image = element["thumbnail"]
+		add_dir(element["title"], element["link"], code, image, "rtvealacarta", element["link"])
 
 def displayRTVETeletext(url,page):
 	logger.debug("displaying teletext for LaSextaText provider")

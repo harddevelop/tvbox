@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
-	<tag>0.1.7</tag>
-	<version>129</version>
-	<date>19/11/2017</date>
-	<changes>Fix for arenavision provider</changes>
+	<tag>0.1.8</tag>
+	<version>130</version>
+	<date>25/11/2017</date>
+	<changes>Updates with new providers</changes>
 </plugin>

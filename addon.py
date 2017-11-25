@@ -65,6 +65,7 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 				add_dir("[T] - Elitetorrent.net", 'elitetorrentnet', 4, "http://www.elitetorrent.net/images/logo_elite.png",'elitetorrentnet', 0)
 		elif str(url)=='popularonline':
 			add_dir("Youtube.com", 'youtube', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/YouTube_logo_2015.svg/120px-YouTube_logo_2015.svg.png",'youtube', 0)
+			add_dir("RTVE AlaCarta", 'rtvealacarta', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Logo_RTVE.svg/150px-Logo_RTVE.svg.png",'rtvealacarta', 0)
 			add_dir("CLAN (rtve)", 'clan', 4,"https://upload.wikimedia.org/wikipedia/en/thumb/4/47/TVEClan_logo.png/150px-TVEClan_logo.png",'clan', 0)
 			add_dir("TuneIn.com", 'tunein', 4,"https://lh5.googleusercontent.com/-NsniPTwZFkc/AAAAAAAAAAI/AAAAAAAAOLE/qtdbWIxlF5M/s0-c-k-no-ns/photo.jpg",'tunein', 0)
 		elif str(url)=='paidonline':
@@ -210,6 +211,8 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		displayTeletext(url, page)
 	elif provider == 'clan':
 		displayClan(url, page)
+	elif provider == 'rtvealacarta':
+		displayRTVE(url, page)
 
 	logger.info(provider)
 
