@@ -673,8 +673,8 @@ def displayTeletext(url,page):
 		add_dir("Rtve.es", "rtve.es", 4, "rtve.es", "teletext", 0)
 		add_dir("Antena3.com", "antena3.com", 4, "antena3.com", "teletext", 0)
 		add_dir("LaSexta.com", "lasexta.com", 4, "lasexta.com", "teletext", 0)
-		add_dir("BBC1 - ceefax.tv", "bbc1", 4, "bbc1", "teletext", 0)
-		add_dir("BBC2 - ceefax.tv", "bbc2", 4, "bbc2", "teletext", 0)
+		#add_dir("BBC1 - ceefax.tv", "bbc1", 4, "bbc1", "teletext", 0)
+		#add_dir("BBC2 - ceefax.tv", "bbc2", 4, "bbc2", "teletext", 0)
 
 def displayClan(url,page):
 	finalUrls = Clan.getChannels(page)
