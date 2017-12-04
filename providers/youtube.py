@@ -256,4 +256,14 @@ class Youtube(Downloader):
         logger.debug("html is: "+html)
         selectedLink = Decoder.extract('data-vlink="','"',html)
         logger.debug("decoded link is: "+selectedLink)
+        #now try to get better quality
+        try:
+            logger.debug("trying better quality...")
+            secondLink = Decoder.extract('<th>Download</th>',"<small>m-HD</small>",html)
+            logger.debug("link is inside: "+secondLink)
+            secondLink = Decoder.extract('data-vlink="', '"', secondLink)
+            logger.debug("new target link is: " + secondLink)
+            selectedLink = secondLink
+        except:
+            logger.debug("could not obtain better quality, using default link: "+link)
         return selectedLink
