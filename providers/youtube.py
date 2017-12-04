@@ -235,3 +235,25 @@ class Youtube(Downloader):
         element["thumbnail"] = thumbnail
         element["finalLink"] = True
         return element
+
+    @staticmethod
+    def decodeY2Mate(link):
+        url = "http://y2mate.com/analyze/ajax"
+        data = "url="+urllib.quote(link)+"&ajax=1"
+        headers = {}
+        headers["Host"]="y2mate.com"
+        headers["User-Agent"] = Downloader.USER_AGENT
+        headers["Accept"] = "*/*"
+        headers["Accept-Language"] = "en-US,en;q=0.8,es-ES;q=0.5,es;q=0.3"
+        headers["Referer"] = "http://y2mate.com"
+        headers["Connection"] = "keep-alive"
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+        headers["charset"] = "UTF-8"
+        headers["X-Requested-With"] = "XMLHttpRequest"
+        headers["DNT"] = "1"
+        Downloader.TIMEOUT=30
+        html = Downloader.getContentFromUrl(url=url,data=data,headers=headers)
+        logger.debug("html is: "+html)
+        selectedLink = Decoder.extract('data-vlink="','"',html)
+        logger.debug("decoded link is: "+selectedLink)
+        return selectedLink
