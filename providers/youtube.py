@@ -163,26 +163,39 @@ class Youtube(Downloader):
             #-> itemSectionRenderer -> contents [0] -> shelfRenderer -> content -> horizontalListRenderer -> items [0-11] (4) -> gridVideoRenderer
             for jsonElement in jsonElements['itemSectionRenderer']['contents'][0]['shelfRenderer']['content']['horizontalListRenderer']['items']:
                 logger.debug("inside second for...")
-                title = ''
-                url = ''
-                thumbnail = ''
-                element2 = jsonElement["gridVideoRenderer"]
-                if element2.has_key('title'):
-                    title = element2['title']['simpleText']
-                if element2.has_key('thumbnail'):
-                    thumbnail = element2['thumbnail']['thumbnails'][0]['url']
-                    if 'https' not in thumbnail:
-                        thumbnail = 'https:' + thumbnail
-                if element2.has_key('videoId'):
-                    url = element2['videoId']
-                    url = 'https://youtube.com/watch?v='+url
-                element = {}
-                element["title"] = title
-                element["page"] = url
-                element["thumbnail"] = thumbnail
-                element["finalLink"] = True
-                logger.debug("append: "+title+", page: "+url+", thumb: "+thumbnail)
-                x.append(element)
+                try:
+                    title = ''
+                    url = ''
+                    thumbnail = ''
+                    try:
+                        element2 = jsonElement["gridVideoRenderer"]
+                    except:
+                        logger.debug("fail!")
+                        element2 = jsonElement["gridChannelRenderer"]
+                        pass
+                    logger.debug("inside element2...")
+                    if element2.has_key('title'):
+                        title = element2['title']['simpleText']
+                    logger.debug("simple text: "+str(title))
+                    if element2.has_key('thumbnail'):
+                        thumbnail = element2['thumbnail']['thumbnails'][0]['url']
+                        if 'https' not in thumbnail:
+                            thumbnail = 'https:' + thumbnail
+                    logger.debug("simple thumb: "+str(thumbnail))
+                    if element2.has_key('videoId'):
+                        url = element2['videoId']
+                        url = 'https://youtube.com/watch?v='+url
+                    logger.debug("simple url: "+str(url))
+                    element = {}
+                    element["title"] = title
+                    element["page"] = url
+                    element["thumbnail"] = thumbnail
+                    element["finalLink"] = True
+                    logger.debug("append: "+title+", page: "+url+", thumb: "+thumbnail)
+                    x.append(element)
+                except:
+                    logger.debug("fail parser for: "+str(jsonElement))
+                    pass
         return x
 
     @staticmethod
@@ -209,9 +222,18 @@ class Youtube(Downloader):
             else: #search
                 content = jsonElements['itemSectionRenderer']['contents']
                 for jsonElement in content:
-                    element2 = jsonElement["videoRenderer"]
-                    element = Youtube.extractVideoElement(element2)
-                    x.append(element)
+                    try:
+                        if jsonElement.has_key("gridMovieRenderer"):
+                            element2 = jsonElement["gridMovieRenderer"]
+                        elif jsonElement.has_key("videoRenderer"):
+                            element2 = jsonElement["videoRenderer"]
+                        #element2 = jsonElement["videoRenderer"]
+                        element = Youtube.extractVideoElement(element2)
+                        x.append(element)
+                    except:
+                        logger.debug("fails this way, so needs other new way...")
+
+                        pass
 
         return x
 
