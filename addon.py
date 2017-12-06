@@ -64,7 +64,7 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			if enablePlexus:
 				#add_dir("[T] - Elitetorrent.net", 'elitetorrentnet', 4, "http://www.elitetorrent.net/images/logo_elite.png",'elitetorrentnet', 0)
 				add_dir("[T] - TuMejorTorrent.net", 'tumejortorrent', 4,"http://tumejortorrent.com/pct1/library/content/template/images/tmt_logo.jpg", 'tumejortorrent', 0)
-				#add_dir("[T] - MejorTorrent.net", 'mejortorrent', 4,"http://www.mejortorrent.com/imagenes_web/cabecera.jpg", 'mejortorrent', 0)
+				add_dir("[T] - MejorTorrent.net", 'mejortorrent', 4,"http://www.mejortorrent.com/imagenes_web/cabecera.jpg", 'mejortorrent', 0)
 		elif str(url)=='popularonline':
 			add_dir("Youtube.com", 'youtube', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/YouTube_logo_2015.svg/120px-YouTube_logo_2015.svg.png",'youtube', 0)
 			add_dir("RTVE AlaCarta", 'rtvealacarta', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Logo_RTVE.svg/150px-Logo_RTVE.svg.png",'rtvealacarta', 0)

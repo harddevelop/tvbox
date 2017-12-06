@@ -729,7 +729,7 @@ def drawMejorTorrent(page):
 		mode = 4
 		title = item["title"]
 		link = item["link"]
-		if '/torrent/' in link:
+		if 'secciones.php' in link and '&p=' not in link:
 			mode = 127
 		if item.has_key("thumbnail"):
 			image = item["thumbnail"]
