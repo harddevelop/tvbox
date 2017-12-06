@@ -84,6 +84,7 @@ def drawHdfulltv(page):
 	mode = 4 #continue browsing
 	jsonChannels = HdfullTv.getChannels(page)
 	for itemFirst in jsonChannels:
+		title = ""
 		if itemFirst.has_key("permalink"):
 			if itemFirst.has_key("show"): #serie
 				link = "http://hdfull.tv/serie/"+itemFirst["permalink"]+"/temporada-"+itemFirst["season"]+"/episodio-"+itemFirst["episode"]
@@ -110,13 +111,17 @@ def drawHdfulltv(page):
 				else:
 					link = "http://hdfull.tv/"+itemFirst["permalink"]
 				title = itemFirst["title"]
-				if type(title) == type(dict()):
-					if title.has_key("es"):
-						title = title["es"]
-					else:
-						title = ""
-					if len(title)==0 and itemFirst["title"].has_key("en"):
-						title = itemFirst["title"]["en"]
+				try:
+					if type(title) == type(dict()):
+						if title.has_key("es"):
+							title = title["es"]
+						else:
+							title = ""
+						if len(title)==0 and itemFirst["title"].has_key("en"):
+							title = itemFirst["title"]["en"]
+				except:
+					logger.error("title is not dic, fails!!"+str(title))
+					pass
 			if itemFirst.has_key("thumbnail"):
 				image = itemFirst["thumbnail"]
 				if image.find("http://")<0:
@@ -125,6 +130,9 @@ def drawHdfulltv(page):
 				image = icon
 		if itemFirst.has_key("finalLink"):
 			mode = 100 #open link from provider
+			title = itemFirst["title"]
+			link = itemFirst["link"]
+			image = ""
 		add_dir(title,link,mode,image,"hdfulltv",link)
 
 def drawVipgoal(page):

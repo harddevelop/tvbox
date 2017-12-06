@@ -7,7 +7,8 @@ import re
 import time
 from core import logger
 from core.decoder import Decoder
-
+from core.downloader import Downloader
+import base64
 
 try:
     import json
@@ -60,64 +61,59 @@ class HdfullTv():
 
     @staticmethod
     def extractProvidersFromLink(url,cookie=""):
-        links = []
+        x = []
         if cookie == "":
             cookie = HdfullTv.getNewCookie()
-        html = HdfullTv.getContentFromUrl(url,cookie)
-        #print html
-        #content = html[html.rfind('<div class="content">'):]
-        content = html
-        splitter = 'class="danger" title="Reportar"><i class="icon-warning-sign icon-white"></i>'
-        #and link will be into the next: <a href="xxx" content
-        i = 0
-        while content.find(splitter)>-1:
+        javascript = HdfullTv.getContentFromUrl(url='http://hdfull.tv/js/providers.js?v=3.0.50',referer=url,cookie=cookie)
+        '''
+        from pyjsparser import PyJsParser
+        p = PyJsParser()
+        processed = p.parse(javascript)
+        logger.debug("str: "+str(processed))
+        for value in processed["body"]:
+            logger.debug("level: "+str(value))
+            if value.has_key('body'):
+                pass
+        '''
+        content = HdfullTv.jhexdecode(javascript)
+        logger.debug("content is: "+content)
 
-            languageSplitter = '<b class="key">Idioma: </b>'
+        html = HdfullTv.getContentFromUrl(url=url,cookie=cookie)
+        contentOfuscated = Decoder.extract("var ad = '","';",html)
+        logger.debug("ofuscated content is: "+contentOfuscated)
 
-            if content.find(languageSplitter) > -1:
+        javascriptKey = Downloader.getContentFromUrl(url="http://hdfull.tv/templates/hdfull/js/jquery.hdfull.view.min.js",cookie=cookie,referer=url)
+        logger.debug("hdfull javascript for key is: "+javascriptKey)
+        #key = re.match('JSON.parse\(atob.*?substrings\((.*?)\)',javascriptKey)[0]
+        key = Decoder.extract('.substrings(',')',javascriptKey)
+        logger.debug("key is: "+key)
+        logger.debug("decrypting...")
+        jsonLinks = HdfullTv.obfs(base64.b64decode(contentOfuscated), 126 - int(key))
+        logger.debug("json links are: "+str(jsonLinks))
 
-                language = content[content.find(languageSplitter)+len(languageSplitter):]
-                language = language[:language.find('</span>')].strip()
-
-            elif content.find('<b class="key"> Idioma: </b>'): #in some cases (films) there is an space between > and Idioma
-
-                languageSplitter = '<b class="key"> Idioma: </b>' #it's the same with one more space character
-                language = content[content.find(languageSplitter)+len(languageSplitter):]
-                language = language[:language.find('</span>')].strip()
-
+        jsonList = json.loads(jsonLinks)
+        for jsonElement in jsonList:
+            id = jsonElement["id"]
+            provider = str(jsonElement["provider"])
+            code = str(jsonElement["code"])
+            lang = jsonElement["lang"]
+            quality = jsonElement["quality"]
+            logger.debug("splitter is: "+";p["+provider+"]=")
+            line = Decoder.extract(";p["+provider+"]=","};",content)
+            logger.debug("line is: "+line)
+            link = Decoder.extract('return "','"',line)
+            logger.debug("hdfull link is: "+link+" - "+code)
+            if len(link)>0:
+                element = {}
+                element["link"] = link+code
+                element["title"] = Decoder.extract("://",'"',line)+" - "+lang+" - "+quality
+                element["finalLink"] = True
+                x.append(element)
             else:
-                language = ''
+                logger.debug("Discarted: "+line+" - "+code)
 
-            if language.find('&iacute;')>-1:
-                language = language.replace('&iacute;','')
-
-            providerNameSplitter = '<b class="key">Servidor:</b><b class="provider" style="'
-            providerName = content[content.find(providerNameSplitter)+len(providerNameSplitter):]
-            providerName = providerName[providerName.find('>')+1:providerName.find('</b>')].strip()
-
-            qualitySplitter = '<b class="key">Calidad: </b>'
-            quality = content[content.find(qualitySplitter)+len(qualitySplitter):]
-            quality = quality[:quality.find('</span>')].strip()
-
-            content = content[content.find(splitter)+len(splitter):]
-
-            linkJSON = {}
-            link = content[content.find('<a href="')+len('<a href="'):]
-            link = link[:link.find('"')]
-            logger.debug("found a provider link: "+link)
-
-            if link.find("http://olo.gg")==0 : ##TODO, change to rfind('http') or Decoder.rExtract() logic to be generic
-                link = link[link.find('=')+1:]
-                logger.debug("detected olo.gg link, cleaned to: "+link)
-
-            linkJSON["permalink"] = link
-            linkJSON["title"] = providerName + " - " + quality + " - "+language
-            linkJSON["finalLink"] = False  #this link is from a provider, needs be decoded
-
-            links.append(linkJSON)
-            i+=1
-        logger.debug("links procesed: "+str(i))
-        return links
+        logger.debug("links procesed: "+str(len(x)))
+        return x
 
     @staticmethod
     def getNewCookie(r=None):
@@ -310,7 +306,7 @@ class HdfullTv():
         return x
 
     @staticmethod
-    def getContentFromUrl(url,cookie=""):
+    def getContentFromUrl(url,cookie="",referer=""):
         headers = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
             "Referer" : "http://hdfull.tv",
@@ -323,6 +319,8 @@ class HdfullTv():
             "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Cookie" : cookie+" __test; __atuvc=3%7C44; _ga=GA1.2.1091232675.1446337892; ppu_main_bf08d52cc9e98012345840f5f2a1ef7f=1; ppu_sub_bf08d52cc9e4321d3ea840f5f2a1ef7f=1; language=es"
         }
+        if referer != '':
+            headers["Referer"] = referer
         #request.add_header("Content-Length", len(form))
         h = httplib.HTTPConnection('hdfull.tv:80')
         subUrl = url[len("http://hdfull.tv"):]
@@ -333,3 +331,44 @@ class HdfullTv():
         html = r.read()
         HdfullTv.magicKey = Decoder.extract("__csrf_magic' value=\"",'"',html)
         return html
+
+
+    @staticmethod
+    def jhexdecode(t):
+
+        r = re.sub(r'_\d+x\w+x(\d+)', 'var_' + r'\1', t)
+        r = re.sub(r'_\d+x\w+', 'var_0', r)
+
+        def to_hx(c):
+            h = int("%s" % c.groups(0), 16)
+            if 19 < h < 160:
+                return chr(h)
+            else:
+                return ""
+
+        r = re.sub(r'(?:\\|)x(\w{2})', to_hx, r).replace('var ', '')
+
+        f = eval(re.findall('\s*var_0\s*=\s*([^;]+);',r)[0])
+        for i, v in enumerate(f):
+            r = r.replace('[[var_0[%s]]' % i, "." + f[i])
+            r = r.replace(':var_0[%s]' % i, ":\"" + f[i] + "\"")
+            r = r.replace(' var_0[%s]' % i, " \"" + f[i] + "\"")
+            r = r.replace('(var_0[%s]' % i, "(\"" + f[i] + "\"")
+            r = r.replace('[var_0[%s]]' % i, "." + f[i])
+            if v == "": r = r.replace('var_0[%s]' % i, '""')
+
+        r = re.sub(r':(function.*?\})', r":'\g<1>'", r)
+        r = re.sub(r':(var[^,]+),', r":'\g<1>',", r)
+
+        return r
+
+    @staticmethod
+    def obfs(data, key, n=126):
+        chars = list(data)
+        for i in range(0, len(chars)):
+            c = ord(chars[i])
+            if c <= n:
+                number = (ord(chars[i]) + key) % n
+                chars[i] = chr(number)
+
+        return "".join(chars)

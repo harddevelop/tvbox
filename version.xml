@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.1.8</tag>
-	<version>130</version>
-	<date>25/11/2017</date>
-	<changes>Updates with new providers</changes>
+	<version>131</version>
+	<date>06/12/2017</date>
+	<changes>Improves related to fix hdfull provider</changes>
 </plugin>
