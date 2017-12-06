@@ -60,7 +60,7 @@ class Peliculasbiz(Downloader):
                     img = Decoder.extract('<img src="', '"', line)
                     title = Decoder.extract(' alt="', '"', line)
                     element = {}
-                    element["link"] = link
+                    element["link"] = link.replace("cinefox.cc/u/","")
                     element["thumbnail"] = img
                     element["title"] = title
                     element["finalLink"] = True
