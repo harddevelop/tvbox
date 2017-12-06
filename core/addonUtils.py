@@ -13,7 +13,7 @@ from providers.cinestrenostv import Cineestrenostv
 from providers.mamahdcom import Mamahdcom
 from providers.showsporttvcom import ShowsportTvCom
 
-MAX = 125
+MAX = 127
 
 def open(url,page):
 	if url.find("rtmp://")==-1 and url.find("|Referer=")==-1 and ( url.find("http://privatestream.tv/")>-1 or url.find("http://www.dinostream.pw/")>-1 or url.find("http://www.embeducaster.com/")>-1 or url.find("http://tv.verdirectotv.org/channel.php")>-1 or url.find("http://mamahd.com/")>-1):
@@ -59,7 +59,7 @@ def open(url,page):
 		if url.find("sop://")>-1:
 			mode = "2"
 		url = "plugin://program.plexus/?mode="+mode+"&url="+url+"&name=RemoteLink"
-	elif url.find(".torrent")>-1 or url.find("magnet:")>-1:
+	elif ".torrent" in url or url.find("magnet:")>-1:
 		logger.info("trying to send link to quasar: "+url)
 		url = urllib.quote_plus(url)
 		url = "plugin://plugin.video.quasar/play?uri="+url

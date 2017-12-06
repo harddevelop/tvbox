@@ -62,7 +62,9 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("Peliculasid.cc", 'peliculasbiz', 4, "", 'peliculasbiz', 0)
 			add_dir("Pepecine.com", 'pepecine', 4, "http://pepecine.net/assets/images/logo.png", 'pepecine', 0)
 			if enablePlexus:
-				add_dir("[T] - Elitetorrent.net", 'elitetorrentnet', 4, "http://www.elitetorrent.net/images/logo_elite.png",'elitetorrentnet', 0)
+				#add_dir("[T] - Elitetorrent.net", 'elitetorrentnet', 4, "http://www.elitetorrent.net/images/logo_elite.png",'elitetorrentnet', 0)
+				add_dir("[T] - TuMejorTorrent.net", 'tumejortorrent', 4,"http://tumejortorrent.com/pct1/library/content/template/images/tmt_logo.jpg", 'tumejortorrent', 0)
+				#add_dir("[T] - MejorTorrent.net", 'mejortorrent', 4,"http://www.mejortorrent.com/imagenes_web/cabecera.jpg", 'mejortorrent', 0)
 		elif str(url)=='popularonline':
 			add_dir("Youtube.com", 'youtube', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/YouTube_logo_2015.svg/120px-YouTube_logo_2015.svg.png",'youtube', 0)
 			add_dir("RTVE AlaCarta", 'rtvealacarta', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Logo_RTVE.svg/150px-Logo_RTVE.svg.png",'rtvealacarta', 0)
@@ -168,8 +170,12 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawAcetvru(page)
 	elif provider == 'streamingsport365':
 		drawStreamingsport365()
-	elif provider == 'elitetorrentnet':
-		drawElitetorrentnet(page)
+	#elif provider == 'elitetorrentnet':
+	#	drawElitetorrentnet(page)
+	elif provider == 'tumejortorrent':
+		drawTuMejorTorrent(page)
+	elif provider == 'mejortorrent':
+		drawMejorTorrent(page)
 	elif provider == 'youtube':
 		drawYoutube(page)
 	elif provider == 'zonaappcom':
@@ -318,6 +324,10 @@ def init():
 			openElitetorrentnet(url,page)
 		elif mode == 125:
 			openClan(url,page)
+		elif mode == 126:
+			openTuMejorTorrent(url,page)
+		elif mode == 127:
+			openMejorTorrent(url,page)
 
 
 	except Exception as e:

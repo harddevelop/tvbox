@@ -53,6 +53,8 @@ from providers.elpaises import ElPais
 from providers.streamingsport365 import StreamingSports365
 from providers.clan import Clan
 from providers.rtvealacarta import RTVEAlaCarta
+from providers.mejortorrent import MejorTorrent
+from providers.tumejortorrent import TuMejorTorrent
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -706,6 +708,36 @@ def displayRTVE(url,page):
 			image = element["thumbnail"]
 		add_dir(element["title"], element["link"], code, image, "rtvealacarta", element["link"])
 
+def drawTuMejorTorrent(page):
+	jsonChannels = TuMejorTorrent.getChannels(page)
+	for item in jsonChannels:
+		mode = 4
+		title = item["title"]
+		link = item["link"]
+		if item.has_key("finalLink"):
+			mode = 126
+		if item.has_key("thumbnail"):
+			image = item["thumbnail"]
+			logger.info("detected img: " + image)
+		else:
+			image = icon
+		add_dir(title, link, mode, image, "tumejortorrent", link)
+
+def drawMejorTorrent(page):
+	jsonChannels = MejorTorrent.getChannels(page)
+	for item in jsonChannels:
+		mode = 4
+		title = item["title"]
+		link = item["link"]
+		if '/torrent/' in link:
+			mode = 127
+		if item.has_key("thumbnail"):
+			image = item["thumbnail"]
+			logger.info("detected img: " + image)
+		else:
+			image = icon
+		add_dir(title, link, mode, image, "mejortorrent", link)
+
 def displayRTVETeletext(url,page):
 	logger.debug("displaying teletext for LaSextaText provider")
 	imgPath = 'http://www.rtve.com/television/teletexto/100/100_0001.png' #first
@@ -920,6 +952,24 @@ def openElitetorrentnet(url,page):
 	logger.info("decoding eliteetorrentnet link... " + url)
 	link = Elitetorrent.getChannels(url)[0]["link"]
 	logger.info("decoded eliteetorrentnet link: " + link)
+	open(link, page)
+
+def openTuMejorTorrent(url,page):
+	logger.info("decoding tumejortorrent link... " + url)
+	link = url
+	if ".torrent" not in url:
+		link = TuMejorTorrent.getChannels(url)[0]["link"]
+		logger.debug("provisional link is: "+link)
+		if ".torrent" not in link:
+			link = TuMejorTorrent.getChannels(link)[0]["link"]
+			logger.info("decoded two times tumejortorrent link: " + link)
+		logger.info("decoded tumejortorrent link: " + link)
+	open(link, page)
+
+def openMejorTorrent(url,page):
+	logger.info("decoding mejortorrent link... " + url)
+	link = MejorTorrent.getChannels(url)[0]["link"]
+	logger.info("decoded mejortorrent link: " + link)
 	open(link, page)
 
 def openClan(url,page):
