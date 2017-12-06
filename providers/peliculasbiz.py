@@ -42,7 +42,7 @@ class Peliculasbiz(Downloader):
         data = 'id='+page
         html = Peliculasbiz.getContentFromUrl(url=Peliculasbiz.GOTO,data=data, referer=Peliculasbiz.MAIN_URL)
         logger.debug("html is: "+html)
-        link = Decoder.extract('document.location = "','";',html).replace("cinefox.bio/u/","")
+        link = Decoder.extract('document.location = "','";',html).replace("cinefox.bio/u/","").replace("cinefox.cc/u/","")
         logger.debug("link obtained is: "+link)
         return link
 
