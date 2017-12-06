@@ -14,8 +14,8 @@ except:
 
 class Pepecine(Downloader):
 
-    MAIN_URL = 'https://pepecine.online'
-    SEARCH = "https://pepecine.online/ver-online?q=%s"
+    MAIN_URL = 'https://pepecine.tv'
+    SEARCH = "https://pepecine.tv/ver-online?q=%s"
 
     @staticmethod
     def search(text):
@@ -64,7 +64,7 @@ class Pepecine(Downloader):
                     #element["link"] = base64.encodestring(element["title"].encode("utf-8"))
                     connector = "/ver-serie/"
                     if elementJson["type"]=='movie':
-                        connector = "/ver-online-pelicula/"
+                        connector = "/ver-online/"
                     element["link"] = Pepecine.MAIN_URL+connector+str(elementJson["id"])
                     x.append(element)
                 except:
@@ -97,19 +97,19 @@ class Pepecine(Downloader):
         if(str(page)=="0"):
             element = {}
             element["title"] = "Películas"
-            element["link"] = 'https://pepecine.online/titles/paginate?_token=%s&perPage=50&page=1&order=mc_num_of_votesDesc&type='+movie+'&minRating=&maxRating=&availToStream=1'
+            element["link"] = 'https://pepecine.tv/titles/paginate?_token=%s&perPage=50&page=1&order=mc_num_of_votesDesc&type='+movie+'&minRating=&maxRating=&availToStream=1'
             x.append(element)
             element = {}
             element["title"] = "Series"
-            element["link"] = 'https://pepecine.online/titles/paginate?_token=%s&perPage=50&page=1&order=mc_num_of_votesDesc&type=' + serie + '&minRating=&maxRating=&availToStream=1'
+            element["link"] = 'https://pepecine.tv/titles/paginate?_token=%s&perPage=50&page=1&order=mc_num_of_votesDesc&type=' + serie + '&minRating=&maxRating=&availToStream=1'
             x.append(element)
             last = {}
             last["title"] = "Últimas películas publicadas"
-            last["link"] = "https://pepecine.online/plugins/estrenos-peliculas-online.php"
+            last["link"] = "https://pepecine.tv/plugins/estrenos-peliculas-online.php"
             x.append(last)
             last = {}
             last["title"] = "Últimas series actualizadas"
-            last["link"] = "https://pepecine.online/plugins/estrenos-episodios-online.php"
+            last["link"] = "https://pepecine.tv/plugins/estrenos-episodios-online.php"
             x.append(last)
             search = {}
             search["title"] = XBMCUtils.getString(11018)
@@ -133,10 +133,10 @@ class Pepecine(Downloader):
                 page+="=" #base64 could be missed
             title = base64.decodestring(page)
             logger.debug("trying to query by title: "+title)
-            searchByTitle = "https://pepecine.online/titles/paginate?_token=%s&perPage=24&page=1&order=mc_num_of_votesDesc&type=series&minRating=&maxRating=&query="+urllib.quote_plus(title)+"&availToStream=true"
+            searchByTitle = "https://pepecine.tv/titles/paginate?_token=%s&perPage=24&page=1&order=mc_num_of_votesDesc&type=series&minRating=&maxRating=&query="+urllib.quote_plus(title)+"&availToStream=true"
             #x = Pepecine.extractProvidersFromLink(searchByTitle,True)
             x = Pepecine.searchItemByTitle(title)
-        elif '/ver-online-pelicula/' in page:
+        elif '/ver-online/' in page:
             #extract links from html
             x = Pepecine.extractLinksFromPage(page)
         elif '/ver-serie/' in page: #serie
@@ -211,7 +211,7 @@ class Pepecine(Downloader):
     @staticmethod
     def searchItemByTitle(title):
         x = []
-        searchByTitle = 'https://pepecine.online/typeahead/' + urllib.quote_plus(title)
+        searchByTitle = 'https://pepecine.tv/typeahead/' + urllib.quote_plus(title)
         jsonContent = Pepecine.getContentFromUrl(url=searchByTitle, cookie=Pepecine.cookie, referer=Pepecine.MAIN_URL,ajax=True)
         logger.debug("jsonContent is: "+jsonContent)
         jsonContentParsed = json.loads(jsonContent)
