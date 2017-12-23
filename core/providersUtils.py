@@ -55,6 +55,7 @@ from providers.clan import Clan
 from providers.rtvealacarta import RTVEAlaCarta
 from providers.mejortorrent import MejorTorrent
 from providers.tumejortorrent import TuMejorTorrent
+from providers.acesoplistingin import Acesoplistingin
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -332,6 +333,15 @@ def drawShowsporttvcom(page):
 		else:
 			image = icon
 		add_dir(title,link,mode,image,"showsporttvcom",link)
+
+def drawAcesoplistingin(page):
+	mode = 2
+	jsonChannels = Acesoplistingin.getChannels(page)
+	for item in jsonChannels:
+		title = item["title"]
+		link = item["link"]
+		image = icon
+		add_dir(title, link, mode, image, "acesoplistingin", link)
 
 def drawArenavisionin(page):
 	mode = 4
