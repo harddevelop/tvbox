@@ -17,16 +17,17 @@ class Arenavisionin(Downloader):
     def getChannels(page):
         x = []
         if str(page) == '0':
+
             try:
-                page=Arenavisionin.MAIN_URL
+                page=Arenavisionin.MAIN_URL+"guide"
                 html = Arenavisionin.getContentFromUrl(page,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
-                guideUrl = Decoder.rExtract('"','">EVENTS GUIDE</a></li>',html)
-                html = Arenavisionin.getContentFromUrl(page+guideUrl,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
+                #guideUrl = Decoder.rExtract('"','">EVENTS GUIDE</a></li>',html)
+                #html = Arenavisionin.getContentFromUrl(page+guideUrl,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
             except:
-                page = Arenavisionin.MAIN_URL_RU
+                page = Arenavisionin.MAIN_URL_RU+"guide"
                 html = Arenavisionin.getContentFromUrl(page, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL_RU)
-                guideUrl = Decoder.rExtract('"', '">EVENTS GUIDE</a></li>', html)
-                html = Arenavisionin.getContentFromUrl(page+guideUrl, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL_RU)
+                #guideUrl = Decoder.rExtract('"', '">EVENTS GUIDE</a></li>', html)
+                #html = Arenavisionin.getContentFromUrl(page+guideUrl, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL_RU)
                 pass
             html = Decoder.extract('<table align="center" cellspacing="1" class="auto-style1" style="width: 100%; float: left"><tr><th class="auto-style4" style="width: 190px; height: 39px"><strong>DAY</strong></th>',"</tr></table></div></div></div>",html)
             x = Arenavisionin.extractElements(html)
