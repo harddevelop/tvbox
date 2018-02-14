@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.1.8</tag>
-	<version>133</version>
-	<date>23/12/2017</date>
+	<version>134</version>
+	<date>14/02/2018</date>
 	<changes>Improves related to fix arenavision provider</changes>
 </plugin>

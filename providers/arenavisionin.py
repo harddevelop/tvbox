@@ -58,7 +58,7 @@ class Arenavisionin(Downloader):
             except:
                 if len(page)== 1:
                     page = "0"+str(page)
-                link = "http://www.arenavision.ru/" + page
+                link = "http://www.arenavision2018.ga/" + page
                 html = Arenavisionin.getContentFromUrl(link, "", Arenavisionin.COOKIE, Arenavisionin.MAIN_URL_RU)
                 pass
             if html.find("acestream://")>-1:
