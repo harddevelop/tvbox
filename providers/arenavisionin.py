@@ -47,20 +47,20 @@ class Arenavisionin(Downloader):
                 else:
                     logger.debug("has choosed "+str(result)+": "+cmenu[result])
                     page = (cmenu[result])
-                if len(page)== 1:
-                    page = "0"+str(page)
-                link = "http://www.arenavision.us/" + page
+                html = Arenavisionin.getContentFromUrl(Arenavisionin.MAIN_URL, "", 'beget=begetok; has_js=1', Arenavisionin.MAIN_URL)
+                link = Decoder.rExtract("<a href=\"","title=\"\">ArenaVision "+page+"</a>",html)
+                logger.debug("html is: "+html)
+                link = link[:link.find('"')]
+                logger.debug("provisional link is: "+link)
             else:
                 if "av" not in page:
                     page = "av"+page
                 link = "http://www.arenavision.us/"+page
             try:
-                html = Arenavisionin.getContentFromUrl(link,"",Arenavisionin.COOKIE,Arenavisionin.MAIN_URL)
+                html = Arenavisionin.getContentFromUrl(link,"",'beget=begetok; has_js=1',Arenavisionin.MAIN_URL)
+                logger.debug("second html is: "+html)
             except:
-                if len(page)== 1:
-                    page = "0"+str(page)
-                link = "http://www.arenavision2018.ga/" + page
-                html = Arenavisionin.getContentFromUrl(link, "", Arenavisionin.COOKIE, Arenavisionin.MAIN_URL_RU)
+                logger.error("sonething goes wrong with link: "+link)
                 pass
             if html.find("acestream://")>-1:
                 link2 = Decoder.extractWithRegex("acestream://",'"',html).replace('"',"")
