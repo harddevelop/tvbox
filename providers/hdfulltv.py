@@ -16,7 +16,7 @@ except:
     import simplejson as json
 
 
-class HdfullTv():
+class HdfullTv(Downloader):
 
     magicKey = ""
     cookie = ""
@@ -30,7 +30,7 @@ class HdfullTv():
         postForm["query"] = text
         postForm["search-button"] = ""
         postForm["__csrf_magic"] = HdfullTv.magicKey
-        response = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/buscar",postForm,cookie,"http://hdfull.tv")
+        response = HdfullTv.getJSONAJAXResponse("https://hdfull.me/buscar",postForm,cookie,"https://hdfull.me")
         if len(HdfullTv.magicKey)==0:
 
             HdfullTv.magicKey = Decoder.extract("__csrf_magic' value=\"",'"',response.read())
@@ -46,17 +46,8 @@ class HdfullTv():
                 cookie = cookie+"; "+newCookie
             logger.debug("updated cookie with: "+cookie)
             #and retry
-            html = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/buscar",postForm,cookie,"http://hdfull.tv").read()
+            html = HdfullTv.getJSONAJAXResponse("https://hdfull.me/buscar",postForm,cookie,"https://hdfull.me").read()
 
-        '''
-        postForm["limit"] = "5"
-        postForm["q"] = text
-        postForm["timestamp"] = str(int(time.time()))
-        postForm["verifiedCheck"] = ""
-        jsonText = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/ajax/search.php",{"limit":"5","query":text,"timestamp":str(int(time.time())),"verifiedCheck":""},cookie,"http://hdfull.tv/buscar").read()
-        print "json is: "+jsonText
-        return json.loads(jsonText)
-        '''
         return HdfullTv.extractItems(html)
 
     @staticmethod
@@ -64,7 +55,7 @@ class HdfullTv():
         x = []
         if cookie == "":
             cookie = HdfullTv.getNewCookie()
-        javascript = HdfullTv.getContentFromUrl(url='http://hdfull.tv/js/providers.js?v=3.0.50',referer=url,cookie=cookie)
+        javascript = HdfullTv.getContentFromUrl(url='https://hdfull.me/js/providers.js?v=3.0.50',referer=url,cookie=cookie)
         '''
         from pyjsparser import PyJsParser
         p = PyJsParser()
@@ -82,7 +73,7 @@ class HdfullTv():
         contentOfuscated = Decoder.extract("var ad = '","';",html)
         logger.debug("ofuscated content is: "+contentOfuscated)
 
-        javascriptKey = Downloader.getContentFromUrl(url="http://hdfull.tv/templates/hdfull/js/jquery.hdfull.view.min.js",cookie=cookie,referer=url)
+        javascriptKey = Downloader.getContentFromUrl(url="https://hdfull.me/templates/hdfull/js/jquery.hdfull.view.min.js",cookie=cookie,referer=url)
         logger.debug("hdfull javascript for key is: "+javascriptKey)
         #key = re.match('JSON.parse\(atob.*?substrings\((.*?)\)',javascriptKey)[0]
         key = Decoder.extract('.substrings(',')',javascriptKey)
@@ -119,7 +110,7 @@ class HdfullTv():
     def getNewCookie(r=None):
         cookie = ""
         if r == None:
-            r = HdfullTv.getJSONAJAXResponse("http://hdfull.tv",{},"")
+            r = HdfullTv.getJSONAJAXResponse("https://hdfull.me",{},"")
         returnedHeaders = r.getheaders()
         cfduid = ""
         phpsession = ""
@@ -173,24 +164,27 @@ class HdfullTv():
             itemFirst6["title"] = XBMCUtils.getString(11018)
             itemFirst6["permalink"] = "search"
             x.append(itemFirst6)
-        elif page=='http://hdfull.tv/episodios#latest':
-            html = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/a/episodes",{"action":"latest","start":"0","limit":"24","elang":"ALL"},cookie).read()
-            #print html
+        elif page=='https://hdfull.me/episodios#latest':
+            html = HdfullTv.getContentFromUrl(url="https://hdfull.me/a/episodes",data="action=latest&start=0&limit=24&elang=ALL",cookie=cookie)
+            logger.debug(html)
             x = json.loads(html)
-        elif page=='http://hdfull.tv/episodios#premiere':
-            html = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/a/episodes",{"action":"premiere","start":"0","limit":"24","elang":"ALL"},cookie).read()
+        elif page=='https://hdfull.me/episodios#premiere':
+            html = HdfullTv.getContentFromUrl(url="https://hdfull.me/a/episodes",data="action=premiere&start=0&limit=24&elang=ALL",cookie=cookie)
+            logger.debug(html)
             x = json.loads(html)
-        elif page=='http://hdfull.tv/episodios#updated':
-            html = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/a/episodes",{"action":"updated","start":"0","limit":"24","elang":"ALL"},cookie).read()
+        elif page=='https://hdfull.me/episodios#updated':
+            html = HdfullTv.getContentFromUrl(url="https://hdfull.me/a/episodes",data="action=updated&start=0&limit=24&elang=ALL",cookie=cookie)
+            logger.debug(html)
             x = json.loads(html)
-        elif page=='http://hdfull.tv/peliculas-estreno':
-            html = HdfullTv.getContentFromUrl("http://hdfull.tv/peliculas-estreno")
-            #print html
+        elif page=='https://hdfull.me/peliculas-estreno':
+            html = HdfullTv.getContentFromUrl("https://hdfull.me/peliculas-estreno")
+            logger.debug(html)
             x = HdfullTv.extractItems(html)
-        elif page=='http://hdfull.tv/peliculas-actualizadas':
-            html = HdfullTv.getContentFromUrl("http://hdfull.tv/peliculas-actualizadas")
+        elif page=='https://hdfull.me/peliculas-actualizadas':
+            html = HdfullTv.getContentFromUrl("https://hdfull.me/peliculas-actualizadas")
+            logger.debug(html)
             x = HdfullTv.extractItems(html)
-        elif page=='http://hdfull.tv/search':
+        elif page=='https://hdfull.me/search':
             #display keyboard, it will wait for result
             keyboard = XBMCUtils.getKeyboard()
             keyboard.doModal()
@@ -198,7 +192,7 @@ class HdfullTv():
             if (keyboard.isConfirmed()):
                 text = keyboard.getText()
                 x = HdfullTv.search(text)
-        elif page.find("http://hdfull.tv/serie/")>-1 and page.find("episodio-")==-1:
+        elif page.find("https://hdfull.me/serie/")>-1 and page.find("episodio-")==-1:
             #proccess serie article, could be: 1) obtain seasons 2) obtains chapters from a season #temporada-2/episodio-2
             if page.find("/temporada-")==-1:
                 html = HdfullTv.getContentFromUrl(page)
@@ -207,7 +201,7 @@ class HdfullTv():
                 season = page[page.find("temporada-")+len("temporada-"):]
                 html = HdfullTv.getContentFromUrl(page)
                 sid = Decoder.extract("var sid = '","'",html) #fix for hardcoded value '126', it was the internal series id, now works fine
-                bruteJson = HdfullTv.getJSONAJAXResponse("http://hdfull.tv/a/episodes",{"action":"season","limit":"0","season":season,"show":sid,"start":"0"},cookie).read()
+                bruteJson = HdfullTv.getContentFromUrl(url="https://hdfull.me/a/episodes",data={"action":"season","limit":"0","season":season,"show":sid,"start":"0"},cookie=cookie).read()
                 x = json.loads(bruteJson)
         else:
             x = HdfullTv.extractProvidersFromLink(page,cookie)
@@ -216,7 +210,7 @@ class HdfullTv():
     @staticmethod
     def extractSeasons(html,url):
         items = []
-        #extract <a href='http://hdfull.tv/serie/homeland/temporada-1'>1</a>
+        #extract <a href='https://hdfull.me/serie/homeland/temporada-1'>1</a>
         while html.find("<a href='"+url+"/temporada-")>-1:
             item = {}
             aHtml = Decoder.extractWithRegex("<a href='"+url+"/temporada-","</a>",html)
@@ -235,14 +229,14 @@ class HdfullTv():
         return items
 
     @staticmethod
-    def getJSONAJAXResponse(url,form,cookie,referer="http://hdfull.tv/episodios"):
+    def getJSONAJAXResponse(url,form,cookie,referer="https://hdfull.me/episodios"):
         data = urllib.urlencode(form)
         logger.debug("using ajax data: "+data)
         headers = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
             "Referer" : referer,
-            #"Origin" : "http://hdfull.tv",
-            "Host" : "hdfull.tv",
+            #"Origin" : "https://hdfull.me",
+            "Host" : "hdfull.me",
             "Accept-Language" : "en-US,en;q=0.8,es-ES;q=0.5,es;q=0.3",
             #"Accept-Encoding" : "gzip, deflate",
             #"Conection" : "keep-alive",
@@ -306,38 +300,18 @@ class HdfullTv():
         return x
 
     @staticmethod
-    def getContentFromUrl(url,cookie="",referer=""):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
-            "Referer" : "http://hdfull.tv",
-            #"Origin" : "http://hdfull.tv",
-            "Host" : "hdfull.tv",
-            "Accept-Language" : "es-ES,es;q=0.8",
-            #"Accept-Encoding" : "gzip, deflate",
-            "Conection" : "keep-alive",
-            #"Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8",
-            "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Cookie" : cookie+" __test; __atuvc=3%7C44; _ga=GA1.2.1091232675.1446337892; ppu_main_bf08d52cc9e98012345840f5f2a1ef7f=1; ppu_sub_bf08d52cc9e4321d3ea840f5f2a1ef7f=1; language=es"
-        }
-        if referer != '':
-            headers["Referer"] = referer
-        #request.add_header("Content-Length", len(form))
-        h = httplib.HTTPConnection('hdfull.tv:80')
-        subUrl = url[len("http://hdfull.tv"):]
-        #print subUrl
-        h.request('GET', subUrl, "", headers)
-        r = h.getresponse()
-        #fill global __csrf_magic if found
-        html = r.read()
-        HdfullTv.magicKey = Decoder.extract("__csrf_magic' value=\"",'"',html)
-        return html
-
-
-    @staticmethod
     def jhexdecode(t):
+        k = re.sub(r'(_0x.{4})(?=\(|=)', 'var_0', t).replace('\'', '\"')
 
-        r = re.sub(r'_\d+x\w+x(\d+)', 'var_' + r'\1', t)
-        r = re.sub(r'_\d+x\w+', 'var_0', r)
+        def to_hex(c, type):
+            h = int("%s" % c, 16)
+            if type == '1':
+                return 'p[%s]' % h
+            if type == '2':
+                return '[%s]' % h
+
+        x = re.sub(r'(?:p\[)(0x.{,2})(?:\])', lambda z: to_hex(z.group(1), '1'), k)
+        y = re.sub(r'(?:\(")(0x.{,2})(?:"\))', lambda z: to_hex(z.group(1), '2'), x)
 
         def to_hx(c):
             h = int("%s" % c.groups(0), 16)
@@ -346,9 +320,19 @@ class HdfullTv():
             else:
                 return ""
 
-        r = re.sub(r'(?:\\|)x(\w{2})', to_hx, r).replace('var ', '')
+        r = re.sub(r'(?:\\|)x(\w{2})(?=[^\w\d])', to_hx, y).replace('var ', '')
+        response = re.findall('=(\[.*?\])', r, flags=re.DOTALL)[0]
+        logger.debug("response is: "+str(response))
+        server_list = eval(response)
+        logger.debug("continue...")
+        for val in range(475, 0, -1):
+            server_list.append(server_list[0])
+            server_list.pop(0)
 
-        f = eval(re.findall('\s*var_0\s*=\s*([^;]+);',r)[0])
+        r = re.sub(r'=\[(.*?)\]', '=%s' % str(server_list), r)
+        logger.debug("second eval...")
+        f = eval(re.findall('\s*var_0\s*=\s*([^;]+);', r, flags=re.DOTALL)[0])
+        logger.debug("done second eval...")
         for i, v in enumerate(f):
             r = r.replace('[[var_0[%s]]' % i, "." + f[i])
             r = r.replace(':var_0[%s]' % i, ":\"" + f[i] + "\"")

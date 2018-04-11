@@ -90,7 +90,7 @@ def drawHdfulltv(page):
 		title = ""
 		if itemFirst.has_key("permalink"):
 			if itemFirst.has_key("show"): #serie
-				link = "http://hdfull.tv/serie/"+itemFirst["permalink"]+"/temporada-"+itemFirst["season"]+"/episodio-"+itemFirst["episode"]
+				link = "https://hdfull.me/serie/"+itemFirst["permalink"]+"/temporada-"+itemFirst["season"]+"/episodio-"+itemFirst["episode"]
 				title = itemFirst["show"]["title"]
 				if type(title) == type(dict()):
 					if title.has_key("es"):
@@ -112,7 +112,7 @@ def drawHdfulltv(page):
 				elif itemFirst["permalink"].find("http")>-1:
 					link = itemFirst["permalink"]
 				else:
-					link = "http://hdfull.tv/"+itemFirst["permalink"]
+					link = "https://hdfull.me/"+itemFirst["permalink"]
 				title = itemFirst["title"]
 				try:
 					if type(title) == type(dict()):
@@ -128,7 +128,7 @@ def drawHdfulltv(page):
 			if itemFirst.has_key("thumbnail"):
 				image = itemFirst["thumbnail"]
 				if image.find("http://")<0:
-					image = "http://hdfull.tv/tthumb/130x190/"+image
+					image = "https://hdfull.me/tthumb/130x190/"+image
 			else:
 				image = icon
 		if itemFirst.has_key("finalLink"):
