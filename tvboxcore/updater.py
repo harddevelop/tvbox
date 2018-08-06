@@ -1,8 +1,8 @@
 import urllib2,os,sys
-from core.xbmcutils import XBMCUtils
-from core import logger
-from core import downloadtools
-from core import ziptools
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore import logger
+from tvboxcore import downloadtools
+from tvboxcore import ziptools
 import time
 import CommonFunctions as common
 

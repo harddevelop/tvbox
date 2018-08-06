@@ -1,10 +1,10 @@
 import urllib
-from core.decoder import Decoder
-from core import logger
-from core import jsunpack
+from tvboxcore.decoder import Decoder
+from tvboxcore import logger
+from tvboxcore import jsunpack
 from providers.filmoncom import Filmoncom
 from providers.live9net import Live9net
-from core.downloader import Downloader
+from tvboxcore.downloader import Downloader
 
 class Cricfreetv(Downloader):
 

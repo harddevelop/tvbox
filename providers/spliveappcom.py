@@ -7,15 +7,15 @@ except:
     import simplejson as json
 
 import urllib
-from core.xbmcutils import XBMCUtils
-from core.decoder import Decoder
-from core import jsunpack
-from core import logger
-from core.downloader import Downloader
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore.decoder import Decoder
+from tvboxcore import jsunpack
+from tvboxcore import logger
+from tvboxcore.downloader import Downloader
 
 ONLINE = False
 try:
-    from core.cipher import PBEWithMD5AndDES
+    from tvboxcore.cipher import PBEWithMD5AndDES
 except:
     logger.error("Detected missing pycrypt")
     logger.info("using online decrypter solution...")

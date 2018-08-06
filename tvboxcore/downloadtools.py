@@ -7,7 +7,7 @@ import logger
 import traceback # for download problems
 import StringIO
 import gzip
-from core.xbmcutils import XBMCUtils
+from tvboxcore.xbmcutils import XBMCUtils
 
 def sec_to_hms(seconds):
     m,s = divmod(int(seconds), 60)

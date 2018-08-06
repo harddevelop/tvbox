@@ -47,5 +47,11 @@ Added support for other kind of content like newspapers
 0.1.6 Added new providers
 Changes related to distributions
 
-0.1.7 (dev) Internal core changes - Now it's too big and powerfull.
+0.1.7 Internal core changes - Now it's too big and powerfull.
 js2py it's a powerfull framework to avoid problems, but it's a complete engine
+
+0.1.8 Changes related to providers
+
+0.2.0 (dev)
+Now the internal decoder engine will be deprecated and tvbox will use externals one.
+It's able to import external engines and now works great with a continuous support of external open sources.

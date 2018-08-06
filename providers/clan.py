@@ -1,9 +1,9 @@
 import time
 import re
 
-from core.downloader import Downloader
-from core.decoder import Decoder
-from core import logger
+from tvboxcore.downloader import Downloader
+from tvboxcore.decoder import Decoder
+from tvboxcore import logger
 
 import urllib
 

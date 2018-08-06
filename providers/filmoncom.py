@@ -1,7 +1,7 @@
 import urllib2
 import re
-from core.decoder import Decoder
-from core import logger
+from tvboxcore.decoder import Decoder
+from tvboxcore import logger
 
 try:
     import json

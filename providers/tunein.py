@@ -1,9 +1,9 @@
 import urllib
 
-from core.downloader import Downloader
-from core.decoder import Decoder
-from core.xbmcutils import XBMCUtils
-from core import logger
+from tvboxcore.downloader import Downloader
+from tvboxcore.decoder import Decoder
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore import logger
 
 try:
     import json

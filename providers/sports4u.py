@@ -1,8 +1,8 @@
-from core.decoder import Decoder
-from core import jsunpack
-from core import logger
+from tvboxcore.decoder import Decoder
+from tvboxcore import jsunpack
+from tvboxcore import logger
 from providers.cricfreetv import Cricfreetv
-from core.downloader import Downloader
+from tvboxcore.downloader import Downloader
 
 class Sports4u(Downloader):
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
-	<tag>0.1.8</tag>
-	<version>136</version>
-	<date>08/04/2018</date>
-	<changes>Improves related to fix arenavision changes</changes>
+	<tag>0.2.0</tag>
+	<version>137</version>
+	<date>06/08/2018</date>
+	<changes>Changes related to internal engine - Now it will be supported by external community developments.</changes>
 </plugin>

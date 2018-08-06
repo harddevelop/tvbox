@@ -1,6 +1,6 @@
-from core.downloader import Downloader
-from core import logger
-from core.decoder import Decoder
+from tvboxcore.downloader import Downloader
+from tvboxcore import logger
+from tvboxcore.decoder import Decoder
 
 try:
     import json

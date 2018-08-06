@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os,sys
-from core.xbmcutils import XBMCUtils
-from core.decoder import Decoder
-from core import logger
-from core.downloader import Downloader
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore.decoder import Decoder
+from tvboxcore import logger
+from tvboxcore.downloader import Downloader
 
 class Cineestrenostv(Downloader):
 

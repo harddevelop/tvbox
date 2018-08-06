@@ -5,7 +5,7 @@ import xbmc
 import xbmcgui
 import os
 import urllib
-from core import logger
+from tvboxcore import logger
 
 class XBMCUtils():
 

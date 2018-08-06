@@ -1,9 +1,9 @@
 # coding=utf-8
-from core.xbmcutils import XBMCUtils
+from tvboxcore.xbmcutils import XBMCUtils
 import urllib
-from core.downloader import Downloader
-from core import logger
-from core.decoder import Decoder
+from tvboxcore.downloader import Downloader
+from tvboxcore import logger
+from tvboxcore.decoder import Decoder
 
 try:
     import json

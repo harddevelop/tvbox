@@ -2,12 +2,12 @@ import urllib
 import sys,os
 import platform
 
-from core.xbmcutils import XBMCUtils
-from core import logger
-from core import updater
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore import logger
+from tvboxcore import updater
 
-from core.decoder import Decoder
-from core.downloader import Downloader
+from tvboxcore.decoder import Decoder
+from tvboxcore.downloader import Downloader
 
 from providers.cinestrenostv import Cineestrenostv
 from providers.mamahdcom import Mamahdcom

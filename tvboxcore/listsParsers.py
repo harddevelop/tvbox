@@ -1,8 +1,8 @@
 import CommonFunctions as common
-from core import logger
-from core.addonUtils import add_dir
-from core.downloader import Downloader
-from core.xbmcutils import XBMCUtils
+from tvboxcore import logger
+from tvboxcore.addonUtils import add_dir
+from tvboxcore.downloader import Downloader
+from tvboxcore.xbmcutils import XBMCUtils
 import urllib
 import base64
 

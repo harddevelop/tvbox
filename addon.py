@@ -6,11 +6,11 @@ import sys
 import re
 import platform
 
-from core.xbmcutils import XBMCUtils
-from core import logger
-from core.listsParsers import * #xml parsers
-from core.addonUtils import * #drawers
-from core.providersUtils import * #renders
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore import logger
+from tvboxcore.listsParsers import * #xml parsers
+from tvboxcore.addonUtils import * #drawers
+from tvboxcore.providersUtils import * #renders
 
 def get_main_dirs():
 

@@ -3,14 +3,14 @@ import urllib
 import sys
 import base64
 
-from core.xbmcutils import XBMCUtils
-from core.addonUtils import add_dir
-from core.addonUtils import open
-from core import logger
-from core.decoder import Decoder
-from core.downloader import Downloader
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore.addonUtils import add_dir
+from tvboxcore.addonUtils import open
+from tvboxcore import logger
+from tvboxcore.decoder import Decoder
+from tvboxcore.downloader import Downloader
 
-from core.listsParsers import getListsUrls
+from tvboxcore.listsParsers import getListsUrls
 
 from providers.filmoncom import Filmoncom
 from providers.hdfulltv import HdfullTv

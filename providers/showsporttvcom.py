@@ -2,10 +2,10 @@ import urllib
 import os
 import re
 import base64
-from core.decoder import Decoder
-from core import jsunpack
-from core import logger
-from core.downloader import Downloader
+from tvboxcore.decoder import Decoder
+from tvboxcore import jsunpack
+from tvboxcore import logger
+from tvboxcore.downloader import Downloader
 from providers.cricfreetv import Cricfreetv
 
 class ShowsportTvCom(Downloader):

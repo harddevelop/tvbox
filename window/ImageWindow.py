@@ -4,9 +4,9 @@ import xbmcaddon
 import json
 import sys
 from PIL import Image
-from core.xbmcutils import XBMCUtils
-from core.downloadtools import downloadfile
-from core import logger
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore.downloadtools import downloadfile
+from tvboxcore import logger
 
 ROOT_DIR = XBMCUtils.getAddonInfo('path')
 

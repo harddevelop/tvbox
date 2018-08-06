@@ -1,6 +1,6 @@
-from core.decoder import Decoder
-from core import logger
-from core.downloader import Downloader
+from tvboxcore.decoder import Decoder
+from tvboxcore import logger
+from tvboxcore.downloader import Downloader
 
 class Live9net(Downloader):
 

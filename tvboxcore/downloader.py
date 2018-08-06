@@ -1,7 +1,7 @@
 import urllib, urllib2, httplib
 import StringIO
 import gzip
-from core import logger
+from tvboxcore import logger
 
 class Downloader():
     TIMEOUT = 20

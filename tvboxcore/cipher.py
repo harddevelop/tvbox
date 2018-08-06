@@ -1,4 +1,4 @@
-from core.pyDes import *
+from tvboxcore.pyDes import *
 from hashlib import md5
 import hashlib
 import base64

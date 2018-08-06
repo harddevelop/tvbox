@@ -1,5 +1,5 @@
-from core.xbmcutils import XBMCUtils
-from core import logger
+from tvboxcore.xbmcutils import XBMCUtils
+from tvboxcore import logger
 
 import xbmcgui
 
