@@ -49,20 +49,69 @@ class Decoder():
 
     @staticmethod
     def decodeLink(link,referer=''):
+        originalLink = link
+
+        logger.debug("trying youtube-dl library...")
         try:
-            logger.debug("first try...")
-            link = Decoder.decodeWithImportedEngine(targetUrl=link)
-            logger.debug("done, url at this moment is %s " % link)
+            link = Decoder.decodeWithYoutubeEngine(url=link)
         except Exception as e:
             logger.info("Something goes wrong, probably there are not engines available, retrying... %s " % str(e))
-            Decoder.importEngine(engine="alfaengine",url="https://github.com/alfa-addon/addon/archive/master.zip",targetPath="/addon-master/plugin.video.alfa/",deletePath="addon-master")
+            Decoder.importEngine(engine="youtubedl", url="https://github.com/rg3/youtube-dl/archive/master.zip",
+                                 targetPath="/youtube-dl-master/youtube_dl/", deletePath="youtube-dl-master")
+
+            logger.debug("Applying fix...")
+            ROOT_DIR = XBMCUtils.getAddonInfo('path')
+            # Read in the file
+            pythonScript = ROOT_DIR + "/youtubedl/extractor/common.py"
+            with open(pythonScript, 'r') as file:
+                filedata = file.read()
+
+            # Replace the target string
+            filedata = filedata.replace('and sys.stderr.isatty()', '')
+
+            # Write the file out again
+            with open(pythonScript, 'w') as file:
+                file.write(filedata)
+
             logger.debug("retry in course...")
             try:
-                link = Decoder.decodeWithImportedEngine(link)
+                link = Decoder.decodeWithYoutubeEngine(url=link)
             except Exception as e2:
                 logger.error("Something goes wrong: %s" % str(e2))
+                pass
             pass
+
+        if originalLink == link or len(link)==0:
+            #use second one
+            logger.debug("trying second engine...")
+            try:
+                logger.debug("first try...")
+                link = Decoder.decodeWithImportedEngine(targetUrl=link)
+                logger.debug("done, url at this moment is %s " % link)
+            except Exception as e:
+                logger.info("Something goes wrong, probably there are not engines available, retrying... %s " % str(e))
+                try:
+                    Decoder.importEngine(engine="alfaengine",
+                                         url="https://github.com/alfa-addon/addon/archive/master.zip",
+                                         targetPath="/addon-master/plugin.video.alfa/", deletePath="addon-master")
+                    logger.debug("retry in course...")
+                    link = Decoder.decodeWithImportedEngine(link)
+                except Exception as e2:
+                    logger.error("FATAL: Something goes wrong: %s" % str(e2))
+                    pass
+                pass
         return link
+
+    @staticmethod
+    def decodeWithYoutubeEngine(url):
+        finalLink = ""
+        from youtubedl.YoutubeDL import YoutubeDL
+        downloader = YoutubeDL()
+        response = downloader.extract_info(url=url, download=False)["formats"]
+        for links in response:
+            finalLink = links["url"]
+            logger.debug("found link %s" % finalLink)
+        return finalLink
 
     @staticmethod
     def decodeWithImportedEngine(targetUrl):
@@ -100,19 +149,25 @@ class Decoder():
     @staticmethod
     def importEngine(engine,url,targetPath,deletePath):
 
+        ROOT_DIR = XBMCUtils.getAddonInfo('path')
+
         try:
-            shutil.rmtree(engine)
+            shutil.rmtree(ROOT_DIR+"/"+engine)
         except:
-            logger.debug("doesn't exists... continue")
+            logger.debug("local folder %s doesn't exists... continue" % str(ROOT_DIR+"/"+engine))
             pass
 
         logger.debug("downloading...")
 
-        ROOT_DIR = XBMCUtils.getAddonInfo('path')
-
         localfile = ROOT_DIR + "/master.zip"
 
-        downloadtools.downloadfile(url, localfile, notStop=False)
+        try:
+            os.delete(localfile)
+        except:
+            logger.debug("local file doesn't exists... continue")
+            pass
+
+        downloadtools.downloadfile(url, localfile, notStop=True)
 
         logger.debug("done, unzipping...")
         logger.debug("Download done, now it's time to unzip")
@@ -122,5 +177,9 @@ class Decoder():
         logger.debug("done, delete all unused files...")
         shutil.rmtree(ROOT_DIR+"/"+deletePath)
         logger.debug("Unzip done! cleaning...")
-        os.unlink(localfile)
+        try:
+            os.unlink(localfile)
+        except:
+            logger.debug("couldn't remove %s" % localfile)
+            pass
         logger.info("Additional addon clean done!")

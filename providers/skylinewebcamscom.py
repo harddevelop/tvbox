@@ -36,10 +36,10 @@ class Skylinewebcamscom(Downloader):
                     x = Skylinewebcamscom.extractElements(content)
                 else: #final channel
                     logger.debug("html is: "+html)
-                    if html.find("\" type='application/x-mpegURL'")>-1:
-                        url = Decoder.rExtract('"',"\" type='application/x-mpegURL'",html)
+                    if 'amp-video src="' in html:
+                        url = Decoder.extract('amp-video src="','"',html)
                     else:
-                        url = Decoder.extract(",url:'","'",html)
+                        url = Decoder.extract('true,source:"','"',html)
                     logger.debug("url is: "+url)
                     logger.debug("building final link: "+url)
                     element = {}

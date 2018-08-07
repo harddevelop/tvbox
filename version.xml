@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.0</tag>
-	<version>137</version>
-	<date>06/08/2018</date>
-	<changes>Now internal engine will be auto-supported by external community developments. If you have problems please remove old tvbox addon and reinstall new one.</changes>
+	<version>138</version>
+	<date>07/08/2018</date>
+	<changes>There are big important changes, some bugfixes and some parts of internal engine will be auto-supported by external community developments.</changes>
 </plugin>
