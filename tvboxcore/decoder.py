@@ -50,8 +50,8 @@ class Decoder():
     @staticmethod
     def decodeLink(link,referer=''):
         originalLink = link
-        patternList = ('.torrent', 'acestream:', 'magnet:', 'sop:')
-        if link not in any(patternList):
+        patternList = ['.torrent', 'acestream:', 'magnet:', 'sop:']
+        if not any(regex in link for regex in patternList):
             logger.debug("trying youtube-dl library...")
             try:
                 link = Decoder.decodeWithYoutubeEngine(url=link)
