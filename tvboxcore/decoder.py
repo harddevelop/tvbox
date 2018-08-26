@@ -122,6 +122,7 @@ class Decoder():
         except:
             finalLink = response["url"]
             logger.debug("using final link %s " % finalLink)
+            pass
         return finalLink
 
     @staticmethod
