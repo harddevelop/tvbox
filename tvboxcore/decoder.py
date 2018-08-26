@@ -48,6 +48,22 @@ class Decoder():
     #END STRING UTILS
 
     @staticmethod
+    def applyFix(fileFix,removeFix,replaced=''):
+        logger.debug("Applying fix...")
+        ROOT_DIR = XBMCUtils.getAddonInfo('path')
+        # Read in the file
+        pythonScript = ROOT_DIR + fileFix
+        with open(pythonScript, 'r') as file:
+            filedata = file.read()
+
+        # Replace the target string
+        filedata = filedata.replace(removeFix, replaced)
+
+        # Write the file out again
+        with open(pythonScript, 'w') as file:
+            file.write(filedata)
+
+    @staticmethod
     def decodeLink(link,referer=''):
         originalLink = link
         patternList = ['.torrent', 'acestream:', 'magnet:', 'sop:']
@@ -60,19 +76,9 @@ class Decoder():
                 Decoder.importEngine(engine="youtubedl", url="https://github.com/rg3/youtube-dl/archive/master.zip",
                                      targetPath="/youtube-dl-master/youtube_dl/", deletePath="youtube-dl-master")
 
-                logger.debug("Applying fix...")
-                ROOT_DIR = XBMCUtils.getAddonInfo('path')
-                # Read in the file
-                pythonScript = ROOT_DIR + "/youtubedl/extractor/common.py"
-                with open(pythonScript, 'r') as file:
-                    filedata = file.read()
-
-                # Replace the target string
-                filedata = filedata.replace('and sys.stderr.isatty()', '')
-
-                # Write the file out again
-                with open(pythonScript, 'w') as file:
-                    file.write(filedata)
+                Decoder.applyFix(fileFix="/youtubedl/extractor/common.py",removeFix='and sys.stderr.isatty()')
+                Decoder.applyFix(fileFix="/youtubedl/YoutubeDL.py", removeFix='and self._err_file.isatty()')
+                Decoder.applyFix(fileFix="/youtubedl/downloader/common.py", removeFix='sys.stderr.isatty()', replaced='False')
 
                 logger.debug("retry in course...")
                 try:
