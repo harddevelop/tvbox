@@ -114,10 +114,14 @@ class Decoder():
         finalLink = ""
         from youtubedl.YoutubeDL import YoutubeDL
         downloader = YoutubeDL()
-        response = downloader.extract_info(url=url, download=False)["formats"]
-        for links in response:
-            finalLink = links["url"]
-            logger.debug("found link %s" % finalLink)
+        response = downloader.extract_info(url=url, download=False)
+        try:
+            for links in response:
+                finalLink = links["url"]
+                logger.debug("found link %s" % finalLink)
+        except:
+            finalLink = response["url"]
+            logger.debug("using final link %s " % finalLink)
         return finalLink
 
     @staticmethod
