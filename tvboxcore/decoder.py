@@ -107,6 +107,8 @@ class Decoder():
                         logger.error("FATAL: Something goes wrong: %s" % str(e2))
                         pass
                     pass
+            else:
+                link = link+"|Referer="+originalLink
         return link
 
     @staticmethod
