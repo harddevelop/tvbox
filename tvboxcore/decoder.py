@@ -68,47 +68,48 @@ class Decoder():
         originalLink = link
         patternList = ['.torrent', 'acestream:', 'magnet:', 'sop:']
         if not any(regex in link for regex in patternList):
-            logger.debug("trying youtube-dl library...")
+
+            logger.debug("trying alfa engine...")
             try:
-                link = Decoder.decodeWithYoutubeEngine(url=link)
+                logger.debug("first try...")
+                link = Decoder.decodeWithImportedEngine(targetUrl=link)
+                logger.debug("done, url at this moment is %s " % link)
             except Exception as e:
                 logger.info("Something goes wrong, probably there are not engines available, retrying... %s " % str(e))
-                Decoder.importEngine(engine="youtubedl", url="https://github.com/rg3/youtube-dl/archive/master.zip",
-                                     targetPath="/youtube-dl-master/youtube_dl/", deletePath="youtube-dl-master")
-
-                Decoder.applyFix(fileFix="/youtubedl/extractor/common.py",removeFix='and sys.stderr.isatty()')
-                Decoder.applyFix(fileFix="/youtubedl/YoutubeDL.py", removeFix='and self._err_file.isatty()')
-                Decoder.applyFix(fileFix="/youtubedl/downloader/common.py", removeFix='sys.stderr.isatty()', replaced='False')
-
-                logger.debug("retry in course...")
                 try:
-                    link = Decoder.decodeWithYoutubeEngine(url=link)
+                    Decoder.importEngine(engine="alfaengine",
+                                         url="https://github.com/alfa-addon/addon/archive/master.zip",
+                                         targetPath="/addon-master/plugin.video.alfa/", deletePath="addon-master")
+                    logger.debug("retry in course...")
+                    link = Decoder.decodeWithImportedEngine(link)
                 except Exception as e2:
-                    logger.error("Something goes wrong: %s" % str(e2))
+                    logger.error("FATAL: Something goes wrong: %s" % str(e2))
                     pass
                 pass
 
             if originalLink == link or len(link)==0:
                 #use second one
-                logger.debug("trying second engine...")
+                logger.debug("trying youtube-dl library...")
                 try:
-                    logger.debug("first try...")
-                    link = Decoder.decodeWithImportedEngine(targetUrl=link)
-                    logger.debug("done, url at this moment is %s " % link)
+                    link = Decoder.decodeWithYoutubeEngine(url=link)
                 except Exception as e:
-                    logger.info("Something goes wrong, probably there are not engines available, retrying... %s " % str(e))
+                    logger.info(
+                        "Something goes wrong, probably there are not engines available, retrying... %s " % str(e))
+                    Decoder.importEngine(engine="youtubedl", url="https://github.com/rg3/youtube-dl/archive/master.zip",
+                                         targetPath="/youtube-dl-master/youtube_dl/", deletePath="youtube-dl-master")
+
+                    Decoder.applyFix(fileFix="/youtubedl/extractor/common.py", removeFix='and sys.stderr.isatty()')
+                    Decoder.applyFix(fileFix="/youtubedl/YoutubeDL.py", removeFix='and self._err_file.isatty()')
+                    Decoder.applyFix(fileFix="/youtubedl/downloader/common.py", removeFix='sys.stderr.isatty()',
+                                     replaced='False')
+
+                    logger.debug("retry in course...")
                     try:
-                        Decoder.importEngine(engine="alfaengine",
-                                             url="https://github.com/alfa-addon/addon/archive/master.zip",
-                                             targetPath="/addon-master/plugin.video.alfa/", deletePath="addon-master")
-                        logger.debug("retry in course...")
-                        link = Decoder.decodeWithImportedEngine(link)
+                        link = Decoder.decodeWithYoutubeEngine(url=link)
                     except Exception as e2:
-                        logger.error("FATAL: Something goes wrong: %s" % str(e2))
+                        logger.error("Something goes wrong: %s" % str(e2))
                         pass
                     pass
-            else:
-                link = link+"|Referer="+originalLink
         return link
 
     @staticmethod
