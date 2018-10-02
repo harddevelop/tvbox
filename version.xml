@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.0</tag>
-	<version>139</version>
-	<date>25/08/2018</date>
-	<changes>Improves related to decoder</changes>
+	<version>140</version>
+	<date>02/10/2018</date>
+	<changes>Fix domain changes for arenavision provider</changes>
 </plugin>
