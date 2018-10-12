@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.0</tag>
-	<version>140</version>
-	<date>02/10/2018</date>
-	<changes>Fix domain changes for arenavision provider</changes>
+	<version>141</version>
+	<date>13/10/2018</date>
+	<changes>Updates related to mobdro provider for non remote settings</changes>
 </plugin>
