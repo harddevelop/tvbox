@@ -20,6 +20,9 @@ class Mobdro(Downloader):
 
     TOKEN = XBMCUtils.getSettingFromContext(int(sys.argv[1]), "mobdro_api")  #stored for premium support, implementation will change
     REMOTE_TOKEN = XBMCUtils.getSettingFromContext(int(sys.argv[1]),"remote_api_url")
+    
+    REMOTE_AUTH = "https://api.mobdro.sx/utils/auth"
+    SIGNATURE = "3560652538"
 
     @staticmethod
     def getChannels(page):
@@ -121,6 +124,12 @@ class Mobdro(Downloader):
             logger.debug("mobdro token is: "+remoteToken)
             Mobdro.TOKEN = remoteToken
             logger.debug("constant is: "+Mobdro.TOKEN)
+        else:
+            response = Downloader.getContentFromUrl(url=Mobdro.REMOTE_AUTH,data="signature="+Mobdro.SIGNATURE)
+            formatedResponse = json.loads(response)
+            remoteToken = formatedResponse["token"]
+            logger.debug("updated mobdro token is: "+remoteToken)
+            Mobdro.TOKEN = remoteToken
 
     @staticmethod
     def search_list(term):
