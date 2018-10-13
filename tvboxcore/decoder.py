@@ -130,10 +130,14 @@ class Decoder():
 
     @staticmethod
     def decodeWithImportedEngine(targetUrl):
-
+        logger.debug("started import...")
+        #Decoder.applyFix(fileFix="/alfaengine/core/servertools.py", removeFix='from platformcode import config, logger', replaced='from tvboxcore import logger')
+        Decoder.applyFix(fileFix="/alfaengine/platformcode/config.py", removeFix='__settings__ = xbmcaddon.Addon(id="plugin.video." + PLUGIN_NAME)', replaced='__settings__ = xbmcaddon.Addon(id="org.harddevelop.kodi.tv")')
+        Decoder.applyFix(fileFix="/alfaengine/platformcode/config.py", removeFix="return xbmc.translatePath(__settings__.getAddonInfo('Path'))", replaced='return xbmc.translatePath(__settings__.getAddonInfo("Path"))+"/alfaengine/"')
         finalLink = ""
         from alfaengine.core.servertools import get_servers_list, get_server_parameters
         from alfaengine.platformcode import config
+        logger.debug("finished import!")
 
         if str(len(targetUrl)) > 0:
             for serverid in get_servers_list().keys():
