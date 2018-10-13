@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.0</tag>
-	<version>141</version>
+	<version>142</version>
 	<date>13/10/2018</date>
-	<changes>Updates related to mobdro provider for non remote settings</changes>
+	<changes>Fix related to comunity import engine</changes>
 </plugin>
