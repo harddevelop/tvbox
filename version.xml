@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.0</tag>
-	<version>143</version>
-	<date>04/11/2018</date>
-	<changes>Improved a little trick for decoder</changes>
+	<version>144</version>
+	<date>27/11/2018</date>
+	<changes>Arenavision updates</changes>
 </plugin>
