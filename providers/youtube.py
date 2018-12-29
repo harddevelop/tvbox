@@ -137,7 +137,7 @@ class Youtube(Downloader):
                 if 'https' not in thumbnail:
                     thumbnail = 'https:'+thumbnail
             if element2.has_key('navigationEndpoint'):
-                url = element2['navigationEndpoint']['webNavigationEndpointData']['url']
+                url = element2['navigationEndpoint']['commandMetadata']['webCommandMetadata']['url']
                 if 'youtube.com' not in url:
                     url = 'https://youtube.com'+url
             element = {}
