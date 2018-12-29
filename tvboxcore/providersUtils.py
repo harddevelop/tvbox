@@ -389,7 +389,7 @@ def drawElitetorrentnet(page):
 		mode = 4
 		title = item["title"]
 		link = item["link"]
-		if '/torrent/' in link:
+		if '/torrent/' in link or "finalLink" in item:
 			mode = 124
 		if item.has_key("thumbnail"):
 			image = item["thumbnail"]
@@ -960,7 +960,7 @@ def openPeliculasbiz(url,page):
 
 def openElitetorrentnet(url,page):
 	logger.info("decoding eliteetorrentnet link... " + url)
-	link = Elitetorrent.getChannels(url)[0]["link"]
+	link = Elitetorrent.getChannels(url,decode=True)[0]["link"]
 	logger.info("decoded eliteetorrentnet link: " + link)
 	open(link, page)
 

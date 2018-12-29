@@ -64,6 +64,29 @@ class Decoder():
             file.write(filedata)
 
     @staticmethod
+    def removeHTML(body):
+        finalText = ""
+        while "<script" in body:
+            replaceBy = Decoder.extractWithRegex("<script", "</script>", body)
+            # logger.debug("removing: "+replaceBy)
+            body = body.replace(replaceBy, "")
+        # logger.debug("scripts removed, now body is: "+body)
+        while "<" in body and ">" in body:
+            index = body.find("<")
+            if index > 0:
+                targetLine = body[:index]
+                # logger.debug("INDEX: "+str(index)+", appending target line to removed html: " + targetLine)
+                finalText += targetLine.strip()
+                body = body[body.find(">") + 1:]
+                if len(targetLine.strip()) > 0:
+                    finalText += " "
+            else:
+                body = body[body.find(">") + 1:]
+                # logger.debug("removed until '>' \n"+body)
+        # body = body.strip()
+        return finalText
+
+    @staticmethod
     def decodeLink(link,referer=''):
         originalLink = link
         patternList = ['.torrent', 'acestream:', 'magnet:', 'sop:', 'mobdro.me',':8777','/v.mp4']

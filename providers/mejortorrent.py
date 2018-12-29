@@ -13,8 +13,9 @@ except:
 
 class MejorTorrent(Downloader):
 
-    MAIN_URL = 'http://www.mejortorrent.com/'
-    SEARCH = "http://www.mejortorrent.com/secciones.php?sec=buscador&valor=%s"
+    MAIN_URL = 'http://www.mejortorrent.org'
+    SEARCH = "http://www.mejortorrent.org/secciones.php?sec=buscador&valor=%s"
+    SECTIONS = "http://www.mejortorrent.org/secciones.php"
 
     @staticmethod
     def getChannels(page):
@@ -22,13 +23,13 @@ class MejorTorrent(Downloader):
         logger.debug("page: "+page)
         if(str(page)=="0"):
             html = MejorTorrent.getContentFromUrl(url=MejorTorrent.MAIN_URL)
-            menuHtml = Decoder.extract("<table width='140' border='0' cellpadding='0' cellspacing='0' style='border-left:1px solid black; border-right:1px solid black; border-bottom:1px solid black;'>",'</table>',html)
-            for itemHtml in menuHtml.split("<a"):
+            menuHtml = Decoder.extract("<table id='main_table_left_menu'>",'</table>',html)
+            for itemHtml in menuHtml.split("</tr>"):
                 logger.debug("li --> HTML is: "+itemHtml)
                 if "href=" in itemHtml:
                     item = {}
-                    title = Decoder.extract('">','</a>',itemHtml)
-                    title = Decoder.removeHTML(title)
+                    title = Decoder.rExtract('>','</a>',itemHtml)
+                    #title = Decoder.removeHTML(title)
                     if len(title)>0:
                         item["title"] = title
                         link = Decoder.extract("href='", "'", itemHtml)
@@ -55,7 +56,7 @@ class MejorTorrent(Downloader):
         elif 'sec=descargas' in page and '&p=' not in page:
             logger.debug("decoding torrent..."+page)
             html = MejorTorrent.getContentFromUrl(url=page)
-            link = MejorTorrent.MAIN_URL+Decoder.extract("Pincha <a href='/","'",html)
+            link = Decoder.extract("Pincha <a href='","'",html)
             logger.debug("extracted torrent link: "+link)
             element = {}
             element["link"] = link
@@ -83,7 +84,7 @@ class MejorTorrent(Downloader):
                     title = Decoder.removeHTML(title)
                     element = {}
                     element["title"] = title
-                    element["link"] = "http://www.mejortorrent.com"+link
+                    element["link"] = MejorTorrent.MAIN_URL+link
                     x.append(element)
                 i+=1
         else:
@@ -131,7 +132,7 @@ class MejorTorrent(Downloader):
                     logger.debug("target line html is: "+text)
                     #text = Decoder.removeHTML(text)
                     id = Decoder.extract(" value='","'",htmlLine)
-                    link = "http://www.mejortorrent.com/secciones.php?sec=descargas&ap=contar&tabla=%s&id=%s&link_bajar=1" % (table,id)
+                    link = MejorTorrent.SECTIONS+"?sec=descargas&ap=contar&tabla=%s&id=%s&link_bajar=1" % (table,id)
                     element = {}
                     element["title"] = text
                     element["link"] = link
@@ -147,13 +148,13 @@ class MejorTorrent(Downloader):
     def extractDownloadItem(html):
         x = []
         refinedHtml = Decoder.extract('<b>Torrent:</b>', "</a>", html)
-        link = "http://www.mejortorrent.com/secciones.php" + Decoder.extract("<a href='secciones.php", "'", refinedHtml)
+        link = MejorTorrent.SECTIONS + Decoder.extract("<a href='secciones.php", "'", refinedHtml)
         text = Decoder.extract("<title>", "</title>", html).replace("Torrent Descargar Bajar Gratis", "")
         element = {}
         element["title"] = text
         element["link"] = link
         element["finalLink"] = True
-        logger.debug("appending: "+text+", link: "+link)
+        logger.debug("ELSE appending: "+text+", link: "+link)
         x.append(element)
         return x
 
@@ -161,16 +162,16 @@ class MejorTorrent(Downloader):
     def extractContentFromLink(page):
         x = []
         html = MejorTorrent.getContentFromUrl(url=page,referer=MejorTorrent.MAIN_URL)
-        if "<td height='20' width='440' colspan='2'>" in html:
+        if "<br><table class='main_table_center_content'>" in html:
             if "' class='paginar'> << Anterior </a>" in html:
-                prevLink = MejorTorrent.MAIN_URL+Decoder.rExtract("<a href='/","' class='paginar'> << Anterior </a>",html)
+                prevLink = MejorTorrent.MAIN_URL+"/"+Decoder.rExtract("<a href='/","' class='paginar'> << Anterior </a>",html)
                 element = {}
                 element["link"] = prevLink
                 element["title"] = "Anterior"
                 x.append(element)
-            content = Decoder.extract("<td height='20' width='440' colspan='2'>","<center><span style='font-size:15px; font-family:arial;'><b>Páginas:</b>",html)
+            content = Decoder.extract("<br><table class='main_table_center_content'>","<center><span style='font-size:15px; font-family:arial;'><b>Páginas:</b>",html)
             i = 0
-            for line in content.split("<td><div align='justify'><center>"):
+            for line in content.split("<td class='main_table_center_content_td' colspan='2'>"):
                 if i>0:
                     img = (MejorTorrent.MAIN_URL+Decoder.extract('<img src="', '"', line)).replace(".com//",".com/")
                     link = (MejorTorrent.MAIN_URL + Decoder.extract('<a href="', '"', line)).replace(".com//",".com/")
@@ -183,7 +184,7 @@ class MejorTorrent(Downloader):
                     x.append(element)
                 i+=1
             if "' class='paginar'> Siguiente >> </a>" in html:
-                nextLink = MejorTorrent.MAIN_URL+Decoder.rExtract("<a href='/","' class='paginar'> Siguiente >> </a>",html)
+                nextLink = MejorTorrent.MAIN_URL+"/"+Decoder.rExtract("<a href='/","' class='paginar'> Siguiente >> </a>",html)
                 element = {}
                 element["link"] = nextLink
                 element["title"] = "Siguiente"

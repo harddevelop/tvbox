@@ -13,8 +13,8 @@ except:
 
 class Elitetorrent(Downloader):
 
-    MAIN_URL = 'http://www.elitetorrent.net'
-    SEARCH = "http://www.elitetorrent.net/resultados/%s"
+    MAIN_URL = 'https://www.elitetorrent.biz'
+    SEARCH = "https://www.elitetorrent.biz/?s=%s&x=1&y=13"
 
     @staticmethod
     def search(text,cookie=''):
@@ -38,12 +38,14 @@ class Elitetorrent(Downloader):
         for htmlElement in htmlList.split("<li>"):
             if i>0:
                 element = {}
-                title = Decoder.extract(" title=\"","\"",htmlElement)
-                link = Elitetorrent.MAIN_URL+Decoder.extract(" href=\"", "\"", htmlElement)
-                img = Elitetorrent.MAIN_URL+"/"+Decoder.extract("<img src=\"","\"",htmlElement)
+                title = Decoder.extract(" title=\"","\"",htmlElement).replace(" torrent","")
+                link = Decoder.extract(" href=\"", "\"", htmlElement)
+                img = Elitetorrent.MAIN_URL+Decoder.extract(" src=\"","\"",htmlElement)
+                logger.debug("link is %s " % link)
                 element["title"] = title
                 element["link"] = link
                 element["thumbnail"] = img
+                element["finalLink"] = True
                 x.append(element)
             i+=1
         return x
@@ -52,7 +54,9 @@ class Elitetorrent(Downloader):
     def extractProviderFromLink(page,cookie=''):
         html = Elitetorrent.getContentFromUrl(url=page,cookie=cookie,referer=Elitetorrent.MAIN_URL)
         logger.debug("html is: "+html)
-        link = "magnet:"+Decoder.extract('<a href="magnet:','"',html)
+        link = "magnet:"+Decoder.extract(' href="magnet:','"',html)
+        if "&amp;" in link:
+            link = link[:link.find("&amp;")]
         logger.debug("link obtained is: "+link)
         return link
 
@@ -66,13 +70,14 @@ class Elitetorrent(Downloader):
             i = 0
             for line in content.split("<li>"):
                 if i>0:
-                    link = Elitetorrent.MAIN_URL+Decoder.extract('<a href="','"',line)
-                    img = Elitetorrent.MAIN_URL+"/"+Decoder.extract('<img src="', '"', line)
-                    title = Decoder.extract(' alt="', '"', line)
+                    link = Decoder.extract(' href="','"',line)
+                    img = Elitetorrent.MAIN_URL+"/"+Decoder.extract(' src="', '"', line)
+                    title = Decoder.extract(' alt="', '"', line).replace(" torrent","")
                     element = {}
                     element["link"] = link
                     element["thumbnail"] = img
                     element["title"] = title
+                    element["finalLink"] = True
                     if len(title)>0:
                         x.append(element)
                 i+=1
@@ -84,23 +89,26 @@ class Elitetorrent(Downloader):
         return "NOBOT="+Decoder.extract('NOBOT=',';',Downloader.cookie)+";"
 
     @staticmethod
-    def getChannels(page):
+    def getChannels(page,decode=False):
         x = []
         logger.debug("page: "+page)
         cookie = Elitetorrent.getValidCookie()
         logger.debug("Using new cookie: "+cookie)
         if(str(page)=="0"):
             html = Elitetorrent.getContentFromUrl(url=Elitetorrent.MAIN_URL,cookie=cookie)
-            menuHtml = Decoder.extract('<div class="wrap">','</div>',html)
-            for itemHtml in menuHtml.split("<a"):
+            menuHtml = Decoder.extract('<li id="mas_categorias"><i class="fa fa-plus" aria-hidden="true"></i> categorias</li>','</ul>',html)
+            for itemHtml in menuHtml.split("</li>"):
                 logger.debug("li --> HTML is: "+itemHtml)
                 if "href=" in itemHtml:
                     item = {}
                     item["title"] = Decoder.extract('">','<',itemHtml)
+                    logger.debug(item["title"])
                     link = Decoder.extract('href="', '"', itemHtml)
+                    logger.debug(link)
                     if "://" not in link:
-                        item["link"] = Elitetorrent.MAIN_URL+link
-                        x.append(item)
+                        link = Elitetorrent.MAIN_URL+link
+                    item["link"] = link
+                    x.append(item)
             search = {}
             search["title"] = XBMCUtils.getString(11018)
             search["link"] = ".search"
@@ -114,7 +122,7 @@ class Elitetorrent(Downloader):
             if (keyboard.isConfirmed()):
                 text = keyboard.getText()
                 x = Elitetorrent.search(text,cookie)
-        elif '/torrent/' in page:
+        elif '/torrent/' in page or decode:
             logger.debug("torrent page detected...")
             link = Elitetorrent.extractProviderFromLink(page,cookie)
             element = {}

@@ -1,6 +1,7 @@
 # coding=utf-8
 from tvboxcore.xbmcutils import XBMCUtils
 import urllib
+import urllib2
 from tvboxcore.downloader import Downloader
 from tvboxcore import logger
 from tvboxcore.decoder import Decoder
@@ -64,8 +65,11 @@ class TuMejorTorrent(Downloader):
             logger.debug("series html is: " + html)
             if '<ul class="buscar-list">' in html:
                 x = TuMejorTorrent.extractItems(html)
-            elif 'http://tumejorjuego.com/redirect/index.php?link=descargar-torrent/' in html:
-                link = "tumejortorrent.com/download/" + Decoder.extract('http://tumejorjuego.com/redirect/index.php?link=descargar-torrent/', '/";', html) + ".torrent"
+            elif 'window.location.href = "' in html:
+                link = Decoder.extract('window.location.href = "', '"', html)
+                #now obtain redirect link
+                f = urllib2.urlopen(link)
+                link = f.geturl()
                 logger.debug("torrent obtained is: " + link)
                 element = {}
                 element["link"] = link
@@ -116,8 +120,10 @@ class TuMejorTorrent(Downloader):
     @staticmethod
     def extractProviderFromLink(page):
         html = TuMejorTorrent.getContentFromUrl(url=page,referer=TuMejorTorrent.MAIN_URL)
-        logger.debug("html is: "+html)
-        link = TuMejorTorrent.MAIN_URL+"download/"+Decoder.extract('http://tumejorjuego.com/redirect/index.php?link=descargar-torrent/','/";',html)+".torrent"
+        link = Decoder.extract('window.location.href = "', '"', html)
+        # now obtain redirect link
+        f = urllib2.urlopen(link)
+        link = f.geturl()
         logger.debug("link obtained is: "+link)
         return link
 
