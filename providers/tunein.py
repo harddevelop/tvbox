@@ -63,21 +63,19 @@ class TuneIn(Downloader):
             logger.debug("extracting stream for: "+page)
             html = TuneIn.getContentFromUrl(url=page)
             logger.debug("decoded html is: "+html)
-            #content = json.loads(html)
+
             element = {}
             while 'https://stream.radiotime.com/listen.stream' in html:
                 logger.debug("old html is: " + html)
                 html = TuneIn.getContentFromUrl(url=html)
                 logger.debug("new html is: " + html)
+            try:
+                content = json.loads(html)
 
-            if "http://" in html and '"' in html:
-                html = html[:html.find('"')]
-            elif "http://" in html and "'" in html:
-                html = html[:html.find("'")]
-            else:
-                logger.debug("nothing done")
-            logger.debug("new URL is: "+html)
-            link = html
+                link = content["Streams"][0]["Url"]
+            except:
+                link = html
+                pass
 
             element["link"] = link
             #element["link"] = content["body"][0]["url"]

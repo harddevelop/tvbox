@@ -15,65 +15,41 @@ from providers.showsporttvcom import ShowsportTvCom
 
 MAX = 127
 
-def open(url,page):
-	if url.find("rtmp://")==-1 and url.find("|Referer=")==-1 and ( url.find("http://privatestream.tv/")>-1 or url.find("http://www.dinostream.pw/")>-1 or url.find("http://www.embeducaster.com/")>-1 or url.find("http://tv.verdirectotv.org/channel.php")>-1 or url.find("http://mamahd.com/")>-1):
-		logger.info("brute url [referer] is: "+url)
-		referer = ''
-		if(url.find("referer: ")>-1):
-			referer = url[url.find("referer: ")+len("referer: "):]
-		url = url[0:url.find(",")]
-		if url.find("http://privatestream.tv/")>-1:
-			html = Downloader.getContentFromUrl(url,"","",referer)
-			url = Decoder.decodePrivatestream(html,referer)
-		elif url.find("http://www.dinostream.pw/")>-1:
-			url = Decoder.extractDinostreamPart(url,referer)["link"]
-		elif url.find("http://www.embeducaster.com/")>-1:
-			#url = url.replace("/membedplayer/","/embedplayer/")
-			url = Cineestrenostv.getContentFromUrl(url,"","",referer)
-		elif url.find("http://tv.verdirectotv.org/channel.php")>-1:
-			html4 = Cineestrenostv.getContentFromUrl(url,"",Cineestrenostv.cookie,referer)
-			finalIframeUrl = Decoder.extractWithRegex('http://','%3D"',html4)
-			if finalIframeUrl.find('"')>-1 or finalIframeUrl.find("'")>-1:
-				finalIframeUrl = finalIframeUrl[0:len(finalIframeUrl)-1]
-			finalHtml = Cineestrenostv.getContentFromUrl(finalIframeUrl,"",Cineestrenostv.cookie,referer)
-			url = Decoder.decodeBussinessApp(finalHtml,finalIframeUrl)
-		elif url.find("http://mamahd.com/")>-1:
-			url = Mamahdcom.getChannels(url)[0]["link"]
-		elif url.find("http://showsport-tv.com/")>-1:
-			url = ShowsportTvCom.getChannels(url)[0]["link"]
-	elif url.find("rtmp://")==-1:
-		try:
-			if url.find(", referer: ")>-1:
-				page = url[url.find(", referer: ")+len(", referer: "):]
-				url = url[:url.find(", referer: ")]
-				logger.debug("changing page to referer: "+page)
-			logger.debug("trying decoder part for url: "+url)
-			url = Decoder.decodeLink(url,page)
-		except:
-			logger.info("decoder url launched an exception, probably could not be decoded")
-			pass
-	#launch redirects to his better addons
-	if url.find("sop://")>-1 or url.find("acestream://")>-1 or url.find(".acelive")>-1: #required plexus or something similar installed, this dependency is external from this addon so needs to be installed
-		logger.info("trying to send link to plexus: "+url)
-		mode = "1"
-		if url.find("sop://")>-1:
-			mode = "2"
-		url = "plugin://program.plexus/?mode="+mode+"&url="+url+"&name=RemoteLink"
-	elif ".torrent" in url or url.find("magnet:")>-1:
-		logger.info("trying to send link to quasar: "+url)
-		url = urllib.quote_plus(url)
-		url = "plugin://plugin.video.quasar/play?uri="+url
-	elif url.find("youtube.com/")>-1:
-		id = ""
-		if url.find("v=")>-1:
-			id = url[url.find("v=")+len("v="):]
-		elif url.find("/embed/")>-1:
-			id = url[url.find("/embed/")+len("/embed/"):]
-		url = "plugin://plugin.video.youtube/play/?video_id="+id+""
-	elif url.find("vimeo.com/")>-1:
-		url = "plugin://plugin.video.vimeo/play/?video_id="+urllib.quote_plus(url)
-	else:
-		logger.info("nothing done!")
+def open(url,page,decode=True):
+	if decode:
+		if "rtmp://" not in url:
+			try:
+				if url.find(", referer: ")>-1:
+					page = url[url.find(", referer: ")+len(", referer: "):]
+					url = url[:url.find(", referer: ")]
+					logger.debug("changing page to referer: "+page)
+				logger.debug("trying decoder part for url: "+url)
+				url = Decoder.decodeLink(url,page)
+			except:
+				logger.info("decoder url launched an exception, probably could not be decoded")
+				pass
+		#launch redirects to his better addons
+		if "youtube.com/" in url:
+			id = ""
+			if url.find("v=") > -1:
+				id = url[url.find("v=") + len("v="):]
+			elif url.find("/embed/") > -1:
+				id = url[url.find("/embed/") + len("/embed/"):]
+			url = "plugin://plugin.video.youtube/play/?video_id=" + id + ""
+		elif "vimeo.com/" in url:
+			url = "plugin://plugin.video.vimeo/play/?video_id=" + urllib.quote_plus(url)
+		elif url.find("sop://")>-1 or url.find("acestream://")>-1 or url.find(".acelive")>-1: #required plexus or something similar installed, this dependency is external from this addon so needs to be installed
+			logger.info("trying to send link to plexus: "+url)
+			mode = "1"
+			if url.find("sop://")>-1:
+				mode = "2"
+			url = "plugin://program.plexus/?mode="+mode+"&url="+url+"&name=RemoteLink"
+		elif ".torrent" in url or url.find("magnet:")>-1:
+			logger.info("trying to send link to quasar: "+url)
+			url = urllib.quote_plus(url)
+			url = "plugin://plugin.video.quasar/play?uri="+url
+		else:
+			logger.info("nothing done!")
 	logger.debug("launching playable url: "+url)
 	play(url,page)
 
@@ -218,7 +194,6 @@ def quasarUpdater():
 def plexusUpdater():
     if XBMCUtils.getDialogYesNo(XBMCUtils.getString(30050), XBMCUtils.getString(30050)):
         try:
-            # url = "http://repo.adryanlist.org/program.plexus-0.1.4.zip"
             url = "https://github.com/AlexMorales85/program.plexus/archive/1.2.2.zip"  # better and updated with an acestream fixed client for raspberry platforms
             updater.install(url, "program.plexus", "program.plexus")
             logger.debug("addon installed!")

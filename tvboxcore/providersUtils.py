@@ -5,7 +5,7 @@ import base64
 
 from tvboxcore.xbmcutils import XBMCUtils
 from tvboxcore.addonUtils import add_dir
-from tvboxcore.addonUtils import open
+from tvboxcore.addonUtils import open, play
 from tvboxcore import logger
 from tvboxcore.decoder import Decoder
 from tvboxcore.downloader import Downloader
@@ -930,9 +930,9 @@ def openZonaappLink(url,page):
 
 def openTuneInLink(url,page):
 	logger.info("decoding tunein link... " + url)
-	link = TuneIn.getChannels(url)[0]["link"]
+	link = TuneIn.getChannels(url)[0]["link"].strip()
 	logger.info("decoded tunein link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openYoutvgratisLink(url,page):
 	logger.info("decoding youtvgratis link... " + url)
