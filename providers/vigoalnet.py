@@ -6,7 +6,7 @@ from tvboxcore.downloader import Downloader
 
 class Vigoal(Downloader):
 
-    MAIN_URL = "http://www.vipgoal.net/"
+    MAIN_URL = "http://www.elitegol.live/"
 
     @staticmethod
     def getChannels(page):

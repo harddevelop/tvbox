@@ -89,7 +89,7 @@ class Decoder():
     @staticmethod
     def decodeLink(link,referer=''):
         originalLink = link
-        patternList = ['.torrent', 'acestream:', 'magnet:', 'sop:', 'mobdro.me',':8777','/v.mp4']
+        patternList = ['.m3u8','.torrent', 'acestream:', 'magnet:', 'sop:', 'mobdro.me',':8777','/v.mp4']
         if not any(regex in link for regex in patternList):
 
             logger.debug("trying alfa engine...")
