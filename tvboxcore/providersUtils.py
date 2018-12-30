@@ -15,32 +15,17 @@ from tvboxcore.listsParsers import getListsUrls
 from providers.filmoncom import Filmoncom
 from providers.hdfulltv import HdfullTv
 from providers.peliculasbiz import Peliculasbiz
-from providers.vigoalnet import Vigoal
-from providers.cinestrenostv import Cineestrenostv
 from providers.cricfreetv import Cricfreetv
-from providers.zoptvcom import Zoptvcom
-from providers.live9net import Live9net
-from providers.sports4u import Sports4u
-from providers.vipracinginfo import Vipracinginfo
-from providers.hdfullhdeu import Hdfullhdeu
 from providers.skylinewebcamscom import Skylinewebcamscom
-from providers.zonasportsme import Zonasportsme
-from providers.sportstream365com import Sportstream365com
-from providers.showsporttvcom import ShowsportTvCom
 from providers.mamahdcom import Mamahdcom
 from providers.arenavisionin import Arenavisionin
 from providers.acetvru import Acetvru
 from providers.elitetorrent import Elitetorrent
 from providers.youtube import Youtube
-from providers.zonaappcom import ZonaAppCom
 from providers.pastebin import Pastebin
 from providers.redeneobuxcom import RedeneobuxCom
 from providers.tunein import TuneIn
 from providers.reuters import Reuters
-from providers.youtvgratiscom import Youtvgratis
-from providers.yomvies import Yomvies
-from providers.streamgaroo import Streamgaroo
-from providers.tvshowme import Tvshowme
 from providers.ramalin import Ramalin
 from providers.mobdro import Mobdro
 from providers.antena3 import Antena3
@@ -50,12 +35,11 @@ from providers.pepecine import Pepecine
 from providers.cnn import CNN
 from providers.elmundo import ElMundo
 from providers.elpaises import ElPais
-from providers.streamingsport365 import StreamingSports365
 from providers.clan import Clan
 from providers.rtvealacarta import RTVEAlaCarta
 from providers.mejortorrent import MejorTorrent
 from providers.tumejortorrent import TuMejorTorrent
-from providers.acesoplistingin import Acesoplistingin
+from providers.vigoalnet import Vigoal
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -155,17 +139,6 @@ def drawVipgoal(page):
 			image = icon
 		add_dir(title,link,mode,image,"vigoal",link)
 
-def drawCinestrenostv(page):
-	jsonChannels = Cineestrenostv.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		mode = 102 #next step returns a final link
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"cineestrenos",link)
 
 def drawCricfree(page):
 	jsonChannels = Cricfreetv.getChannels(page)
@@ -184,65 +157,6 @@ def drawCricfree(page):
 			image = icon
 		add_dir(title,link,mode,image,"cricfree",link)
 
-def drawZoptv(page):
-	jsonChannels = Zoptvcom.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		if title=='Browse by Country':
-			title = XBMCUtils.getString(10007)
-		elif title=='Browse by Genre':
-			title = XBMCUtils.getString(10008)
-		link = item["link"]
-		mode = 4
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			mode = 104
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"zoptv",link)
-
-def drawLive9(page):
-	jsonChannels = Live9net.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		mode = 105 #next step returns a final link
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"live9",link)
-
-def drawSports4u(page):
-	jsonChannels = Sports4u.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		mode = 106 #next step returns a final link
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"sports4u",link)
-
-def drawVipracinginfo(page):
-	jsonChannels = Vipracinginfo.getChannels(page)
-	mode = 107
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		add_dir(title,link,mode,icon,"vipracinginfo",link)
-
-def drawHdfullhdeu(page):
-	jsonChannels = Hdfullhdeu.getChannels(page)
-	mode = 4
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		if item.has_key("permaLink"):
-			mode = 2
-		add_dir(title,link,mode,icon,"hdfullhdeu",link)
-
 def drawSkylinewebcams(page):
 	jsonChannels = Skylinewebcamscom.getChannels(page)
 	mode = 4
@@ -257,24 +171,6 @@ def drawSkylinewebcams(page):
 		if item.has_key("permaLink"):
 			mode = 108
 		add_dir(title,link,mode,image,"skylinewebcams",link)
-
-def drawZonasportsme(page):
-	mode = 109
-	jsonChannels = Zonasportsme.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		image = icon
-		add_dir(title,link,mode,image,"zonasportsme",link)
-
-def drawSportstream365(page):
-	mode = 110
-	jsonChannels = Sportstream365com.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		image = icon
-		add_dir(title,link,mode,image,"sportstream365com",link)
 
 def drawSplive(page):
 	mode = 4
@@ -317,32 +213,6 @@ def drawMamahdcom(page):
 			image = icon
 		add_dir(title,link,mode,image,"mamahdcom",link)
 
-def drawShowsporttvcom(page):
-	mode = 4
-	jsonChannels = ShowsportTvCom.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		if title=='Display by event':
-			title = XBMCUtils.getString(10006)
-		link = item["link"]
-		if link!='1':
-			mode = 113
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			logger.info("detected img: "+image)
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"showsporttvcom",link)
-
-def drawAcesoplistingin(page):
-	mode = 2
-	jsonChannels = Acesoplistingin.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		image = icon
-		add_dir(title, link, mode, image, "acesoplistingin", link)
-
 def drawArenavisionin(page):
 	mode = 4
 	jsonChannels = Arenavisionin.getChannels(page)
@@ -375,14 +245,6 @@ def drawAcetvru(page):
 			image = icon
 		add_dir(title,link,mode,image,"acetvru",link)
 
-def drawStreamingsport365():
-	mode = 2
-	jsonChannels = StreamingSports365.getChannels()
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		add_dir(title, link, mode, icon, "streamingsports365", link)
-
 def drawElitetorrentnet(page):
 	jsonChannels = Elitetorrent.getChannels(page)
 	for item in jsonChannels:
@@ -410,16 +272,6 @@ def drawYoutube(url='0'): #BROWSES ALL PROVIDERS (it has been re-sorted)
 		if channel.has_key('thumbnail'):
 			image = channel["thumbnail"]
 		add_dir(channel["title"], channel["page"], level, image, "youtube", channel["page"])
-
-def drawZonaAppCom():
-	channels = ZonaAppCom.getChannelsJSON()
-	logger.debug("items obtained: " + str(len(channels)))
-	for channel in channels:
-		image = ''
-		level = 116
-		if channel.has_key('thumbnail'):
-			image = channel["thumbnail"]
-		add_dir(channel["title"], channel["link"], level, image, "zonaappcom", channel["link"])
 
 def drawPastebinCom():
 	param = urllib.quote_plus(str(XBMCUtils.getSettingFromContext(sys.argv[1],'pastebin_param')))
@@ -453,59 +305,6 @@ def drawTuneIn(url):
 		if channel.has_key("thumbnail"):
 			img = channel["thumbnail"]
 		add_dir(channel["title"], channel["link"], level, img, "tunein", channel["link"])
-
-def drawYoutvgratis(url):
-	channels = Youtvgratis.getChannels(url)
-	logger.debug("items obtained: " + str(len(channels)))
-	level = 119  # stream
-	for channel in channels:
-		img = ''
-		if channel.has_key("thumbnail"):
-			img = channel["thumbnail"]
-		add_dir(channel["title"], channel["link"], level, img, "youtvgratis", channel["link"])
-
-def drawYomviEs(page):
-	mode = 120
-	jsonChannels = Yomvies.getChannels(page)
-	for item in jsonChannels:
-		title = item["title"]
-		link = item["link"]
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			logger.info("detected img: " + image)
-		else:
-			image = icon
-		add_dir(title, link, mode, image, "yomvies", link)
-
-def drawStreamgaroo(page):
-	jsonChannels = Streamgaroo.getChannels(page)
-	for item in jsonChannels:
-		mode = 121
-		title = item["title"]
-		link = item["link"]
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			logger.info("detected img: " + image)
-		else:
-			image = icon
-		if item.has_key("navigate"):
-			mode = 4
-		add_dir(title, link, mode, image, "streamgaroo", link)
-
-def drawTvshowme(page):
-	jsonChannels = Tvshowme.getChannels(page)
-	for item in jsonChannels:
-		mode = 4
-		title = item["title"]
-		link = item["link"]
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			logger.info("detected img: " + image)
-		else:
-			image = icon
-		if item.has_key("finalLink"):
-			mode = 100
-		add_dir(title, link, mode, image, "tvshowme", link)
 
 def drawRamalin(page):
 	jsonChannels = Ramalin.getChannels(page)
@@ -819,49 +618,13 @@ def openVipgoalLink(url,page):
     logger.info("found link: " + url + ", launching...")
     open(url, page)  # same that 2, but reserved for rtmp
 
-def openCineestrenosLink(url,page):
-    jsonChannels = Cineestrenostv.getChannels(page)
-    url = jsonChannels[0]["link"]
-    logger.info("found link: " + url + ", launching...")
-    open(url, page)
-
 def openCricFreeLink(url,page):
     channel = Cricfreetv.getChannels(page)
     logger.info("found link: " + channel[0]["link"] + ", launching...")
     open(channel[0]["link"], page)
 
-def openZopTvLink(url,page):
-	channel = Zoptvcom.getChannels(page)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openLive9Link(url,page):
-	channel = Live9net.getChannels(page)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openSports4uLink(url,page):
-	channel = Sports4u.getChannels(page)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openVipracingLink(url,page):
-	channel = Vipracinginfo.getChannels(page)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
 def openSkylineLink(url,page):
 	channel = Skylinewebcamscom.getChannels(page, True)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openZonasportsLink(url,page):
-	channel = Zonasportsme.getChannels(url)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openSports365Link(url,page):
-	channel = Sportstream365com.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
 	open(channel[0]["link"], page)
 
@@ -877,25 +640,6 @@ def openSpliveLink(url,page,provider):
 
 	logger.debug("splive BRUTE logic for url: " + url)
 
-	try:
-		if 'ponlatv.com' in url or 'playerhd1.pw' in url:
-			logger.debug("trying to decode cineestrenos script from url: " + url)
-			url = Cineestrenostv.extractScriptLevel3(url,referer=Cineestrenostv.MAIN_URL)
-			logger.debug("decoded link was: "+url)
-
-		else:
-			url = Cineestrenostv.getChannels(url)[0]["link"]
-			html = Downloader.getContentFromUrl(url)
-			element = Cineestrenostv.extractIframeChannel(html, url)
-			if element is not None and element.has_key("link"):
-				url = element["link"]
-				logger.debug("cineestrenos url was decoded to: " + url)
-			else:
-				logger.debug("nothing was done to decode cineestrenostv url!")
-	except:
-		logger.debug("nothing to be decoded with url: " + url)
-		pass
-
 	link = url
 
 	logger.info("found link: " + link + ", launching...")
@@ -903,11 +647,6 @@ def openSpliveLink(url,page,provider):
 
 def openMamahdLink(url,page):
 	channel = Mamahdcom.getChannels(url)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
-
-def openShowsportsLink(url,page):
-	channel = ShowsportTvCom.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
 	open(channel[0]["link"], page)
 
@@ -922,35 +661,11 @@ def openYoutubeLink(url,page): #could be replaced by decodeAndOpenLink, traces a
 	logger.info("decoded youtube link: " + link)
 	open(link, page)
 
-def openZonaappLink(url,page):
-	logger.info("decoding zonaapp link... " + url)
-	link = ZonaAppCom.getFinalLink(url)
-	logger.info("decoded zonaapp link: " + link)
-	open(link, page)
-
 def openTuneInLink(url,page):
 	logger.info("decoding tunein link... " + url)
 	link = TuneIn.getChannels(url)[0]["link"].strip()
 	logger.info("decoded tunein link: " + link)
 	play(link, page)
-
-def openYoutvgratisLink(url,page):
-	logger.info("decoding youtvgratis link... " + url)
-	link = Youtvgratis.getChannels(url)[0]["link"]
-	logger.info("decoded youtvgratis link: " + link)
-	open(link, page)
-
-def openYomvies(url,page):
-	logger.info("decoding yomvi link... " + url)
-	link = Yomvies.getChannels(url)[0]["link"]
-	logger.info("decoded yomvi link: " + link)
-	open(link, page)
-
-def openStreamgaroo(url, page):
-	logger.info("decoding streamgaroo link... " + url)
-	link = Streamgaroo.getChannels(url)[0]["link"]
-	logger.info("decoded streamgaroo link: " + link)
-	open(link, page)
 
 def openPeliculasbiz(url,page):
 	logger.info("decoding peliculasbiz link... " + url)

@@ -70,10 +70,6 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("RTVE AlaCarta", 'rtvealacarta', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Logo_RTVE.svg/150px-Logo_RTVE.svg.png",'rtvealacarta', 0)
 			add_dir("CLAN (rtve)", 'clan', 4,"https://upload.wikimedia.org/wikipedia/en/thumb/4/47/TVEClan_logo.png/150px-TVEClan_logo.png",'clan', 0)
 			add_dir("TuneIn.com", 'tunein', 4,"https://lh5.googleusercontent.com/-NsniPTwZFkc/AAAAAAAAAAI/AAAAAAAAOLE/qtdbWIxlF5M/s0-c-k-no-ns/photo.jpg",'tunein', 0)
-		elif str(url)=='paidonline':
-			enableYomvi = XBMCUtils.getSettingFromContext(int(sys.argv[1]), "enable_yomvi")
-			if enableYomvi == "true":
-				add_dir("Yomvi.es", 'yomvies', 4, "http://ver.movistarplus.es/img/logo-web-player-YOMVI.png", 'yomvies', 0)
 		elif str(url) == 'programsonline':
 			if enableSplive == "true":
 				add_dir("Spliveapp.com", 'splive', 4, "http://www.spliveapp.com/main/wp-content/uploads/footer_logo.png",'splive', 0)
@@ -81,16 +77,10 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 				add_dir("Mobdro.com", 'mobdro', 4, "https://www.mobdro.com/favicon.ico", 'mobdro', 0)
 		elif str(url)=='torrentwebsites'and enablePlexus == "true":
 			add_dir("Arenavision.in", 'arenavisionin', 4, "http://www.arenavision.in/sites/default/files/logo_av2015.png",'arenavisionin', 0)
-			add_dir("Acesoplisting.in", 'acesoplistingin', 4, "http://acesoplisting.in/images/acesop.gif", 'acesoplistingin', 0)
 			add_dir("Ace-tv.ru", 'acetvru', 4, "http://ace-tv.eu/logo.png", 'acetvru', 0)
-		#elif str(url)=='usersonlinewebsites':
-			#add_dir("Tvshow.me", 'tvshowme', 4, "http://www.tvshow.me/wp-content/uploads/2016/09/Icon_.png", 'tvshowme', 0)
 		elif str(url)=='sportsonline':
-			add_dir("Live9.co", 'live9', 4, "", 'live9', 0)
 			add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
 			add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
-			add_dir("Vipracing.net", 'vipracinginfo', 4, "", 'vipracinginfo', 0)
-			add_dir("Zonasports.me", 'zonasportsme', 4, "http://i.imgur.com/yAuKRZw.png", 'zonasportsme', 0)
 		elif str(url)=='newsonlinewebsites' and enableNews == "true":
 			add_dir("Bbc.co.uk", 'bbccouk', 4, "", 'bbccouk', 'http://feeds.bbci.co.uk/news/rss.xml?edition=int')
 			add_dir("Reuters.com", 'reuters', 4, "http://www.thewrap.com/wp-content/uploads/2013/10/Reuters-Logo.jpg",'reuters', 0)
@@ -100,7 +90,6 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 
 		elif str(url)=='worldstvonlinewebsites':
 			add_dir("Filmon.com", 'filmon', 4, "http://static.filmon.com/theme/img/filmon_small_logo.png", 'filmoncom', 0)
-			add_dir("Streamgaroo.com", 'streamgaroo', 4, "http://www.streamgaroo.com/images/logo.png", 'streamgaroo', 0)
 		elif str(url)=='listsonlinewebsites':
 			add_dir("Ramalin.com", 'ramalin', 4, "http://websites-img.milonic.com/img-slide/420x257/r/ramalin.com.png",'ramalin', 0)
 			if enableDinamic == "true":
@@ -110,23 +99,8 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("Skylinewebcams.com", 'skylinewebcams', 4, "http://www.skylinewebcams.com/website.jpg",'skylinewebcams', 0)
 		elif str(url)=='otherssonlinewebsites':
 			if patchedFfmpeg == "true":
-				add_dir("Cinestrenostv.tv", 'cineestrenos', 4, "http://i.imgur.com/z3CINCU.jpg", 'cineestrenos',0)
-				add_dir("Vipgoal.net", 'vigoal', 4, "http://vipgoal.net/VIPgoal/img/logo.png", 'vigoal', 0)
+				add_dir("Vipgoal.me", 'vigoal', 4, "https://2.bp.blogspot.com/-I8bndGrJcio/W8EFr_igJtI/AAAAAAAADzc/jeO495i1CaMbsK7YTH8jwvc1VR-UJsfxgCLcBGAs/s1600/vipgoal4.png", 'vigoal', 0)
 
-	#sports with event
-	#add_dir("Sportstream365.com", 'sportstream365com', 4, "http://sportstream365.com/img/logo.png", 'sportstream365com' , 0)
-
-	#world tv
-
-	#add_dir("Youtvgratis.com", 'youtvgratis', 4, "http://youtvgratis.com/themes/tutvplayer/img/logo.gif", 'youtvgratis', 0)
-	#add_dir("Zoptv.com", 'zoptv', 4, "http://www.zoptv.com/images/logo.png", 'zoptv' , 0)
-
-	#add_dir("Sports4u.tv", 'sports4u', 4, "http://live.sports4u.tv/wp-content/uploads/logo3.png", 'sports4u' , 0)
-	#add_dir("Showsport-tv.com", 'showsporttvcom', 4, "http://showsport-tv.com/images/logoh.png", 'showsporttvcom', 0)
-
-	#add_dir("Zona-app.com", 'zonaappcom', 4, "", 'zonaappcom', 0)
-	#static streaming lists
-	#add_dir("Hdfullhd.eu", 'hdfullhdeu', 4, "", 'hdfullhdeu' , 0)
 
 def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 	if provider == "filmoncom":
@@ -139,40 +113,18 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawPepecine(url, page)
 	elif provider == "vigoal":
 		drawVipgoal(page)
-	elif provider == "cineestrenos":
-		drawCinestrenostv(page)
 	elif provider == "cricfree":
 		drawCricfree(page)
-	elif provider == 'zoptv':
-		drawZoptv(page)
-	elif provider == 'live9':
-		drawLive9(page)
-	elif provider == 'sports4u':
-		drawSports4u(page)
-	elif provider == 'vipracinginfo':
-		drawVipracinginfo(page)
-	elif provider == 'hdfullhdeu':
-		drawHdfullhdeu(page)
 	elif provider == 'skylinewebcams':
 		drawSkylinewebcams(page)
-	elif provider == 'zonasportsme':
-		drawZonasportsme(page)
-	elif provider == 'sportstream365com':
-		drawSportstream365(page)
 	elif provider == 'splive':
 		drawSplive(page)
 	elif provider == 'mamahdcom':
 		drawMamahdcom(page)
-	elif provider == 'showsporttvcom':
-		drawShowsporttvcom(page)
 	elif provider == 'arenavisionin':
 		drawArenavisionin(page)
-	elif provider == 'acesoplistingin':
-		drawAcesoplistingin(page)
 	elif provider == 'acetvru':
 		drawAcetvru(page)
-	elif provider == 'streamingsport365':
-		drawStreamingsport365()
 	elif provider == 'elitetorrentnet':
 		drawElitetorrentnet(page)
 	elif provider == 'tumejortorrent':
@@ -181,8 +133,6 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawMejorTorrent(page)
 	elif provider == 'youtube':
 		drawYoutube(page)
-	elif provider == 'zonaappcom':
-		drawZonaAppCom()
 	elif provider == 'pastebincom':
 		drawPastebinCom()
 	elif provider == 'redeneobuxcom':
@@ -204,14 +154,6 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawElPaisNews(url=page)
 	elif provider == "tunein":
 		drawTuneIn(page)
-	elif provider == 'youtvgratis':
-		drawYoutvgratis(page)
-	elif provider == "yomvies":
-		drawYomviEs(page)
-	elif provider == 'streamgaroo': #<ul class="nav navbar-nav">
-		drawStreamgaroo(page)
-	elif provider == 'tvshowme':
-		drawTvshowme(page)
 	elif provider == 'ramalin':
 		drawRamalin(page)
 	elif provider == 'mobdro':
@@ -279,46 +221,22 @@ def init():
 			decodeAndOpenLink(url,page)
 		elif mode == 101:
 			openVipgoalLink(url,page)
-		elif mode == 102:
-			openCineestrenosLink(url,page)
 		elif mode == 103:
 			openCricFreeLink(url,page)
-		elif mode == 104:
-			openZopTvLink(url,page)
-		elif mode == 105:
-			openLive9Link(url,page)
-		elif mode == 106:
-			openSports4uLink(url,page)
-		elif mode == 107:
-			openVipracingLink(url,page)
 		elif mode == 108:
 			openSkylineLink(url,page)
-		elif mode == 109:
-			openZonasportsLink(url,page)
-		elif mode == 110:
-			openSports365Link(url,page)
 		elif mode == 111:
 			openSpliveLink(url,page,provider)
 		elif mode == 112:
 			openMamahdLink(url,page)
-		elif mode == 113:
-			openShowsportsLink(url,page)
 		elif mode == 114:
 			openArenavisionLink(url,page)
 		elif mode == 115:
 			openYoutubeLink(url,page)
-		elif mode == 116:
-			openZonaappLink(url,page)
 		elif mode == 117:
 			drawFilmonLinks(url,page)
 		elif mode == 118:
 			openTuneInLink(url,page)
-		elif mode == 119:
-			openYoutvgratisLink(url, page)
-		elif mode == 120:
-			openYomvies(url,page)
-		elif mode == 121:
-			openStreamgaroo(url, page)
 		elif mode == 122:
 			openMobdro(url,page)
 		elif mode == 123:

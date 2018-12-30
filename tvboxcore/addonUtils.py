@@ -9,9 +9,7 @@ from tvboxcore import updater
 from tvboxcore.decoder import Decoder
 from tvboxcore.downloader import Downloader
 
-from providers.cinestrenostv import Cineestrenostv
 from providers.mamahdcom import Mamahdcom
-from providers.showsporttvcom import ShowsportTvCom
 
 MAX = 127
 

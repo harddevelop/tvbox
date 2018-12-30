@@ -2,8 +2,6 @@
 import urllib
 from tvboxcore.decoder import Decoder
 from tvboxcore import logger
-from providers.cinestrenostv import Cineestrenostv
-
 from tvboxcore.downloader import Downloader
 
 class Vigoal(Downloader):
@@ -79,12 +77,9 @@ class Vigoal(Downloader):
             lastUrl = lastUrl.replace('"',"")
             logger.debug("last url: "+lastUrl+", cookie="+Vigoal.cookie)
             html3 = Vigoal.getContentFromUrl(lastUrl,"",Vigoal.cookie,lastUrl)
-            playerUrl = Decoder.decodeBussinessApp(html3,lastUrl)
-            logger.debug("player url is: "+playerUrl)
+            #playerUrl = Decoder.decodeBussinessApp(html3,lastUrl)
+            #logger.debug("player url is: "+playerUrl)
             element["title"] = "Watch streaming"
             element["permalink"] = True
-            element["link"] = playerUrl
-        else: #unified with cinestrenostv, they are the same people, at least the same code works and the changes are at the same time xD
-            logger.debug('Extracting channel from: '+page)
-            element = Cineestrenostv.extractIframeChannel(html,page)
+            element["link"] = lastUrl
         return element
