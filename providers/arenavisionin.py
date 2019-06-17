@@ -8,8 +8,8 @@ from tvboxcore.downloader import Downloader
 
 class Arenavisionin(Downloader):
 
-    MAIN_URL = "http://www.arenavision.in/"
-    MAIN_URL_RU = "http://www.arenavision.ru/"
+    MAIN_URL = "http://www.arenavision.us/"
+    MAIN_URL_RU = "http://www.arenavision.in/"
 
     COOKIE = "has_js=1; POPARENArhpmax=3|Sat%2C%2014%20Oct%202017%2018%3A26%3A06%20GMT; ads_smrt_popunder=2%7CSun%2C%2015%20Oct%202017%2017%3A26%3A02%20GMT; POPARENArhpmin=yes"
 

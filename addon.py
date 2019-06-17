@@ -81,6 +81,7 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 		elif str(url)=='sportsonline':
 			add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
 			add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
+			add_dir("Tvpor-internet.net", 'tvporinternetnet', 4, "http://tvpor-internet.net/theme/img/woot.png", 'tvporinternetnet', 0)
 		elif str(url)=='newsonlinewebsites' and enableNews == "true":
 			add_dir("Bbc.co.uk", 'bbccouk', 4, "", 'bbccouk', 'http://feeds.bbci.co.uk/news/rss.xml?edition=int')
 			add_dir("Reuters.com", 'reuters', 4, "http://www.thewrap.com/wp-content/uploads/2013/10/Reuters-Logo.jpg",'reuters', 0)
@@ -121,6 +122,8 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawSplive(page)
 	elif provider == 'mamahdcom':
 		drawMamahdcom(page)
+	elif provider == 'tvporinternetnet':
+		drawTvporinternetnet(page)
 	elif provider == 'arenavisionin':
 		drawArenavisionin(page)
 	elif provider == 'acetvru':

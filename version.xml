@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
-	<tag>0.2.0</tag>
-	<version>144</version>
-	<date>27/11/2018</date>
-	<changes>Arenavision updates</changes>
+	<tag>0.2.1</tag>
+	<version>145</version>
+	<date>17/06/2019</date>
+	<changes>little old updates</changes>
 </plugin>

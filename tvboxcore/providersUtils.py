@@ -40,6 +40,7 @@ from providers.rtvealacarta import RTVEAlaCarta
 from providers.mejortorrent import MejorTorrent
 from providers.tumejortorrent import TuMejorTorrent
 from providers.vigoalnet import Vigoal
+from providers.tvporinternetnet import Tvporinternetnet
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -212,6 +213,21 @@ def drawMamahdcom(page):
 		else:
 			image = icon
 		add_dir(title,link,mode,image,"mamahdcom",link)
+
+def drawTvporinternetnet(page):
+	mode=4
+	jsonChannels = Tvporinternetnet.getChannels(page)
+	for item in jsonChannels:
+		title = item["title"]
+		link = item["link"]
+		if item.has_key("permaLink"):
+			mode = 128
+		if item.has_key("thumbnail"):
+			image = item["thumbnail"]
+			logger.info("detected img: " + image)
+		else:
+			image = icon
+		add_dir(title, link, mode, image, "tvporinternetnet", link)
 
 def drawArenavisionin(page):
 	mode = 4
