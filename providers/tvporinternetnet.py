@@ -17,15 +17,12 @@ class Tvporinternetnet(Downloader):
         html = Tvporinternetnet.getContentFromUrl(page,"",Tvporinternetnet.cookie,"")
         x = []
         if page == Tvporinternetnet.MAIN_URL:
-            element = {}
-            element["link"] = '1'
-            element["title"] = 'Display by event'
-            x.append(element)
             table = Decoder.extract('<div id="canalesdown" class="canales">',"<br>",html)
             for fieldHtml in table.split('<li'):
                 element = {}
                 element["link"] = Decoder.extract('<a href="','"',fieldHtml)
                 element["title"] = Decoder.extract('<div style="color: #ffffff;">','<',fieldHtml)
+                element["permalink"] = True
                 element["thumbnail"] = Decoder.extract('<img src="','"',fieldHtml)
                 logger.debug("found title: "+element["title"]+", link: "+element["link"]+", thumb: "+element["thumbnail"])
                 if "http" in element["link"]:
