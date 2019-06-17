@@ -252,6 +252,8 @@ def init():
 			openTuMejorTorrent(url,page)
 		elif mode == 127:
 			openMejorTorrent(url,page)
+		elif mode == 128:
+			openTvporinternetnet(url,page)
 
 
 	except Exception as e:

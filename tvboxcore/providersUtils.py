@@ -666,6 +666,11 @@ def openMamahdLink(url,page):
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
 	open(channel[0]["link"], page)
 
+def openTvporinternetnet(url,page):
+	channel = Tvporinternetnet.getChannels(url)
+	logger.info("found link: " + channel[0]["link"] + ", launching...")
+	open(channel[0]["link"], page)
+
 def openArenavisionLink(url,page):
 	channel = Arenavisionin.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
