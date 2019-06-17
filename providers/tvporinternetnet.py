@@ -38,7 +38,7 @@ class Tvporinternetnet(Downloader):
             script = Decoder.extract("<script type='text/javascript'>","</",html)
             cosa = Decoder.extract("cosa = '","'",script)
             id = Decoder.extract("id='", "'", script)
-            scriptUrl = "tvpor-internet.net/player/"+cosa+"/"+id
+            scriptUrl = "http://tvpor-internet.net/player/"+cosa+"/"+id
             html2 = Tvporinternetnet.getContentFromUrl(scriptUrl)
             lastUrl = Decoder.extract('<source src="','"',html2)
             logger.debug("decoded link is: "+lastUrl)
