@@ -41,6 +41,7 @@ from providers.mejortorrent import MejorTorrent
 from providers.tumejortorrent import TuMejorTorrent
 from providers.vigoalnet import Vigoal
 from providers.tvporinternetnet import Tvporinternetnet
+from providers.vercanalestv1com import Vercanalestv1com
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -228,6 +229,21 @@ def drawTvporinternetnet(page):
 		else:
 			image = icon
 		add_dir(title, link, mode, image, "tvporinternetnet", link)
+
+def drawVercanalestv(page):
+	mode=4
+	jsonChannels = Vercanalestv1com.getChannels(page)
+	for item in jsonChannels:
+		title = item["title"]
+		link = item["link"]
+		if item.has_key("permaLink"):
+			mode = 129
+		if item.has_key("thumbnail"):
+			image = item["thumbnail"]
+			logger.info("detected img: " + image)
+		else:
+			image = icon
+		add_dir(title, link, mode, image, "vercanalestv", link)
 
 def drawArenavisionin(page):
 	mode = 4
@@ -668,6 +684,11 @@ def openMamahdLink(url,page):
 
 def openTvporinternetnet(url,page):
 	channel = Tvporinternetnet.getChannels(url)
+	logger.info("found link: " + channel[0]["link"] + ", launching...")
+	open(channel[0]["link"], page)
+
+def openVercanalestv(url,page):
+	channel = Vercanalestv1com.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
 	open(channel[0]["link"], page)
 

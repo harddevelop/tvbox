@@ -81,16 +81,16 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 		elif str(url)=='sportsonline':
 			add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
 			add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
-			add_dir("Tvpor-internet.net", 'tvporinternetnet', 4, "http://tvpor-internet.net/theme/img/woot.png", 'tvporinternetnet', 0)
 		elif str(url)=='newsonlinewebsites' and enableNews == "true":
 			add_dir("Bbc.co.uk", 'bbccouk', 4, "", 'bbccouk', 'http://feeds.bbci.co.uk/news/rss.xml?edition=int')
 			add_dir("Reuters.com", 'reuters', 4, "http://www.thewrap.com/wp-content/uploads/2013/10/Reuters-Logo.jpg",'reuters', 0)
 			add_dir("CNN.com", 'editioncnn', 4, "http://i.cdn.cnn.com/cnn/.e1mo/img/4.0/logos/logo_cnn_badge_2up.png",'editioncnn', 0)
 			add_dir("ElMundo.es", 'editionelmundo', 4, "http://estaticos.elmundo.es/imagen/canalima144.gif",'editionelmundo', 0)
 			add_dir("ElPais.es", 'editionelpais', 4, "http://ep01.epimg.net/corporativos/img/elpais2.jpg",'editionelpais', 0)
-
 		elif str(url)=='worldstvonlinewebsites':
 			add_dir("Filmon.com", 'filmon', 4, "http://static.filmon.com/theme/img/filmon_small_logo.png", 'filmoncom', 0)
+			add_dir("Vercanalestv1.com", 'vercanalestv', 4, "https://vercanalestv1.com/wp-content/uploads/2014/01/vercanalestv4.png", 'vercanalestv', 0)
+			add_dir("Tvpor-internet.net", 'tvporinternetnet', 4, "http://tvpor-internet.net/theme/img/woot.png", 'tvporinternetnet', 0)
 		elif str(url)=='listsonlinewebsites':
 			add_dir("Ramalin.com", 'ramalin', 4, "http://websites-img.milonic.com/img-slide/420x257/r/ramalin.com.png",'ramalin', 0)
 			if enableDinamic == "true":
@@ -106,6 +106,8 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 	if provider == "filmoncom":
 		drawFilmon(page)
+	elif provider == 'vercanalestv':
+		drawVercanalestv(page)
 	elif provider== "hdfulltv":
 		drawHdfulltv(page)
 	elif provider == "peliculasbiz":
@@ -254,6 +256,9 @@ def init():
 			openMejorTorrent(url,page)
 		elif mode == 128:
 			openTvporinternetnet(url,page)
+		elif mode == 129:
+			openVercanalestv(url,page)
+
 
 
 	except Exception as e:
