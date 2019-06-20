@@ -62,20 +62,27 @@ class TuneIn(Downloader):
         else:
             logger.debug("extracting stream for: "+page)
             html = TuneIn.getContentFromUrl(url=page)
-            logger.debug("decoded html is: "+html)
-
             element = {}
-            while 'https://stream.radiotime.com/listen.stream' in html:
-                logger.debug("old html is: " + html)
+            if '\n' in html:
+                html = html[:html.find("\n")]
+            logger.debug("decoded html is: "+html)
+            if '.pls' in html:
                 html = TuneIn.getContentFromUrl(url=html)
-                logger.debug("new html is: " + html)
-            try:
-                content = json.loads(html)
+                link = Decoder.extract("=","\n",html)
+                logger.debug("second method done: ")
+            else:
+                
+                while 'https://stream.radiotime.com/listen.stream' in html:
+                    logger.debug("old html is: " + html)
+                    html = TuneIn.getContentFromUrl(url=html)
+                    logger.debug("new html is: " + html)
+                try:
+                    content = json.loads(html)
 
-                link = content["Streams"][0]["Url"]
-            except:
-                link = html
-                pass
+                    link = content["Streams"][0]["Url"]
+                except:
+                    link = html
+                    pass
 
             element["link"] = link
             #element["link"] = content["body"][0]["url"]
