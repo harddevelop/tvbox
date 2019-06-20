@@ -52,6 +52,11 @@ js2py it's a powerfull framework to avoid problems, but it's a complete engine
 
 0.1.8 Changes related to providers
 
-0.2.0 (dev)
+0.2.0 
 Now the internal decoder engine will be deprecated and tvbox will use externals one.
 It's able to import external engines and now works great with a continuous support of external open sources.
+
+0.2.1 (dev)
+Added new providers and fixes
+Fixes for some dependencies
+
