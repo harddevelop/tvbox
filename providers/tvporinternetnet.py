@@ -22,8 +22,8 @@ class Tvporinternetnet(Downloader):
                 element = {}
                 element["link"] = Decoder.extract('<a href="','"',fieldHtml)
                 element["title"] = Decoder.extract('<div style="color: #ffffff;">','<',fieldHtml)
-                element["permalink"] = True
                 element["thumbnail"] = Decoder.extract('<img src="','"',fieldHtml)
+                element["permaLink"] = True
                 logger.debug("found title: "+element["title"]+", link: "+element["link"]+", thumb: "+element["thumbnail"])
                 if "http" in element["link"]:
                     x.append(element)
@@ -43,6 +43,5 @@ class Tvporinternetnet(Downloader):
             lastUrl = Decoder.extract('<source src="','"',html2)
             logger.debug("decoded link is: "+lastUrl)
             element["title"] = page
-            element["permalink"] = True
             element["link"] = lastUrl
         return element
