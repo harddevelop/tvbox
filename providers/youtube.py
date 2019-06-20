@@ -124,7 +124,7 @@ class Youtube(Downloader):
     def extractMainChannelsJSON(jsonScript):
         x = []
         jsonList = json.loads(jsonScript)
-        for jsonElement in jsonList['items'][1]["guideSectionRenderer"]["items"]:
+        for jsonElement in jsonList['items'][3]["guideSectionRenderer"]["items"]:
             title = ''
             url = ''
             thumbnail = ''
