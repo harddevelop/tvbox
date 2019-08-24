@@ -42,6 +42,7 @@ from providers.tumejortorrent import TuMejorTorrent
 from providers.vigoalnet import Vigoal
 from providers.tvporinternetnet import Tvporinternetnet
 from providers.vercanalestv1com import Vercanalestv1com
+from providers.elgolesme import Elgolesme
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -214,6 +215,15 @@ def drawMamahdcom(page):
 		else:
 			image = icon
 		add_dir(title,link,mode,image,"mamahdcom",link)
+
+def drawElgolesme(page):
+	mode = 4
+	jsonChannels = Elgolesme.getChannels(page)
+	for item in jsonChannels:
+		title = item["title"]
+		link = item["link"]
+		mode = 130
+		add_dir(title,link,mode,icon,"elgolesme",link)
 
 def drawTvporinternetnet(page):
 	mode=4
@@ -752,6 +762,12 @@ def openMobdro(url,page):
 		logger.debug("not a valid base64 content...")
 		pass
 	logger.info("decoded streamgaroo link: " + link)
+	play(link, page)
+
+def openElgolesme(url,page):
+	logger.info("decoding Elgolesme link... " + url)
+	link = Elgolesme.getChannels(url)[0]["link"]
+	logger.info("decoded Elgolesme link: " + link)
 	play(link, page)
 
 def isAnException(url,page,provider,mode):
