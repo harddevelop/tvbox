@@ -6,7 +6,7 @@ from tvboxcore.downloader import Downloader
 
 class Tvporinternetnet(Downloader):
 
-    MAIN_URL = "http://tvpor-internet.net/channels"
+    MAIN_URL = "http://tvpor-internet.com/channels"
 
     @staticmethod
     def getChannels(page):
@@ -32,13 +32,13 @@ class Tvporinternetnet(Downloader):
         return x
 
     @staticmethod
-    def extractChannel(html,page="http://tvpor-internet.net"):
+    def extractChannel(html,page="http://tvpor-internet.com"):
         element = {}
         if "<script type='text/javascript'>" in html: #old part
             script = Decoder.extract("<script type='text/javascript'>","</",html)
             cosa = Decoder.extract("cosa = '","'",script)
             id = Decoder.extract("id='", "'", script)
-            scriptUrl = "http://tvpor-internet.net/player/"+cosa+"/"+id
+            scriptUrl = "http://tvpor-internet.com/player/"+cosa+"/"+id
             html2 = Tvporinternetnet.getContentFromUrl(scriptUrl)
             lastUrl = Decoder.extract('<source src="','"',html2)
             logger.debug("decoded link is: "+lastUrl)

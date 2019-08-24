@@ -33,48 +33,145 @@ class Vercanalestv1com(Downloader):
                 if "http" in element["link"]:
                     x.append(element)
         else:
+            logger.debug("extracting channel...")
             x.append(Vercanalestv1com.extractChannel(html,page))
+            logger.debug("extracted channel!")
         return x
 
     @staticmethod
     def extractChannel(html,page="https://vercanalestv1.com"):
         element = {}
+        if '<iframe scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allowfullscreen width="650" height="400" src="' in html:
+            url = Decoder.extract('<iframe scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allowfullscreen width="650" height="400" src="','"',html)
+            if "http" not in url:
+                url = "https://vercanalestv1.com"+url
+            html = Vercanalestv1com.getContentFromUrl(url=url,referer=page)
+            page = url
+            url = "https:"+Decoder.extract('<iframe scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allowfullscreen width="650" height="400" src="','"',html)
+            html = Vercanalestv1com.getContentFromUrl(url=url,referer=page)
+            page = url
+            logger.debug("HTML NEW IS: %s"%html)
+            key = Decoder.extract('" name="','"',html) #manzana66 key
+            formData = key+"=12345"
+            logger.debug("FORM DATA IS: %s"%formData)
+            html4 = Vercanalestv1com.getContentFromUrl(url=url,data=formData,referer=url)
+            if "source: '" in html4:
+                lastUrl = "https:"+Decoder.extract("source: '","'",html4)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(url)
+            elif ".php" in html4:
+                scriptUrl = url
+                newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html4)
+                html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+                key = Decoder.extract('" name="','"',html5) #manzana66 key
+                formData = key+"=12345"
+                html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+                logger.debug("html is: "+html6)
+                if "source: '" in html6:
+                    lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+            logger.debug("decoded link is: "+lastUrl)
+            element["title"] = page
+            element["link"] = lastUrl
         if ' allowfullscreen src="' in html:
+            logger.debug("allowfullscreen found!")
             try:
                 script = Decoder.extract(' allowfullscreen src="','"',html)
-                scriptUrl = "https://vercanalestv1.com"+script
-                logger.debug("triying first fix... "+script)
+                if 'http' not in script:
+                    script = "https://vercanalestv1.com"+script
+                scriptUrl = script
+                logger.debug("trying first fix... "+script)
                 html2 = Vercanalestv1com.getContentFromUrl(url=scriptUrl,referer=page)
+
+                logger.debug("HTML: %s"%html2)
+
                 logger.debug("DONE fix")
-                if "source: '" not in html2 and '/embed.js' not in html2:
-                    newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html2)
-                    html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
-                    key = Decoder.extract('" name="','"',html3) #manzana66 key
-                    formData = key+"=12345"
-                    html4 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
-                    if "source: '" in html4:
-                        lastUrl = "https:"+Decoder.extract("source: '","'",html4)+"|User-Agent=Mozilla/5.0"
-                    elif ".php" in html4:
-                        scriptUrl = newScriptUrl
-                        newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html4)
-                        html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
-                        key = Decoder.extract('" name="','"',html5) #manzana66 key
-                        formData = key+"=12345"
-                        html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
-                        logger.debug("html is: "+html6)
-                        if "source: '" in html6:
-                            lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla/5.0"
+                if "source: '" not in html2 and '/embed.js' not in html2 and '12345' not in html2:
+#                    newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html2)
+#                    html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+#                    key = Decoder.extract('" name="','"',html3) #manzana66 key
+#                    formData = key+"=12345"
+#                    html4 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+                    lastUrl = Vercanalestv1com.decodeChannel(html2,scriptUrl,page)
                 elif "source: '" in html2:
+                    logger.debug("second if")
                     lastUrl = "https:"+Decoder.extract("source: '","'",html2)+"|User-Agent=Mozilla/5.0"
                 elif 'embed.js' in html2:
+                    logger.debug("third if")
                     domain = Decoder.rExtract("//","/embed.js",html2)
                     id = Decoder.extract(", id='","'",html2)
                     newScriptUrl = "http://"+domain+"/embed/"+id
                     html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
                     lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                else: #premier league
+                    #key = Decoder.extract('" name="','"',html3) #manzana66 key
+                    #formData = key+"=12345"
+                    #html4 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+                    lastUrl = Vercanalestv1com.decodeChannel(html2,scriptUrl,page)
+
                 logger.debug("decoded link is: "+lastUrl)
                 element["title"] = page
                 element["link"] = lastUrl
             except Exception as ex:
                 logger.debug("Ex: "+str(ex))
         return element
+
+    @staticmethod
+    def decodeChannel(html4,scriptUrl,page):
+
+        lastUrl = ""
+        logger.debug("first if")
+
+        if "source: '" in html4:
+            lastUrl = "https:"+Decoder.extract("source: '","'",html4)+"|User-Agent=Mozilla/5.0"
+        elif ".php" in html4:
+            newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html4)
+            html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+            key = Decoder.extract('" name="','"',html5) #manzana66 key
+            formData = key+"=12345"
+            html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+            logger.debug("html is: "+html6)
+            if "source: '" in html6:
+                lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+            elif 'embed.js' in html6:
+                logger.debug("third if")
+                domain = Decoder.rExtract("//","/embed.js",html6)
+                id = Decoder.extract(", id='","'",html6)
+                newScriptUrl = "http://"+domain+"/embed/"+id
+                html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+                lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+            else:
+                logger.debug("ELSEEEEE url=%s"%scriptUrl)
+                scriptUrl = newScriptUrl #backup referer
+                newScriptUrl = "https:"+Decoder.extractWithRegex('//','.php',html6)
+                html7 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+                logger.debug("ELSEEEEE 2 url=%s"%newScriptUrl)
+                logger.debug(html7)
+                key = Decoder.extract('" name="','"',html7) #manzana66 key
+                formData = key+"=12345"
+                html8 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+                lastUrl = Vercanalestv1com.decodeChannel(html8,newScriptUrl,scriptUrl)
+        else:
+            logger.debug("ELSE HTML! special dev. %s"%html4)
+            domain = Decoder.rExtract("//","/embed.js",html4).replace("embed.","")
+            id = Decoder.extract("id='","'",html4)
+            newScriptUrl = "http://"+domain+"/embed/"+id+".html"
+            html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
+            logger.debug("last content has HTML: %s"%html5)
+            if 'file: "' in html5:
+                lastUrl = Decoder.extract('file: "','"',html5)+"|User-Agent=Mozilla/5.0"
+            else: #laliga
+                #extract eval packer
+                packer = "eval("+Decoder.extract("eval(",",{}))",html5)+',{}))'
+                logger.debug("packer: %s"%packer)
+                from tvboxcore import jsunpackOld
+                packer = jsunpackOld.unpack(packer)
+                logger.debug("unpacked: %s"%packer)
+                #now get link and token
+
+
+
+                #lastUrl = 'https://e5.cdn4.us/ingest010/46718.m3u8?sf=enNJelFyZDA3OQ==&token=d0pz01WaC5FK9C3Wtru2dA&expires=1566666526&rnd=46718'
+                #lastUrl = 'https://telerium.tv/ingest010/32929.m3u8?sf=MzJMRmtYTzJwZQ==&token=AGHJx9LkByowdxoegjsR4A&expires=1566660986&rnd=32929'
+                #lastUrl = 'https://petopa152.caraponi.me/live/goltv/index.m3u8?token=IZzHs1xpRAE69pBCRZUlOA&expires=1566746291'
+                lastUrl = 'https://mbl2.chessbook.icu/ingest010/46718.m3u8?sf=enNJelFyZDA3OQ==&token=d0pz01WaC5FK9C3Wtru2dA&expires=1566666526&rnd=46718'
+                lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+
+        return lastUrl

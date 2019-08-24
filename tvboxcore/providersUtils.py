@@ -648,17 +648,17 @@ def openVipgoalLink(url,page):
     jsonChannels = Vigoal.getChannels(page)
     url = jsonChannels[0]["link"]
     logger.info("found link: " + url + ", launching...")
-    open(url, page)  # same that 2, but reserved for rtmp
+    play(url, page)  # same that 2, but reserved for rtmp
 
 def openCricFreeLink(url,page):
     channel = Cricfreetv.getChannels(page)
     logger.info("found link: " + channel[0]["link"] + ", launching...")
-    open(channel[0]["link"], page)
+    play(channel[0]["link"], page)
 
 def openSkylineLink(url,page):
 	channel = Skylinewebcamscom.getChannels(page, True)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
+	play(channel[0]["link"], page)
 
 def openSpliveLink(url,page,provider):
 	if url.find(".m3u8") == -1 and url.find("rtmp://") == -1:
@@ -675,33 +675,33 @@ def openSpliveLink(url,page,provider):
 	link = url
 
 	logger.info("found link: " + link + ", launching...")
-	open(link, page)
+	play(link, page)
 
 def openMamahdLink(url,page):
 	channel = Mamahdcom.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
+	play(channel[0]["link"], page)
 
 def openTvporinternetnet(url,page):
 	channel = Tvporinternetnet.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
+	play(channel[0]["link"], page)
 
 def openVercanalestv(url,page):
 	channel = Vercanalestv1com.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
+	play(channel[0]["link"], page)
 
 def openArenavisionLink(url,page):
 	channel = Arenavisionin.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	open(channel[0]["link"], page)
+	play(channel[0]["link"], page)
 
 def openYoutubeLink(url,page): #could be replaced by decodeAndOpenLink, traces are the unique difference
 	logger.info("decoding youtube link... " + url)
 	link = Decoder.decodeLink(url)
 	logger.info("decoded youtube link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openTuneInLink(url,page):
 	logger.info("decoding tunein link... " + url)
@@ -713,13 +713,13 @@ def openPeliculasbiz(url,page):
 	logger.info("decoding peliculasbiz link... " + url)
 	link = Peliculasbiz.getChannels(url)[0]["link"]
 	logger.info("decoded peliculasbiz link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openElitetorrentnet(url,page):
 	logger.info("decoding eliteetorrentnet link... " + url)
 	link = Elitetorrent.getChannels(url,decode=True)[0]["link"]
 	logger.info("decoded eliteetorrentnet link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openTuMejorTorrent(url,page):
 	logger.info("decoding tumejortorrent link... " + url)
@@ -731,19 +731,19 @@ def openTuMejorTorrent(url,page):
 			link = TuMejorTorrent.getChannels(link)[0]["link"]
 			logger.info("decoded two times tumejortorrent link: " + link)
 		logger.info("decoded tumejortorrent link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openMejorTorrent(url,page):
 	logger.info("decoding mejortorrent link... " + url)
 	link = MejorTorrent.getChannels(url)[0]["link"]
 	logger.info("decoded mejortorrent link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openClan(url,page):
 	logger.info("decoding Clan link... " + url)
 	link = Clan.getChannels(url)[0]["link"]
 	logger.info("decoded Clan link: " + link)
-	open(link, page)
+	play(link, page)
 
 def openMobdro(url,page):
 	try:
@@ -752,7 +752,7 @@ def openMobdro(url,page):
 		logger.debug("not a valid base64 content...")
 		pass
 	logger.info("decoded streamgaroo link: " + link)
-	open(link, page)
+	play(link, page)
 
 def isAnException(url,page,provider,mode):
 	state = False

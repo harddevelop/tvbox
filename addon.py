@@ -206,7 +206,7 @@ def init():
 		elif mode==1: #get channels
 			getListsUrls(url)
 		elif mode == 2: #open video in player
-			open(url,page)
+			play(url,page)
 		elif mode == 3:
 			browse_channels(url,page)
 		elif mode == 4:
