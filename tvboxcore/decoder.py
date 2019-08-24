@@ -170,8 +170,13 @@ class Decoder():
                         url = pattern["url"]
                         for x in range(len(match.groups())):
                             url = url.replace("\\%s" % (x + 1), match.groups()[x])
-                            scriptToInvoke = __import__("alfaengine.servers." + serverid, globals(), locals(),
-                                                        ["get_video_url"], 0)
+                            logger.debug("brute url is %s "%url)
+                            #first call test_video_exists
+                            scriptToInvoke = __import__("alfa.servers." + serverid, globals(), locals(),["test_video_exists"], 0)
+                            logger.debug("Exists: %s"%str(scriptToInvoke))
+                            #next call get_video_url
+                            scriptToInvoke = __import__("alfa.servers." + serverid, globals(), locals(),["get_video_url"], 0)
+                            logger.debug(str(scriptToInvoke))
                             links = scriptToInvoke.get_video_url(page_url=url)
         try:
             for link in links:
