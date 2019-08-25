@@ -70,6 +70,7 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("RTVE AlaCarta", 'rtvealacarta', 4,"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Logo_RTVE.svg/150px-Logo_RTVE.svg.png",'rtvealacarta', 0)
 			add_dir("CLAN (rtve)", 'clan', 4,"https://upload.wikimedia.org/wikipedia/en/thumb/4/47/TVEClan_logo.png/150px-TVEClan_logo.png",'clan', 0)
 			add_dir("TuneIn.com", 'tunein', 4,"https://lh5.googleusercontent.com/-NsniPTwZFkc/AAAAAAAAAAI/AAAAAAAAOLE/qtdbWIxlF5M/s0-c-k-no-ns/photo.jpg",'tunein', 0)
+			add_dir("Atresplayer.com", 'atresplayer', 4,"https://statics.atresmedia.com/atresplayer/assets/web/icon-192x192.png",'atresplayer', 0)
 		elif str(url) == 'programsonline':
 			if enableSplive == "true":
 				add_dir("Spliveapp.com", 'splive', 4, "http://www.spliveapp.com/main/wp-content/uploads/footer_logo.png",'splive', 0)
@@ -162,6 +163,8 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawElPaisNews(url=page)
 	elif provider == "tunein":
 		drawTuneIn(page)
+	elif provider == 'atresplayer':
+		drawAresplayer(page)
 	elif provider == 'ramalin':
 		drawRamalin(page)
 	elif provider == 'mobdro':
@@ -264,6 +267,8 @@ def init():
 			openVercanalestv(url,page)
 		elif mode == 130:
 			openElgolesme(url,page)
+		elif mode == 131:
+			openAtresplayer(url,page)
 
 
 

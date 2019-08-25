@@ -11,7 +11,7 @@ from tvboxcore.downloader import Downloader
 
 from providers.mamahdcom import Mamahdcom
 
-MAX = 130
+MAX = 131
 
 def open(url,page,decode=True):
 	if decode:

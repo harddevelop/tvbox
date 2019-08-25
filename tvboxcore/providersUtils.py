@@ -43,6 +43,7 @@ from providers.vigoalnet import Vigoal
 from providers.tvporinternetnet import Tvporinternetnet
 from providers.vercanalestv1com import Vercanalestv1com
 from providers.elgolesme import Elgolesme
+from providers.atresplayer import Atresplayer
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -335,6 +336,18 @@ def drawTuneIn(url):
 		level = 4
 		if channel.has_key("finalLink"):
 			level = 118  # stream
+		img = ''
+		if channel.has_key("thumbnail"):
+			img = channel["thumbnail"]
+		add_dir(channel["title"], channel["link"], level, img, "tunein", channel["link"])
+
+def drawAresplayer(url):
+	channels = Atresplayer.getChannels(url)
+	logger.debug("items obtained: " + str(len(channels)))
+	for channel in channels:
+		level = 4
+		if channel.has_key("finalLink"):
+			level = 131  # stream
 		img = ''
 		if channel.has_key("thumbnail"):
 			img = channel["thumbnail"]
@@ -704,6 +717,12 @@ def openTuneInLink(url,page):
 	logger.info("decoding tunein link... " + url)
 	link = TuneIn.getChannels(url)[0]["link"].strip()
 	logger.info("decoded tunein link: " + link)
+	play(link, page)
+
+def openAtresplayer(url,page):
+	logger.info("decoding atresplayer link... " + url)
+	link = Atresplayer.getChannels(url)[0]["link"].strip()
+	logger.info("decoded atresplayer link: " + link)
 	play(link, page)
 
 def openPeliculasbiz(url,page):
