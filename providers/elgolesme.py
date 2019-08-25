@@ -32,6 +32,7 @@ class Elgolesme(Downloader):
             html = Elgolesme.getContentFromUrl(url=page,referer=Elgolesme.URL)
             if '.m3u8?id=' in html:
                 link = "acestream://"+Decoder.extract( '.m3u8?id=','"',html)
+                link = "plugin://program.plexus/?mode=2&url="+link+"&name=RemoteLink"
             else:
                 logger.debug("time for m3u8 source...")
                 link = Elgolesme.decodeLink(html,page)

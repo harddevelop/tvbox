@@ -217,12 +217,13 @@ def drawMamahdcom(page):
 		add_dir(title,link,mode,image,"mamahdcom",link)
 
 def drawElgolesme(page):
-	mode = 4
 	jsonChannels = Elgolesme.getChannels(page)
 	for item in jsonChannels:
 		title = item["title"]
 		link = item["link"]
 		mode = 130
+		if "acestream" in link:
+			mode = 2
 		add_dir(title,link,mode,icon,"elgolesme",link)
 
 def drawTvporinternetnet(page):
@@ -256,21 +257,12 @@ def drawVercanalestv(page):
 		add_dir(title, link, mode, image, "vercanalestv", link)
 
 def drawArenavisionin(page):
-	mode = 4
+	mode = 2
 	jsonChannels = Arenavisionin.getChannels(page)
 	for item in jsonChannels:
 		title = item["title"]
-		if title=='Display by event':
-			title = XBMCUtils.getString(10006)
 		link = item["link"]
-		if link!='1':
-			mode = 114
-		if item.has_key("thumbnail"):
-			image = item["thumbnail"]
-			logger.info("detected img: "+image)
-		else:
-			image = icon
-		add_dir(title,link,mode,image,"arenavisionin",link)
+		add_dir(title,link,mode,icon,"arenavisionin",link)
 
 def drawAcetvru(page):
 	mode = 2
@@ -699,11 +691,6 @@ def openTvporinternetnet(url,page):
 
 def openVercanalestv(url,page):
 	channel = Vercanalestv1com.getChannels(url)
-	logger.info("found link: " + channel[0]["link"] + ", launching...")
-	play(channel[0]["link"], page)
-
-def openArenavisionLink(url,page):
-	channel = Arenavisionin.getChannels(url)
 	logger.info("found link: " + channel[0]["link"] + ", launching...")
 	play(channel[0]["link"], page)
 

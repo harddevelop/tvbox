@@ -238,7 +238,8 @@ def init():
 		elif mode == 112:
 			openMamahdLink(url,page)
 		elif mode == 114:
-			openArenavisionLink(url,page)
+			#openArenavisionLink(url,page) #clean
+			pass
 		elif mode == 115:
 			openYoutubeLink(url,page)
 		elif mode == 117:
