@@ -33,6 +33,7 @@ class Elgolesme(Downloader):
             if '.m3u8?id=' in html:
                 link = "acestream://"+Decoder.extract( '.m3u8?id=','"',html)
             else:
+                logger.debug("time for m3u8 source...")
                 link = Elgolesme.decodeLink(html,page)
             element = {}
             element["link"] = link
@@ -42,17 +43,16 @@ class Elgolesme(Downloader):
 
     @staticmethod
     def decodeLink(html,page):
-        if '</script><script type="text/javascript" src="' in html:
-            if 'http://www.ezcast.tv/static/scripts/hezcast.js' in html:
-                id = Decoder.extract("channel='","'",html)
-                url = "http://www.embedezcast.com/hembedplayer/%s/1/640/360"%str(id)
-                html = Elgolesme.getContentFromUrl(url=url,referer=page)
-                logger.debug("html is %s"%html)
-                link = Decoder.extract('var hlsUrl = "http://" + ea + "','";',html)
-                key = Decoder.extract('enableVideo("','");',html)
-                id = Decoder.extract("?id=","&",link)
-                requestedUrl = 'http://cdn.pubezcast.com:1935/loadbalancer?'+id
-                url = Elgolesme.getContentFromUrl(url=requestedUrl).replace('redirect=','http://')
-                link = url+link+key
-                logger.debug("found link %s"%link)
-                return link
+        if 'http://www.ezcast.tv/static/scripts/hezcast.js' in html:
+            id = Decoder.extract("channel='","'",html)
+            url = "http://www.embedezcast.com/hembedplayer/%s/1/640/360"%str(id)
+            html = Elgolesme.getContentFromUrl(url=url,referer=page)
+            logger.debug("html is %s"%html)
+            link = Decoder.extract('var hlsUrl = "http://" + ea + "','";',html)
+            key = Decoder.extract('enableVideo("','");',html)
+            id = Decoder.extract("?id=","&",link)
+            requestedUrl = 'http://cdn.pubezcast.com:1935/loadbalancer?'+id
+            url = Elgolesme.getContentFromUrl(url=requestedUrl).replace('redirect=','http://')
+            link = url+link+key
+            logger.debug("found link %s"%link)
+            return link
