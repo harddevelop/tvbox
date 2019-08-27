@@ -44,6 +44,7 @@ from providers.tvporinternetnet import Tvporinternetnet
 from providers.vercanalestv1com import Vercanalestv1com
 from providers.elgolesme import Elgolesme
 from providers.atresplayer import Atresplayer
+from providers.rojadirecta import Rojadirecta
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -351,7 +352,14 @@ def drawAresplayer(url):
 		img = ''
 		if channel.has_key("thumbnail"):
 			img = channel["thumbnail"]
-		add_dir(channel["title"], channel["link"], level, img, "tunein", channel["link"])
+		add_dir(channel["title"], channel["link"], level, img, "atresplayer", channel["link"])
+
+def drawRojadirecta(url):
+	channels = Rojadirecta.getChannels(url)
+	logger.debug("items obtained: " + str(len(channels)))
+	for channel in channels:
+		level = 132  # stream
+		add_dir(channel["title"], channel["link"], level, icon, "rojadirecta", channel["link"])
 
 def drawRamalin(page):
 	jsonChannels = Ramalin.getChannels(page)
@@ -723,6 +731,12 @@ def openAtresplayer(url,page):
 	logger.info("decoding atresplayer link... " + url)
 	link = Atresplayer.getChannels(url)[0]["link"].strip()
 	logger.info("decoded atresplayer link: " + link)
+	play(link, page)
+
+def openRojadirecta(url,page):
+	logger.info("decoding rojadirecta link... %s" % url)
+	link = Rojadirecta.getChannels(url)[0]["link"].strip()
+	logger.info("decoded rojadirecta link: %s" % link)
 	play(link, page)
 
 def openPeliculasbiz(url,page):

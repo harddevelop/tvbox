@@ -83,6 +83,7 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
 			add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
 			add_dir("Elgoles.me", 'elgolesme', 4, "http://elgoles.me/elgoles3.png", 'elgolesme', 0)
+			add_dir("rojadirecta.(unblocker.cc)", 'rojadirecta', 4, "http://rojadirecta.unblocker.cc/static/roja.jpg", 'rojadirecta', 0)
 		elif str(url)=='newsonlinewebsites' and enableNews == "true":
 			add_dir("Bbc.co.uk", 'bbccouk', 4, "", 'bbccouk', 'http://feeds.bbci.co.uk/news/rss.xml?edition=int')
 			add_dir("Reuters.com", 'reuters', 4, "http://www.thewrap.com/wp-content/uploads/2013/10/Reuters-Logo.jpg",'reuters', 0)
@@ -165,6 +166,8 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		drawTuneIn(page)
 	elif provider == 'atresplayer':
 		drawAresplayer(page)
+	elif provider == 'rojadirecta':
+		drawRojadirecta(page)
 	elif provider == 'ramalin':
 		drawRamalin(page)
 	elif provider == 'mobdro':
@@ -269,8 +272,8 @@ def init():
 			openElgolesme(url,page)
 		elif mode == 131:
 			openAtresplayer(url,page)
-
-
+		elif mode == 132:
+			openRojadirecta(url,page)
 
 	except Exception as e:
 		logger.error(XBMCUtils.getString(10009)+", "+str(e))
