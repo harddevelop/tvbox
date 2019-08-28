@@ -94,12 +94,19 @@ class Vercanalestv1com(Downloader):
                     logger.debug("second if")
                     lastUrl = "https:"+Decoder.extract("source: '","'",html2)+"|User-Agent=Mozilla/5.0"
                 elif 'embed.js' in html2:
-                    logger.debug("third if")
+                    logger.debug("third 3333333333333333333333 if")
                     domain = Decoder.rExtract("//","/embed.js",html2)
-                    id = Decoder.extract(", id='","'",html2)
+                    if ", id='" in html2:
+                        id = Decoder.extract(", id='","'",html2)
+                    else:
+                        id = Decoder.extract(">id='","'",html2)
                     newScriptUrl = "http://"+domain+"/embed/"+id
                     html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
-                    lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                    if 'file: "' in html3:
+                        lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                    else:
+                        logger.debug("decoding channel (loop)")
+                        #lastUrl = Vercanalestv1com  .decodeChannel(html3,newScriptUrl)
                 else: #premier league
                     #key = Decoder.extract('" name="','"',html3) #manzana66 key
                     #formData = key+"=12345"
@@ -117,7 +124,7 @@ class Vercanalestv1com(Downloader):
     def decodeChannel(html4,scriptUrl,page):
 
         lastUrl = ""
-        logger.debug("first if")
+        logger.debug("first if %s"%html4)
 
         if "source: '" in html4:
             lastUrl = "https:"+Decoder.extract("source: '","'",html4)+"|User-Agent=Mozilla/5.0"
@@ -131,12 +138,23 @@ class Vercanalestv1com(Downloader):
             if "source: '" in html6:
                 lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             elif 'embed.js' in html6:
-                logger.debug("third if")
-                domain = Decoder.rExtract("//","/embed.js",html6)
-                id = Decoder.extract(", id='","'",html6)
-                newScriptUrl = "http://"+domain+"/embed/"+id
+                logger.debug("third 1111111111111111111 if")
+                domain = Decoder.rExtract("//","/embed.js",html6).replace("embed.","")
+                #id = Decoder.extract(", id='","'",html6)
+                if ", id='" in html6:
+                    id = Decoder.extract(", id='","'",html6)
+                else:
+                    id = Decoder.extract(">id='","'",html6)
+                newScriptUrl = "http://"+domain+"/embed/"+id+".html"
                 html3 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
-                lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                #logger.debug("ELSE HTML! special dev. %s"%html3)
+                #lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                if 'file: "' in html3:
+                    lastUrl = Decoder.extract('file: "','"',html3)+"|User-Agent=Mozilla/5.0"
+                else:
+                    logger.debug("decoding channel (loop)")
+                    lastUrl = Vercanalestv1com.extractLaliga(html3,newScriptUrl,scriptUrl)
+                    #lastUrl = Vercanalestv1com .decodeChannel(html3,newScriptUrl,scriptUrl)
             else:
                 logger.debug("ELSEEEEE url=%s"%scriptUrl)
                 scriptUrl = newScriptUrl #backup referer
@@ -156,29 +174,42 @@ class Vercanalestv1com(Downloader):
             newScriptUrl = "http://"+domain+"/embed/"+id+".html"
             logger.debug("new script url is: %s"%newScriptUrl)
             html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
-            logger.debug("last content has HTML: %s"%html5)
+            #logger.debug("last content has HTML: %s"%html5)
             if 'file: "' in html5:
                 lastUrl = Decoder.extract('file: "','"',html5)+"|User-Agent=Mozilla/5.0"
             else: #laliga
                 #extract eval packer
-                packer = "eval("+Decoder.extract("eval(",",{}))",html5)+',{}))'
-                logger.debug("packer: %s"%packer)
-                from tvboxcore import jsunpackOld
-                packer = jsunpackOld.unpack(packer)
-                logger.debug("unpacked: %s"%packer)
-                #now get link and token
-                logger.debug("")
-                lastUrl = Decoder.extract('var hlsUrl = "','="',packer)+"="
-                hmac = Decoder.extract('hlsUrl = hlsUrl + enableVideo("','"',packer)
-                hmac = hmac[:8]+hmac[9:]
-                lastUrl = lastUrl + hmac
-                #loadbalancer domain
-                loadBalancer = Decoder.extract('$.ajax({url: "','",',packer)
-                domain = Rojadirecta.getContentFromUrl(url=loadBalancer,referer=url)
-                domain = domain[domain.find('=')+1:]
-                lastUrl = lastUrl.replace('" + ea + "',domain)
-                logger.debug("link is: %s. Sum headers to kodi..."%lastUrl)
+                lastUrl = Vercanalestv1com.extractLaliga(html5,newScriptUrl,scriptUrl)
 
-                lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0"
+        return lastUrl
 
+    @staticmethod
+    def extractLaliga(html5,newScriptUrl,scriptUrl):
+        packer = "eval("+Decoder.extract("eval(",",{}))",html5)+',{}))'
+        #logger.debug("packer: %s"%packer)
+        from tvboxcore import jsunpackOld
+        packer = jsunpackOld.unpack(packer)
+        logger.debug("unpacked: %s"%packer)
+        vars = Decoder.extract('doThePIayer("",',",location",packer)
+        var1 = vars[:vars.find(",")]
+        var2 = vars[vars.find(",")+1:]
+        var1 = Decoder.extract(var1+'=window.atob(',')',packer)
+        var2 = ""
+        logger.debug("var1 %s "%var1)
+        value1 = Decoder.extract(var1+'="','"',packer)
+        value2 = "JnRva2Vu"+Decoder.extract('JnRva2Vu','"',packer)
+        logger.debug("value1 %s value2 %s"%(value1,value2))
+        import base64
+        lastUrl = str(base64.b64decode(value1))
+        logger.debug("lastUrl %s"%lastUrl)
+        hmac = str(base64.b64decode(value2))
+        logger.debug("hmac %s"%hmac)
+        lastUrl = lastUrl + hmac
+        lastUrl = "https:"+lastUrl
+        oldDomain = Decoder.extract("//","/",lastUrl)
+        newDomain = 'telerium.tv'
+        lastUrl = lastUrl.replace(oldDomain,newDomain)
+        logger.debug("link is: %s. Sum headers to kodi..."%lastUrl)
+        #lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+        lastUrl = ""
         return lastUrl
