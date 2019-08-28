@@ -64,7 +64,7 @@ class Vercanalestv1com(Downloader):
                 key = Decoder.extract('" name="','"',html5) #manzana66 key
                 formData = key+"=12345"
                 html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
-                logger.debug("html is: "+html6)
+                logger.debug("html66 is: "+html6)
                 if "source: '" in html6:
                     lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             logger.debug("decoded link is: "+lastUrl)
@@ -127,7 +127,7 @@ class Vercanalestv1com(Downloader):
             key = Decoder.extract('" name="','"',html5) #manzana66 key
             formData = key+"=12345"
             html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
-            logger.debug("html is: "+html6)
+            logger.debug("html6 is: "+html6)
             if "source: '" in html6:
                 lastUrl = "https:"+Decoder.extract("source: '","'",html6)+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             elif 'embed.js' in html6:
@@ -147,12 +147,14 @@ class Vercanalestv1com(Downloader):
                 key = Decoder.extract('" name="','"',html7) #manzana66 key
                 formData = key+"=12345"
                 html8 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
+                logger.debug("launching new decode channel process with url: %s"%newScriptUrl)
                 lastUrl = Vercanalestv1com.decodeChannel(html8,newScriptUrl,scriptUrl)
         else:
             logger.debug("ELSE HTML! special dev. %s"%html4)
             domain = Decoder.rExtract("//","/embed.js",html4).replace("embed.","")
             id = Decoder.extract("id='","'",html4)
             newScriptUrl = "http://"+domain+"/embed/"+id+".html"
+            logger.debug("new script url is: %s"%newScriptUrl)
             html5 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,referer=scriptUrl)
             logger.debug("last content has HTML: %s"%html5)
             if 'file: "' in html5:
@@ -165,13 +167,18 @@ class Vercanalestv1com(Downloader):
                 packer = jsunpackOld.unpack(packer)
                 logger.debug("unpacked: %s"%packer)
                 #now get link and token
+                logger.debug("")
+                lastUrl = Decoder.extract('var hlsUrl = "','="',packer)+"="
+                hmac = Decoder.extract('hlsUrl = hlsUrl + enableVideo("','"',packer)
+                hmac = hmac[:8]+hmac[9:]
+                lastUrl = lastUrl + hmac
+                #loadbalancer domain
+                loadBalancer = Decoder.extract('$.ajax({url: "','",',packer)
+                domain = Rojadirecta.getContentFromUrl(url=loadBalancer,referer=url)
+                domain = domain[domain.find('=')+1:]
+                lastUrl = lastUrl.replace('" + ea + "',domain)
+                logger.debug("link is: %s. Sum headers to kodi..."%lastUrl)
 
-
-
-                #lastUrl = 'https://e5.cdn4.us/ingest010/46718.m3u8?sf=enNJelFyZDA3OQ==&token=d0pz01WaC5FK9C3Wtru2dA&expires=1566666526&rnd=46718'
-                #lastUrl = 'https://telerium.tv/ingest010/32929.m3u8?sf=MzJMRmtYTzJwZQ==&token=AGHJx9LkByowdxoegjsR4A&expires=1566660986&rnd=32929'
-                #lastUrl = 'https://petopa152.caraponi.me/live/goltv/index.m3u8?token=IZzHs1xpRAE69pBCRZUlOA&expires=1566746291'
-                lastUrl = 'https://mbl2.chessbook.icu/ingest010/46718.m3u8?sf=enNJelFyZDA3OQ==&token=d0pz01WaC5FK9C3Wtru2dA&expires=1566666526&rnd=46718'
-                lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+                lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0"
 
         return lastUrl
