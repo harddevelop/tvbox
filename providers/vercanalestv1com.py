@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import urllib
+import base64
 from tvboxcore.decoder import Decoder
 from tvboxcore import logger
 from tvboxcore.downloader import Downloader
@@ -189,7 +190,7 @@ class Vercanalestv1com(Downloader):
         #logger.debug("packer: %s"%packer)
         from tvboxcore import jsunpackOld
         packer = jsunpackOld.unpack(packer)
-        logger.debug("unpacked: %s"%packer)
+        #logger.debug("unpacked: %s"%packer)
         vars = Decoder.extract('doThePIayer("",',",location",packer)
         var1 = vars[:vars.find(",")]
         var2 = vars[vars.find(",")+1:]
@@ -199,7 +200,6 @@ class Vercanalestv1com(Downloader):
         value1 = Decoder.extract(var1+'="','"',packer)
         value2 = "JnRva2Vu"+Decoder.extract('JnRva2Vu','"',packer)
         logger.debug("value1 %s value2 %s"%(value1,value2))
-        import base64
         lastUrl = str(base64.b64decode(value1))
         logger.debug("lastUrl %s"%lastUrl)
         hmac = str(base64.b64decode(value2))
@@ -207,9 +207,9 @@ class Vercanalestv1com(Downloader):
         lastUrl = lastUrl + hmac
         lastUrl = "https:"+lastUrl
         oldDomain = Decoder.extract("//","/",lastUrl)
-        newDomain = 'telerium.tv'
+        newDomain = Decoder.extract("//","/",newScriptUrl)
         lastUrl = lastUrl.replace(oldDomain,newDomain)
         logger.debug("link is: %s. Sum headers to kodi..."%lastUrl)
-        #lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
-        lastUrl = ""
+        lastUrl = lastUrl+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
+        #lastUrl = ""
         return lastUrl
