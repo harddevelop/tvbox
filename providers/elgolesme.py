@@ -15,11 +15,11 @@ class Elgolesme(Downloader):
             i=0
             for line in table.split('<tr>'):
                 if i>1:
-                    href = Decoder.extract('td> <a href=','>',line)
-                    title = Decoder.extract(href+'> ','</a>',line)
+                    href = Decoder.extract('<a href=','>',line).replace('"',"")
+                    title = Decoder.extract(href,'</a>',line).replace(">","")
                     time = Decoder.extract('<td> <span class= t >','<',line)
                     platform = "Acestream"
-                    if 'Html5  </a> </td>' in line:
+                    if 'html5' in line.lower():
                         platform = "HTML5"
                     element = {}
                     element["title"] = time+" : "+title+" - "+platform
