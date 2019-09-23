@@ -44,7 +44,7 @@ class Arenavisionin(Downloader):
                                 logger.debug("%s - %s",(link["title"].lower(),"arenavision "+number))
                     element = {}
                     element["title"] = title[0:title.find(": ")]
-                    element["link"] = "plugin://program.plexus/?mode=2&url=acestream://"+href+"&name=RemoteLink"
+                    element["link"] = "plugin://program.plexus/?mode=1&url=acestream://"+href+"&name=RemoteLink"
                     logger.debug("decoded link... %s"%title)
                     x.append(element)
                 i+=1

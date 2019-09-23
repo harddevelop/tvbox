@@ -7,6 +7,8 @@ try:
 except:
     import simplejson as json
 
+import random
+import string
 import urllib
 import shutil
 import zipfile
@@ -85,6 +87,12 @@ class Decoder():
                 # logger.debug("removed until '>' \n"+body)
         # body = body.strip()
         return finalText
+
+    @staticmethod
+    def randomString(length=12):
+        """Generate a random string of fixed length """
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(length))
 
     @staticmethod
     def decodeLink(link,referer=''):
