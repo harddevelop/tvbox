@@ -165,7 +165,7 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 	elif provider == "tunein":
 		drawTuneIn(page)
 	elif provider == 'atresplayer':
-		drawAresplayer(page)
+		drawAtresplayer(page)
 	elif provider == 'rojadirecta':
 		drawRojadirecta(page)
 	elif provider == 'ramalin':
