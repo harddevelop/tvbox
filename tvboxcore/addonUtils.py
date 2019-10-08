@@ -11,7 +11,7 @@ from tvboxcore.downloader import Downloader
 
 from providers.mamahdcom import Mamahdcom
 
-MAX = 132
+MAX = 133
 
 def open(url,page,decode=True):
 	if decode:
@@ -45,7 +45,7 @@ def open(url,page,decode=True):
 		elif ".torrent" in url or url.find("magnet:")>-1:
 			logger.info("trying to send link to quasar: "+url)
 			url = urllib.quote_plus(url)
-			url = "plugin://plugin.video.quasar/play?uri="+url
+			url = "plugin://plugin.video.elementum/play?uri="+url
 		else:
 			logger.info("nothing done!")
 	logger.debug("launching playable url: "+url)

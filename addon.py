@@ -80,8 +80,9 @@ def browse_channels(url,page): #BROWSES ALL PROVIDERS (it has been re-sorted)
 			add_dir("Arenavision.in", 'arenavisionin', 4, "http://www.arenavision.in/sites/default/files/logo_av2015.png",'arenavisionin', 0)
 			add_dir("Ace-tv.ru", 'acetvru', 4, "http://ace-tv.eu/logo.png", 'acetvru', 0)
 		elif str(url)=='sportsonline':
-			add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
-			add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
+			add_dir("Dailysport.pw", 'dailysport', 4, "", 'dailysport', 0)
+			#add_dir("Cricfree.tv", 'cricfree', 4, "http://cricfree.tv/images/logosimg.png", 'cricfree', 0)
+			#add_dir("Mamahd.com", 'mamahdcom', 4, "http://mamahd.com/images/logo.png", 'mamahdcom', 0)
 			add_dir("Elgoles.me", 'elgolesme', 4, "http://elgoles.me/elgoles3.png", 'elgolesme', 0)
 			add_dir("rojadirecta.(unblocker.cc)", 'rojadirecta', 4, "http://rojadirecta.unblocker.cc/static/roja.jpg", 'rojadirecta', 0)
 		elif str(url)=='newsonlinewebsites' and enableNews == "true":
@@ -178,6 +179,8 @@ def browse_channel(url,page,provider): #MAIN TREE BROWSER IS HERE!
 		displayClan(url, page)
 	elif provider == 'rtvealacarta':
 		displayRTVE(url, page)
+	elif provider == 'dailysport':
+		displayDailySport(url, page)
 
 	logger.info(provider)
 
@@ -274,6 +277,8 @@ def init():
 			openAtresplayer(url,page)
 		elif mode == 132:
 			openRojadirecta(url,page)
+		elif mode == 133:
+			openDailySport(url,page)
 
 	except Exception as e:
 		logger.error(XBMCUtils.getString(10009)+", "+str(e))

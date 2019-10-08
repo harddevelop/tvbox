@@ -45,6 +45,7 @@ from providers.vercanalestv1com import Vercanalestv1com
 from providers.elgolesme import Elgolesme
 from providers.atresplayer import Atresplayer
 from providers.rojadirecta import Rojadirecta
+from providers.dailysport import Dailysport
 
 try:
 	from providers.spliveappcom import Spliveappcom
@@ -572,6 +573,16 @@ def displayRTVE(url,page):
 			image = element["thumbnail"]
 		add_dir(element["title"], element["link"], code, image, "rtvealacarta", element["link"])
 
+def displayDailySport(url,page):
+	finalUrls = Dailysport.getChannels(page)
+	for element in finalUrls:
+		code = 133
+		image = icon
+		if element.has_key("thumbnail"):
+			image = element["thumbnail"]
+		add_dir(element["title"], element["link"], code, image, "dailysport", element["link"])
+
+
 def drawTuMejorTorrent(page):
 	jsonChannels = TuMejorTorrent.getChannels(page)
 	for item in jsonChannels:
@@ -788,6 +799,12 @@ def openElgolesme(url,page):
 	logger.info("decoding Elgolesme link... " + url)
 	link = Elgolesme.getChannels(url)[0]["link"]
 	logger.info("decoded Elgolesme link: " + link)
+	play(link, page)
+
+def openDailySport(url,page):
+	logger.info("decoding dailysport link... " + url)
+	link = Dailysport.getChannels(url)[0]["link"]
+	logger.info("decoded dailysport link: " + link)
 	play(link, page)
 
 def isAnException(url,page,provider,mode):
