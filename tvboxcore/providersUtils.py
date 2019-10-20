@@ -343,7 +343,7 @@ def drawTuneIn(url):
 			img = channel["thumbnail"]
 		add_dir(channel["title"], channel["link"], level, img, "tunein", channel["link"])
 
-def drawAresplayer(url):
+def drawAtresplayer(url):
 	channels = Atresplayer.getChannels(url)
 	logger.debug("items obtained: " + str(len(channels)))
 	for channel in channels:
