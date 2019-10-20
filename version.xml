@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.1</tag>
-	<version>146</version>
-	<date>20/06/2019</date>
+	<version>147</version>
+	<date>20/10/2019</date>
 	<changes>some new updates and fixes</changes>
 </plugin>
