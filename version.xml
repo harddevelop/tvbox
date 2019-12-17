@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
-	<tag>0.2.1</tag>
-	<version>147</version>
-	<date>20/10/2019</date>
-	<changes>some new updates and fixes</changes>
+	<tag>0.2.2</tag>
+	<version>148</version>
+	<date>17/12/2019</date>
+	<changes>Upgraded revision. More stable providers.</changes>
 </plugin>
