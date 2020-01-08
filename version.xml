@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.2</tag>
-	<version>148</version>
-	<date>17/12/2019</date>
-	<changes>Upgraded revision. More stable providers.</changes>
+	<version>149</version>
+	<date>08/01/2020</date>
+	<changes>Fixed revision. Happy new year.</changes>
 </plugin>

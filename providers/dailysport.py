@@ -16,16 +16,22 @@ class Dailysport(Downloader):
             i=0
             for line in table.split('<tr>'):
                 if i>0:
-                    href = Dailysport.URL+Decoder.extract('<a href=','>',line)
+                    links = []
+                    for link in line.split("<a "):
+                        if 'href=' in link:
+                            href = Dailysport.URL+Decoder.extract('href=','>',link).replace('"','')
+                            logger.debug("href found %s" % href)
+                            links.append(href)
                     title = Decoder.extract('</td>','</td>',line).replace("<td>","").replace("\n","")
                     if "</span>" in title:
                         title = title[title.find("</span>")+len("</span>"):]
                     time = line[:line.find('</td>')].replace("<td>","").replace("\n","")
-                    element = {}
-                    element["title"] = str(time+" : "+title).strip()
-                    element["link"] = href.replace('"','')
-                    x.append(element)
-                    logger.debug("appended %s -#- %s"%(title,href))
+                    for href in links:
+                        element = {}
+                        element["title"] = str(time+" : "+title).strip()
+                        element["link"] = href
+                        x.append(element)
+                        logger.debug("appended %s -#- %s"%(title,href))
                 i+=1
         else:
             link = Dailysport.decodeLink(page)

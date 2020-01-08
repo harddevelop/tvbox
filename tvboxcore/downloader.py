@@ -2,6 +2,7 @@ import urllib, urllib2, httplib
 import StringIO
 import gzip
 from tvboxcore import logger
+import ssl
 
 class Downloader():
     TIMEOUT = 20
@@ -54,8 +55,9 @@ class Downloader():
         if data == "":
             logger.debug("launching GET for "+url+"...")
             req = urllib2.Request(url, headers=headers)
+            context = ssl._create_unverified_context()
             try:
-                r = urllib2.urlopen(req, timeout=Downloader.TIMEOUT)
+                r = urllib2.urlopen(req, context=context, timeout=Downloader.TIMEOUT)
             except BaseException as e:
                 logger.error("Something went wrong with urllib :'(: "+str(e))
                 pass
