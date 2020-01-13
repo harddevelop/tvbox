@@ -59,7 +59,7 @@ class Clan(Downloader):
             html = Clan.getContentFromUrl(url=decoder,data=data,referer='http://www.descargavideos.tv/');
             logger.debug("HTML IS: "+html)
             videoUrl = Decoder.extract(' name="video" value="','"',html)
-            videoUrl = videoUrl.replace('&amp;','&')
+            videoUrl = videoUrl.replace('&amp;','&').replace('http://www.rtve.es','')
             element = {}
             element["link"] = videoUrl+"|"+Downloader.getHeaders()
             element["title"] = page
