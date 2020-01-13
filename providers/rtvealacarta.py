@@ -9,7 +9,7 @@ except:
 
 class RTVEAlaCarta(Downloader):
 
-	SEARCH = 'http://www.rtve.es/alacarta/interno/buscador'
+	SEARCH = 'http://secure-embed.rtve.es/alacarta/interno/buscador'
 	MAIN_URL = 'http://www.rtve.es'
 	A_LA_CARTA = 'http://www.rtve.es/alacarta/'
 
@@ -19,6 +19,8 @@ class RTVEAlaCarta(Downloader):
 		if page == '0':
 			x = RTVEAlaCarta.getSections()
 			pass
+		elif page == 'search':
+			x = RTVEAlaCarta.search()
 		elif RTVEAlaCarta.A_LA_CARTA in page:
 			elementPage = page[len(RTVEAlaCarta.A_LA_CARTA):]
 			logger.debug("subPage is: " + elementPage)
@@ -37,6 +39,7 @@ class RTVEAlaCarta(Downloader):
 		x = []
 		referer = RTVEAlaCarta.MAIN_URL+"/alacarta/tve/la1/"
 		bruteJson = RTVEAlaCarta.getContentFromUrl(url=RTVEAlaCarta.SEARCH,referer=referer)
+		logger.debug("json obtained!")
 		items = json.loads(bruteJson)
 		for item in items["items"]:
 			title = item["text"]
@@ -44,6 +47,8 @@ class RTVEAlaCarta(Downloader):
 			logger.debug("item is: "+title+", url: "+url)
 			element = {}
 			element["title"] = title
+			if RTVEAlaCarta.MAIN_URL not in url:
+				url = RTVEAlaCarta.MAIN_URL + url
 			element["link"] = url
 			x.append(element)
 		return x
@@ -76,6 +81,10 @@ class RTVEAlaCarta(Downloader):
 					element["link"] = link
 					if len(sublink)>0:
 						x.append(element)
+		element = {}
+		element["title"] = "All (use kodi filter)"
+		element["link"] = "search"
+		x.append(element)
 		return x
 		
 	@staticmethod
