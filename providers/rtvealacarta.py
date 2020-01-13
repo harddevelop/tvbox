@@ -52,8 +52,8 @@ class RTVEAlaCarta(Downloader):
 	def getSections():
 		x = []
 		html = RTVEAlaCarta.getContentFromUrl(url=RTVEAlaCarta.A_LA_CARTA)
-		content = Decoder.extract('<div class="wrapper-canales mark">','</ul></div>',html)
-		for line in content.split('"><a '):
+		content = Decoder.extract('<div class="wrapper-canales mark">','<div class="mark">',html)
+		for line in content.split('<a '):
 			if 'href=' in line:
 				link = Decoder.extract('href="','"',line)
 				if '/alacarta' in link:
@@ -104,7 +104,7 @@ class RTVEAlaCarta(Downloader):
 			x.append(element)
 		if '<!--EMPIEZA TOOL-TIP-->' in content:
 			for line in content.split('<!--EMPIEZA TOOL-TIP-->'):
-				logger.debug("html line is: "+line)
+				logger.debug("html line1 is: "+line)
 				title = Decoder.extract(' title="Ver programa seleccionado">','<',line)
 				link = Decoder.rExtract('<a href=',title+'</a>',line)
 				link = Decoder.extract('"','"',link)
@@ -118,7 +118,7 @@ class RTVEAlaCarta(Downloader):
 				x.append(element)
 		elif '</li><li class="' in content:
 			for line in content.split('</li><li class="'):
-				logger.debug("html line is: " + line)
+				logger.debug("html line2 is: " + line)
 				link = Decoder.extract('<a href="', '"', line)
 				title = Decoder.extract('/">', '</a>', line).replace("&nbsp;"," ").replace("<em>","").replace("</em>","")
 				element = {}
@@ -129,10 +129,11 @@ class RTVEAlaCarta(Downloader):
 				element["link"] = link
 				element["finalLink"] = True
 				if "</span>" not in title:
+                                        logger.debug("title: %s, url: %s"%(title,link))
 					x.append(element)
 		elif '</li><li class="' in html:
 			for line in html.split('</li><li class="'):
-				logger.debug("html line is: " + line)
+				logger.debug("html line3 is: " + line)
 				link = Decoder.extract('<a href="', '"', line)
 				title = Decoder.extract('/">', '</a>', line).replace("&nbsp;", " ").replace("<em>", "").replace("</em>",
 																												"")
@@ -179,7 +180,7 @@ class RTVEAlaCarta(Downloader):
 					url = item["htmlUrl"]
 					title = item["longTitle"]
 					element = {}
-					element["link"] = link
+					element["link"] = url
 					element["title"] = title
 					try:
 						element["thumbnail"] = item["imageSEO"]
@@ -187,6 +188,7 @@ class RTVEAlaCarta(Downloader):
 						logger.error("No imageSEO found!")
 						pass
 					element["finalLink"] = True
+					logger.debug("%s %s" % (title,link))
 					x.append(element)
 			except:
 				logger.error("Could not parse JSON from ALACARTA alternative way: "+jsonPage)
