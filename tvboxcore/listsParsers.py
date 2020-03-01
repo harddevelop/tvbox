@@ -72,7 +72,7 @@ def drawXml(html,icon='',provider='',finalTarget=1):
 						try:
 							value = common.parseDOM(item, "link")[0].encode("utf-8")
 							logger.debug("extracted link: "+value)
-							if 'ignorame' in value or 'ignora.me' in value:
+							if 'gnoreme' in value or  'ignorame' in value or 'ignora.me' in value:
 								value = common.parseDOM(item, "externallink")[0].encode("utf-8")
 							elif 'ignor' in value:
 								value = common.parseDOM(item, "jsonrpc")[0].encode("utf-8")

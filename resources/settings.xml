@@ -1,6 +1,6 @@
 <settings>
 	<category label="30000">
-		<setting id="remote_repository" type="text" label="30001" value="http://harddevelop.x10.bz/channels/channels_spain" default="http://harddevelop.x10.bz/channels/channels_spain" enable="true"/>
+		<setting id="remote_repository" type="text" label="30001" value="http://mullafabz.xyz/HOST/LiveTV/sportsstreamz.xml" default="http://mullafabz.xyz/HOST/LiveTV/sportsstreamz.xml" enable="true"/>
 		<setting id="remote_updater" type="text" label="30002" value="https://github.com/harddevelop/tvbox/raw/master/version.xml" default="https://github.com/harddevelop/tvbox/raw/master/version.xml" enable="true"/>
 	</category>
 	<category label="30010">

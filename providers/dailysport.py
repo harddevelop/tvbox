@@ -2,6 +2,7 @@ from tvboxcore import logger
 from tvboxcore.downloader import Downloader
 from tvboxcore.decoder import Decoder
 import urllib
+import base64
 
 class Dailysport(Downloader):
 
@@ -44,11 +45,12 @@ class Dailysport(Downloader):
     @staticmethod
     def decodeLink(page):
         html = Dailysport.getContentFromUrl(url=page,referer=Dailysport.URL)
-        if "source:'" in html:
-            extractor = "source:'"
+        if 'source: window.atob("' in html:
+            extractor = 'source: window.atob("'
         elif "source:'" in html:
             extractor = "source: '"
         else:
             extractor = "'"
-        link = Decoder.rExtract(extractor,".m3u8'",html)+".m3u8"
-        return link+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F70.0&amp;Referer="+urllib.quote_plus(page)
+        link = Decoder.rExtract(extractor,'"',html)
+        link = base64.b64decode(link)
+        return link+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F70.0&amp;Referer="+urllib.quote_plus(page)+"&amp;Origin=https://dailysport.pw"

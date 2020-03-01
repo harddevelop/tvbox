@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.2</tag>
-	<version>150</version>
-	<date>12/01/2020</date>
-	<changes>Fixed rtve provider, bad characters in url</changes>
+	<version>151</version>
+	<date>01/03/2020</date>
+	<changes>minor fix, sorry</changes>
 </plugin>
