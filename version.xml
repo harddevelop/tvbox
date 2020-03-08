@@ -2,7 +2,7 @@
 <plugin>
 	<file>https://github.com/harddevelop/tvbox/archive/master.zip</file>
 	<tag>0.2.2</tag>
-	<version>151</version>
-	<date>01/03/2020</date>
-	<changes>minor fix, sorry</changes>
+	<version>152</version>
+	<date>08/03/2020</date>
+	<changes>minor fixes</changes>
 </plugin>
