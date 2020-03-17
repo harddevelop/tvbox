@@ -4,6 +4,8 @@ import base64
 from tvboxcore.decoder import Decoder
 from tvboxcore import logger
 from tvboxcore.downloader import Downloader
+import re
+
 
 class Vercanalestv1com(Downloader):
 
@@ -58,9 +60,7 @@ class Vercanalestv1com(Downloader):
             html4 = Vercanalestv1com.getContentFromUrl(url=url,data=formData,referer=url)
             if "source: '" in html4:
                 #change
-                originalLink = Decoder.extract("source: '","'",html4)
-                originalLink = html4[html4.rfind("source: '")+len("source: '"):]
-                originalLink = originalLink[:originalLink.find("'")]
+                originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html4, flags=0).group(0).replace("'","")
                 lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(url)
             elif ".php" in html4:
                 scriptUrl = url
@@ -72,9 +72,7 @@ class Vercanalestv1com(Downloader):
                 logger.debug("html66 is: "+html6)
                 if "source: '" in html6:
                     #change
-                    originalLink = Decoder.extract("source: '","'",html6)
-                    originalLink = html6[html6.rfind("source: '")+len("source: '"):]
-                    originalLink = originalLink[:originalLink.find("'")]
+                    originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html6, flags=0).group(0).replace("'","")
                     lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             logger.debug("decoded link is: "+lastUrl)
             element["title"] = page
@@ -101,9 +99,7 @@ class Vercanalestv1com(Downloader):
                     lastUrl = Vercanalestv1com.decodeChannel(html2,scriptUrl,page)
                 elif "source: '" in html2:
                     logger.debug("second if")
-                    originalLink = Decoder.extract("source: '","'",html2)
-                    originalLink = html2[html2.rfind("source: '")+len("source: '"):]
-                    originalLink = originalLink[:originalLink.find("'")]                    
+                    originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html2, flags=0).group(0).replace("'","")
                     lastUrl = "https:"+originalLink+"|User-Agent=Mozilla/5.0"
                 elif 'embed.js' in html2:
                     logger.debug("third 3333333333333333333333 if")
@@ -139,9 +135,7 @@ class Vercanalestv1com(Downloader):
         logger.debug("first if %s"%html4)
 
         if "source: '" in html4:
-            originalLink = Decoder.extract("source: '","'",html4)
-            originalLink = html4[html4.rfind("source: '")+len("source: '"):]
-            originalLink = originalLink[:originalLink.find("'")]   
+            originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html4, flags=0).group(0).replace("'","")
             lastUrl = "https:"+originalLink+"|User-Agent=Mozilla/5.0"
         elif ".php" in html4:
             newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html4)
@@ -151,9 +145,8 @@ class Vercanalestv1com(Downloader):
             html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
             logger.debug("html6 is: "+html6)
             if "source: '" in html6:
-                originalLink = Decoder.extract("source: '","'",html6)
-                originalLink = html6[html6.rfind("source: '")+len("source: '"):]
-                originalLink = originalLink[:originalLink.find("'")] 
+                originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html6, flags=0).group(0).replace("'","")
+                #originalLink = Decoder.extract("'","'",html6)
                 lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             elif 'embed.js' in html6:
                 logger.debug("third 1111111111111111111 if")
