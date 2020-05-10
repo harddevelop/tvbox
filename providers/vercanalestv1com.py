@@ -60,7 +60,7 @@ class Vercanalestv1com(Downloader):
             html4 = Vercanalestv1com.getContentFromUrl(url=url,data=formData,referer=url)
             if "source: '" in html4:
                 #change
-                originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html4, flags=0).group(0).replace("'","")
+                originalLink = Vercanalestv1com.extractLastLink(html4)
                 lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(url)
             elif ".php" in html4:
                 scriptUrl = url
@@ -71,8 +71,7 @@ class Vercanalestv1com(Downloader):
                 html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
                 logger.debug("html66 is: "+html6)
                 if "source: '" in html6:
-                    #change
-                    originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html6, flags=0).group(0).replace("'","")
+                    originalLink = Vercanalestv1com.extractLastLink(html6)
                     lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             logger.debug("decoded link is: "+lastUrl)
             element["title"] = page
@@ -99,7 +98,7 @@ class Vercanalestv1com(Downloader):
                     lastUrl = Vercanalestv1com.decodeChannel(html2,scriptUrl,page)
                 elif "source: '" in html2:
                     logger.debug("second if")
-                    originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html2, flags=0).group(0).replace("'","")
+                    originalLink = Vercanalestv1com.extractLastLink(html2)
                     lastUrl = "https:"+originalLink+"|User-Agent=Mozilla/5.0"
                 elif 'embed.js' in html2:
                     logger.debug("third 3333333333333333333333 if")
@@ -129,13 +128,21 @@ class Vercanalestv1com(Downloader):
         return element
 
     @staticmethod
+    def extractLastLink(html6):
+        #originalLink = re.search("(?=(//([a-zA-Z])+[0-9](.+)+[0-9]))", html6, flags=0).group(1).replace("'","")
+        originalLink = Decoder.extract('<script src="/player/player.js"></script>',"',",html6)
+        originalLink = originalLink[originalLink.find("source: '")+len("source: '"):]
+        #originalLink = Decoder.extract("'","'",html6)
+        return originalLink
+
+    @staticmethod
     def decodeChannel(html4,scriptUrl,page):
 
         lastUrl = ""
         logger.debug("first if %s"%html4)
 
         if "source: '" in html4:
-            originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html4, flags=0).group(0).replace("'","")
+            originalLink = Vercanalestv1com.extractLastLink(html4)
             lastUrl = "https:"+originalLink+"|User-Agent=Mozilla/5.0"
         elif ".php" in html4:
             newScriptUrl = "https:"+Decoder.rExtractWithRegex('//','.php',html4)
@@ -145,8 +152,7 @@ class Vercanalestv1com(Downloader):
             html6 = Vercanalestv1com.getContentFromUrl(url=newScriptUrl,data=formData,referer=scriptUrl)
             logger.debug("html6 is: "+html6)
             if "source: '" in html6:
-                originalLink = re.search("//(?:[a-zA-Z])+[0-9](.+)\'", html6, flags=0).group(0).replace("'","")
-                #originalLink = Decoder.extract("'","'",html6)
+                originalLink = Vercanalestv1com.extractLastLink(html6)
                 lastUrl = "https:"+originalLink+"|User-Agent=Mozilla%2F5.0+%28X11%3B+Linux+x86_64%3B+rv%3A68.0%29+Gecko%2F20100101+Firefox%2F68.0&amp;Referer="+urllib.quote_plus(newScriptUrl)
             elif 'embed.js' in html6:
                 logger.debug("third 1111111111111111111 if")
